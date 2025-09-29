@@ -189,14 +189,14 @@
         right: 0;
         bottom: 0;
         background: linear-gradient(to top, 
-            rgba(255,255,255,0.95) 0%, 
-            rgba(255,255,255,0.85) 15%, 
-            rgba(255,255,255,0.7) 30%, 
-            rgba(255,255,255,0.5) 45%, 
-            rgba(255,255,255,0.3) 60%, 
-            rgba(255,255,255,0.15) 75%, 
-            rgba(255,255,255,0.05) 90%, 
-            transparent 100%);
+            rgba(255,255,255,0.95) 0%,     /* من الأسفل - شفافية بيضاء 95% */
+            rgba(255,255,255,0.85) 15%,    /* ارتفاع 15% - شفافية 85% */
+            rgba(255,255,255,0.7) 30%,     /* ارتفاع 30% - شفافية 70% */
+            rgba(255,255,255,0.5) 45%,     /* منتصف البطاقة - شفافية 50% */
+            rgba(255,255,255,0.3) 60%,     /* ارتفاع 60% - شفافية 30% */
+            rgba(255,255,255,0.15) 75%,    /* ارتفاع 75% - شفافية 15% */
+            rgba(255,255,255,0.05) 90%,    /* قرب الأعلى - شفافية 5% */
+            transparent 100%);              /* في الأعلى - شفاف تماماً */
         pointer-events: none;
         z-index: 1;
     }
@@ -315,8 +315,7 @@
     }
 
     .card-footer {
-        padding: 20px;
-        text-align: center;
+        padding: 10px;
         position: relative;
         z-index: 2;
     }
@@ -432,7 +431,6 @@
         </div>
 
         <div class="input-group">
-            <label>🎨 اختر تصميم الخلفية:</label>
             <div class="patterns-grid">
                 <div class="pattern-option pattern-1 active" data-pattern="1"></div>
                 <div class="pattern-option pattern-2" data-pattern="2"></div>
@@ -495,11 +493,6 @@
             </div>
 
             <div class="card-footer">
-                <svg class="brand-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#d4af37" stroke-width="2" opacity="0.5"/>
-                    <text x="50" y="55" text-anchor="middle" fill="#8B4513" font-size="16" font-weight="bold">عقد</text>
-                    <text x="50" y="70" text-anchor="middle" fill="#8B4513" font-size="12">قران</text>
-                </svg>
             </div>
         </div>
     </div>
