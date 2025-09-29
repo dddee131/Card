@@ -233,34 +233,32 @@
         padding: 20px;
         position: relative;
         z-index: 2;
+        background: linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 30%, rgba(255,255,255,0.3) 60%, transparent 100%);
     }
 
     .message-box {
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(212, 175, 55, 0.3);
         text-align: center;
         max-width: 90%;
     }
 
     .celebration-text {
-        font-size: 16px;
-        color: #34495e;
-        margin-bottom: 20px;
-        line-height: 1.6;
+        font-size: 18px;
+        color: #2c3e50;
+        margin-bottom: 25px;
+        line-height: 1.8;
+        font-weight: 600;
+        text-shadow: 1px 1px 3px rgba(255,255,255,0.8), -1px -1px 3px rgba(255,255,255,0.8);
     }
 
     .name-section {
         background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
         padding: 20px 35px;
         border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(139, 69, 19, 0.3);
+        box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4);
         border: 2px solid #d4af37;
         position: relative;
         overflow: hidden;
+        backdrop-filter: blur(5px);
     }
 
     .name-section::before {
@@ -299,7 +297,7 @@
 
     .card-footer {
         padding: 20px;
-        background: linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.95) 100%);
+        background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.95) 100%);
         text-align: center;
         position: relative;
         z-index: 2;
