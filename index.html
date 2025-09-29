@@ -15,7 +15,7 @@
 ```
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        background: linear-gradient(135deg, #f5e6e8 0%, #fdf5f7 100%);
         min-height: 100vh;
         padding: 20px;
     }
@@ -27,135 +27,162 @@
 
     /* صفحة البطاقة */
     .card-view {
-        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        background: linear-gradient(to bottom, #fdf5f7 0%, #fce4ec 50%, #fdf5f7 100%);
         border-radius: 20px;
-        padding: 40px 30px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        padding: 60px 40px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         position: relative;
         overflow: hidden;
     }
 
-    .card-view::before {
-        content: '';
+    /* زخارف الورود */
+    .floral-decoration {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10 L60 30 L80 35 L65 50 L68 70 L50 60 L32 70 L35 50 L20 35 L40 30 Z" fill="%23d4af37" opacity="0.1"/></svg>');
-        background-size: 100px;
-        opacity: 0.1;
-        pointer-events: none;
+        width: 250px;
+        height: 250px;
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="80" rx="40" ry="50" fill="%23f8bbd0" opacity="0.4"/><ellipse cx="130" cy="90" rx="35" ry="45" fill="%23f48fb1" opacity="0.3"/><ellipse cx="70" cy="90" rx="35" ry="45" fill="%23f48fb1" opacity="0.3"/><path d="M100 120 Q120 140 100 160 Q80 140 100 120" fill="%23d4a5a5" opacity="0.3"/><path d="M90 100 L95 90 L100 85 L105 90 L110 100" stroke="%23c48b9f" stroke-width="2" fill="none" opacity="0.4"/></svg>');
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 0.6;
     }
 
-    .photo-frame {
-        width: 280px;
-        height: 280px;
-        margin: 0 auto 30px;
-        border: 3px solid #d4af37;
-        background: #000;
-        border-radius: 10px;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .floral-top-right {
+        top: -50px;
+        right: -50px;
+        transform: rotate(-20deg);
     }
 
-    .photo-frame img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+    .floral-top-left {
+        top: -30px;
+        left: -50px;
+        transform: rotate(20deg) scaleX(-1);
     }
 
-    .photo-placeholder {
-        color: #666;
-        font-size: 14px;
-        text-align: center;
+    .floral-bottom-left {
+        bottom: -50px;
+        left: -50px;
+        transform: rotate(160deg);
+    }
+
+    .floral-bottom-right {
+        bottom: -50px;
+        right: -50px;
+        transform: rotate(-160deg) scaleX(-1);
     }
 
     .invitation-title {
-        background: #1a1a1a;
-        border: 2px solid #d4af37;
-        padding: 15px 30px;
         text-align: center;
-        margin: 0 auto 20px;
-        width: fit-content;
-        border-radius: 5px;
+        margin: 0 auto 40px;
+        position: relative;
+        z-index: 10;
     }
 
     .invitation-title h2 {
-        color: #fff;
-        font-size: 32px;
+        color: #c48b9f;
+        font-size: 48px;
         font-weight: bold;
-    }
-
-    .divider {
-        width: 80%;
-        height: 2px;
-        background: linear-gradient(to right, transparent, #d4af37, transparent);
-        margin: 20px auto;
+        text-shadow: 2px 2px 4px rgba(196, 139, 159, 0.2);
+        font-family: 'Traditional Arabic', serif;
     }
 
     .invitation-text {
-        color: #fff;
+        color: #c48b9f;
         text-align: center;
-        margin: 20px 0;
-        line-height: 1.8;
+        margin: 30px 0;
+        line-height: 2;
+        position: relative;
+        z-index: 10;
     }
 
     .invitation-text p {
-        font-size: 18px;
-        margin: 10px 0;
+        font-size: 20px;
+        margin: 15px 0;
+        font-weight: 500;
+    }
+
+    .decorative-symbol {
+        text-align: center;
+        font-size: 50px;
+        color: #c48b9f;
+        margin: 30px 0;
+        opacity: 0.7;
+        position: relative;
+        z-index: 10;
     }
 
     .event-details {
         display: flex;
         justify-content: space-around;
-        margin: 30px 0;
-        gap: 20px;
+        margin: 50px 0;
+        gap: 40px;
+        position: relative;
+        z-index: 10;
     }
 
     .detail-item {
         text-align: center;
-        color: #d4af37;
+        flex: 1;
     }
 
     .detail-icon {
-        font-size: 40px;
-        margin-bottom: 10px;
+        font-size: 50px;
+        margin-bottom: 15px;
+        color: #c48b9f;
     }
 
     .detail-text {
-        color: #fff;
-        font-size: 14px;
+        color: #c48b9f;
+        font-size: 16px;
+        line-height: 1.8;
+        font-weight: 500;
+        white-space: pre-line;
+    }
+
+    .divider-line {
+        position: absolute;
+        width: 2px;
+        height: 80%;
+        background: linear-gradient(to bottom, transparent, #d4a5a5, transparent);
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .quran-verse {
         text-align: center;
-        color: #d4af37;
-        font-size: 24px;
-        margin: 30px 0;
-        padding: 20px;
-        border-top: 1px solid #d4af37;
-        border-bottom: 1px solid #d4af37;
-        line-height: 1.8;
+        color: #c48b9f;
+        font-size: 26px;
+        margin: 50px 0;
+        padding: 30px 20px;
+        line-height: 2;
+        position: relative;
+        z-index: 10;
+        font-family: 'Traditional Arabic', serif;
+    }
+
+    .verse-decoration {
+        width: 60%;
+        height: 2px;
+        background: linear-gradient(to right, transparent, #d4a5a5, transparent);
+        margin: 20px auto;
     }
 
     /* صفحة النموذج */
     .form-view {
-        background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
+        background: linear-gradient(135deg, #fff 0%, #fce4ec 100%);
         border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        padding: 40px 30px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         display: none;
     }
 
     .form-title {
         text-align: center;
-        color: #2a2a2a;
+        color: #c48b9f;
         margin-bottom: 30px;
         font-size: 22px;
-        line-height: 1.6;
+        line-height: 1.8;
+        font-weight: 600;
     }
 
     .form-group {
@@ -166,25 +193,25 @@
     .form-group textarea {
         width: 100%;
         padding: 15px;
-        border: 2px solid #d4af37;
+        border: 2px solid #f8bbd0;
         border-radius: 10px;
         font-size: 16px;
         text-align: center;
         background: #fff;
-        color: #2a2a2a;
+        color: #c48b9f;
         transition: all 0.3s;
     }
 
     .form-group input:focus,
     .form-group textarea:focus {
         outline: none;
-        border-color: #b8941f;
-        box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        border-color: #f48fb1;
+        box-shadow: 0 0 15px rgba(244, 143, 177, 0.3);
     }
 
     .form-group input::placeholder,
     .form-group textarea::placeholder {
-        color: #999;
+        color: #d4a5a5;
     }
 
     .btn-group {
@@ -205,23 +232,25 @@
     }
 
     .btn-view {
-        background: #00bcd4;
+        background: linear-gradient(135deg, #f48fb1 0%, #f06292 100%);
         color: #fff;
     }
 
     .btn-view:hover {
-        background: #0097a7;
+        background: linear-gradient(135deg, #f06292 0%, #ec407a 100%);
         transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(244, 143, 177, 0.4);
     }
 
     .btn-download {
-        background: #00bcd4;
+        background: linear-gradient(135deg, #ce93d8 0%, #ba68c8 100%);
         color: #fff;
     }
 
     .btn-download:hover {
-        background: #0097a7;
+        background: linear-gradient(135deg, #ba68c8 0%, #ab47bc 100%);
         transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(206, 147, 216, 0.4);
     }
 
     .toggle-btn {
@@ -229,39 +258,39 @@
         bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
-        background: #d4af37;
-        color: #1a1a1a;
+        background: linear-gradient(135deg, #f48fb1 0%, #f06292 100%);
+        color: #fff;
         border: none;
-        padding: 15px 30px;
+        padding: 15px 35px;
         border-radius: 50px;
         font-size: 16px;
         font-weight: bold;
         cursor: pointer;
-        box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        box-shadow: 0 8px 25px rgba(244, 143, 177, 0.4);
         transition: all 0.3s;
         z-index: 1000;
     }
 
     .toggle-btn:hover {
-        background: #b8941f;
+        background: linear-gradient(135deg, #f06292 0%, #ec407a 100%);
         transform: translateX(-50%) translateY(-3px);
-        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
+        box-shadow: 0 10px 30px rgba(244, 143, 177, 0.5);
     }
 
     .file-upload-label {
         display: block;
         text-align: center;
         padding: 40px;
-        border: 2px dashed #d4af37;
-        border-radius: 10px;
+        border: 2px dashed #f8bbd0;
+        border-radius: 15px;
         cursor: pointer;
         transition: all 0.3s;
-        background: #fafafa;
+        background: linear-gradient(135deg, #fff 0%, #fce4ec 100%);
     }
 
     .file-upload-label:hover {
-        background: #f0f0f0;
-        border-color: #b8941f;
+        background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+        border-color: #f48fb1;
     }
 
     .file-upload-label input {
@@ -269,8 +298,9 @@
     }
 
     .upload-text {
-        color: #666;
+        color: #c48b9f;
         font-size: 16px;
+        font-weight: 500;
     }
 
     @media (max-width: 600px) {
@@ -278,17 +308,31 @@
             padding: 10px;
         }
 
-        .photo-frame {
-            width: 200px;
-            height: 200px;
+        .card-view {
+            padding: 40px 20px;
         }
 
         .invitation-title h2 {
-            font-size: 24px;
+            font-size: 36px;
         }
 
         .quran-verse {
-            font-size: 18px;
+            font-size: 20px;
+            padding: 20px 10px;
+        }
+
+        .event-details {
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .divider-line {
+            display: none;
+        }
+
+        .floral-decoration {
+            width: 150px;
+            height: 150px;
         }
     }
 </style>
@@ -299,9 +343,10 @@
     <div class="container">
         <!-- صفحة البطاقة -->
         <div class="card-view" id="cardView">
-            <div class="photo-frame" id="photoFrame">
-                <div class="photo-placeholder">صورة الدعوة</div>
-            </div>
+            <div class="floral-decoration floral-top-right"></div>
+            <div class="floral-decoration floral-top-left"></div>
+            <div class="floral-decoration floral-bottom-left"></div>
+            <div class="floral-decoration floral-bottom-right"></div>
 
 ```
         <div class="invitation-title">
@@ -309,31 +354,35 @@
         </div>
 
         <div class="invitation-text">
-            <p id="displayWishes">بكل المحبة والتقدير</p>
-            <p id="displayInvite">اتشرف بدعوتكم لحضور</p>
-            <p id="displayEvent">حفل زواجي وتناول طعام العشاء</p>
+            <p id="displayWishes">بكل الود والمحبة والتقدير</p>
+            <p id="displayInvite">نتشرف بدعوتكم لحضور حفل زفاف</p>
+        </div>
+
+        <div class="decorative-symbol">
+            <span>❦</span>
         </div>
 
         <div class="event-details">
             <div class="detail-item">
-                <div class="detail-icon">📍</div>
-                <div class="detail-text" id="displayLocation">المكان</div>
-            </div>
-            <div class="detail-item">
                 <div class="detail-icon">📅</div>
                 <div class="detail-text" id="displayDate">التاريخ</div>
+            </div>
+            <div class="divider-line"></div>
+            <div class="detail-item">
+                <div class="detail-icon">📍</div>
+                <div class="detail-text" id="displayLocation">المكان</div>
             </div>
         </div>
 
         <div class="quran-verse" id="displayVerse">
-            وَمِنۡ ءَايَٰتِهِۦٓ أَنۡ خَلَقَ لَكُم مِّنۡ أَنفُسِكُمۡ أَزۡوَٰجٗا لِّتَسۡكُنُوٓاْ إِلَيۡهَا وَجَعَلَ بَيۡنَكُم مَّوَدَّةٗ وَرَحۡمَةً
+            وَمِنۡ ءَايَٰتِهِۦٓ أَنۡ خَلَقَ لَكُم مِّنۡ أَنفُسِكُمۡ أَزۡوَٰجٗا<br>لِّتَسۡكُنُوٓاْ إِلَيۡهَا وَجَعَلَ بَيۡنَكُم مَّوَدَّةٗ وَرَحۡمَةً
         </div>
 
-        <div class="divider"></div>
+        <div class="verse-decoration"></div>
 
         <div class="invitation-text">
             <p id="displayHost">الداعي/ـة</p>
-            <p id="displayName">اسم العريس/الداعي</p>
+            <p id="displayName" style="font-size: 18px; margin-top: 10px;">اسم العريس/الداعي</p>
         </div>
     </div>
 
@@ -344,28 +393,20 @@
         <div class="form-group">
             <label class="file-upload-label">
                 <input type="file" id="photoUpload" accept="image/*">
-                <span class="upload-text">📷 اختر صورة من جهازك</span>
+                <span class="upload-text">🌸 اختر صورة خلفية من جهازك</span>
             </label>
         </div>
 
         <div class="form-group">
-            <input type="text" id="wishesInput" placeholder="بكل المحبة والتقدير">
+            <input type="text" id="wishesInput" placeholder="بكل الود والمحبة والتقدير">
         </div>
 
         <div class="form-group">
-            <input type="text" id="inviteInput" placeholder="أتشرف بدعوتكم لحضور">
+            <input type="text" id="inviteInput" placeholder="نتشرف بدعوتكم لحضور حفل زفاف">
         </div>
 
         <div class="form-group">
-            <input type="text" id="eventInput" placeholder="حفل زواجي وتناول طعام العشاء">
-        </div>
-
-        <div class="form-group">
-            <input type="text" id="dateInput" placeholder="اليوم">
-        </div>
-
-        <div class="form-group">
-            <input type="text" id="timeInput" placeholder="التاريخ">
+            <input type="text" id="dateInput" placeholder="اليوم والتاريخ">
         </div>
 
         <div class="form-group">
@@ -373,7 +414,11 @@
         </div>
 
         <div class="form-group">
-            <input type="text" id="locationDetailsInput" placeholder="وصف المكان">
+            <input type="text" id="locationDetailsInput" placeholder="وصف المكان (اختياري)">
+        </div>
+
+        <div class="form-group">
+            <textarea id="verseInput" rows="3" placeholder="الآية القرآنية (اختياري)"></textarea>
         </div>
 
         <div class="form-group">
@@ -384,10 +429,6 @@
             <input type="text" id="nameInput" placeholder="اسم العريس/الداعي">
         </div>
 
-        <div class="form-group">
-            <textarea id="contactInput" rows="3" placeholder="بيانات التواصل"></textarea>
-        </div>
-
         <div class="btn-group">
             <button class="btn btn-view" onclick="updateCard()">👁️ عرض</button>
             <button class="btn btn-download" onclick="downloadCard()">📥 تحميل</button>
@@ -395,7 +436,7 @@
     </div>
 </div>
 
-<button class="toggle-btn" id="toggleBtn" onclick="toggleView()">تعديل البيانات</button>
+<button class="toggle-btn" id="toggleBtn" onclick="toggleView()">✏️ تعديل البيانات</button>
 
 <script>
     let currentView = 'card';
@@ -409,13 +450,13 @@
         if (currentView === 'card') {
             cardView.style.display = 'none';
             formView.style.display = 'block';
-            toggleBtn.textContent = 'عرض البطاقة';
+            toggleBtn.innerHTML = '🌸 عرض البطاقة';
             currentView = 'form';
         } else {
             updateCard();
             cardView.style.display = 'block';
             formView.style.display = 'none';
-            toggleBtn.textContent = 'تعديل البيانات';
+            toggleBtn.innerHTML = '✏️ تعديل البيانات';
             currentView = 'card';
         }
     }
@@ -423,24 +464,23 @@
     function updateCard() {
         const wishes = document.getElementById('wishesInput').value;
         const invite = document.getElementById('inviteInput').value;
-        const event = document.getElementById('eventInput').value;
         const date = document.getElementById('dateInput').value;
-        const time = document.getElementById('timeInput').value;
         const location = document.getElementById('locationInput').value;
         const locationDetails = document.getElementById('locationDetailsInput').value;
+        const verse = document.getElementById('verseInput').value;
         const host = document.getElementById('hostInput').value;
         const name = document.getElementById('nameInput').value;
 
         if (wishes) document.getElementById('displayWishes').textContent = wishes;
         if (invite) document.getElementById('displayInvite').textContent = invite;
-        if (event) document.getElementById('displayEvent').textContent = event;
         if (host) document.getElementById('displayHost').textContent = host;
         if (name) document.getElementById('displayName').textContent = name;
+        if (verse) document.getElementById('displayVerse').innerHTML = verse.replace(/\n/g, '<br>');
 
-        const dateText = date && time ? `${date}\n${time}` : date || time || 'التاريخ';
+        const dateText = date || 'التاريخ';
         document.getElementById('displayDate').textContent = dateText;
 
-        const locationText = location && locationDetails ? `${location}\n${locationDetails}` : location || locationDetails || 'المكان';
+        const locationText = location && locationDetails ? `${location}\n${locationDetails}` : location || 'المكان';
         document.getElementById('displayLocation').textContent = locationText;
     }
 
@@ -450,8 +490,11 @@
             const reader = new FileReader();
             reader.onload = function(event) {
                 uploadedImage = event.target.result;
-                const photoFrame = document.getElementById('photoFrame');
-                photoFrame.innerHTML = `<img src="${uploadedImage}" alt="صورة الدعوة">`;
+                const cardView = document.getElementById('cardView');
+                cardView.style.backgroundImage = `linear-gradient(rgba(253, 245, 247, 0.85), rgba(252, 228, 236, 0.85)), url('${uploadedImage}')`;
+                cardView.style.backgroundSize = 'cover';
+                cardView.style.backgroundPosition = 'center';
+                cardView.style.backgroundRepeat = 'no-repeat';
             };
             reader.readAsDataURL(file);
         }
@@ -459,7 +502,7 @@
 
     function downloadCard() {
         updateCard();
-        alert('لتحميل البطاقة، يمكنك:\n1. التقاط لقطة شاشة للبطاقة\n2. استخدام أدوات المتصفح لحفظ الصفحة كصورة\n\nأو يمكنك نسخ الكود واستخدام مكتبات مثل html2canvas في بيئة تطوير كاملة.');
+        alert('لتحميل البطاقة:\n\n📱 من الموبايل: التقط لقطة شاشة\n💻 من الكمبيوتر: اضغط بالزر الأيمن على البطاقة واختر "حفظ الصورة"\n\n✨ أو استخدم أدوات لقطة الشاشة في متصفحك');
     }
 </script>
 ```
