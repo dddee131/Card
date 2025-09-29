@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محرر دعوة الزواج</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- لوحة التحرير -->
+        <div class="editor-panel">
+            <h2>تخصيص دعوة الزواج</h2>
+            
+            <div class="form-group">
+                <label for="invitationTitle">عنوان الدعوة:</label>
+                <input type="text" id="invitationTitle" value="دعوة زواج" placeholder="مثال: دعوة زواج">
+            </div>
+
+            <div class="form-group">
+                <label for="brideName">اسم العروس:</label>
+                <input type="text" id="brideName" value="فاطمة" placeholder="اسم العروس">
+            </div>
+
+            <div class="form-group">
+                <label for="groomName">اسم العريس:</label>
+                <input type="text" id="groomName" value="أحمد" placeholder="اسم العريس">
+            </div>
+
+            <div class="form-group">
+                <label for="weddingDate">تاريخ الزفاف:</label>
+                <textarea id="weddingDate" rows="2" placeholder="مثال: الجمعة ١٥ ديسمبر ٢٠٢٤
+الساعة ٨:٠٠ مساءً">الجمعة ١٥ ديسمبر ٢٠٢٤
+الساعة ٨:٠٠ مساءً</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="venueInfo">معلومات المكان:</label>
+                <textarea id="venueInfo" rows="3" placeholder="اسم القاعة، العنوان، الوقت">قاعة الأحلام الذهبية
+شارع الملك فهد - الرياض
+الساعة ٧:٠٠ مساءً</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="additionalText">نص إضافي:</label>
+                <textarea id="additionalText" rows="2" placeholder="رسالة خاصة أو معلومات إضافية">يشرفنا حضوركم لمشاركتنا هذه المناسبة السعيدة</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="cardOrientation">اتجاه البطاقة:</label>
+                <select id="cardOrientation">
+                    <option value="portrait">طولي (عادي)</option>
+                    <option value="landscape">عرضي</option>
+                    <option value="story">ستوري إنستغرام</option>
+                    <option value="square">مربع</option>
+                    <option value="postcard">بطاقة بريدية</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="backgroundType">نوع الخلفية:</label>
+                <select id="backgroundType">
+                    <option value="gradient">لون متدرج</option>
+                    <option value="image">صورة مخصصة</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="colorGroup">
+                <label for="cardColor">لون الخلفية:</label>
+                <input type="color" id="cardColor" class="color-input" value="#f093fb">
+            </div>
+
+            <div class="form-group" id="imageGroup" style="display: none;">
+                <label for="backgroundImage">صورة الخلفية:</label>
+                <input type="file" id="backgroundImage" accept="image/*">
+                <small style="color: #718096; margin-top: 5px; display: block;">اختر صورة للخلفية (JPG, PNG, GIF)</small>
+            </div>
+
+            <div class="form-group" id="overlayGroup" style="display: none;">
+                <label for="overlayOpacity">شفافية الطبقة العلوية:</label>
+                <input type="range" id="overlayOpacity" min="0" max="90" value="50" style="width: 100%;">
+                <small style="color: #718096;">لجعل النص أكثر وضوحاً على الصورة</small>
+            </div>
+
+            <div class="form-group">
+                <label for="fontFamily">نوع الخط:</label>
+                <select id="fontFamily">
+                    <option value="Segoe UI">Segoe UI (افتراضي)</option>
+                    <option value="Arial">Arial (كلاسيكي)</option>
+                    <option value="Times New Roman">Times New Roman (رسمي)</option>
+                    <option value="Georgia">Georgia (أنيق)</option>
+                    <option value="Trebuchet MS">Trebuchet MS (عصري)</option>
+                    <option value="Palatino Linotype">Palatino (فاخر)</option>
+                    <option value="Book Antiqua">Book Antiqua (تقليدي)</option>
+                    <option value="Garamond">Garamond (راقي)</option>
+                    <option value="Verdana">Verdana (واضح)</option>
+                    <option value="Tahoma">Tahoma (مدمج)</option>
+                    <option value="Cairo">Cairo (عربي حديث)</option>
+                    <option value="Amiri">Amiri (عربي تقليدي)</option>
+                    <option value="Noto Sans Arabic">Noto Sans Arabic (عربي نظيف)</option>
+                    <option value="IBM Plex Sans Arabic">IBM Plex Arabic (تقني)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="textColor">لون النص:</label>
+                <input type="color" id="textColor" class="color-input" value="#ffffff">
+            </div>
+
+            <div class="form-group">
+                <label for="frameColor">لون الإطار:</label>
+                <input type="color" id="frameColor" class="color-input" value="#ffffff">
+            </div>
+
+            <div class="form-group">
+                <label for="frameOpacity">شفافية الإطار:</label>
+                <input type="range" id="frameOpacity" min="0" max="100" value="30" style="width: 100%;">
+                <small style="color: #718096; margin-top: 5px; display: block;">تحكم في وضوح الإطار الزخرفي (<span id="frameOpacityValue">30</span>%)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="frameMargin">هوامش الإطار:</label>
+                <input type="range" id="frameMargin" min="10" max="80" value="30" style="width: 100%;">
+                <small style="color: #718096; margin-top: 5px; display: block;">المسافة من حواف البطاقة (<span id="frameMarginValue">30</span>px)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="showFrame">عرض الإطار:</label>
+                <select id="showFrame">
+                    <option value="both">الإطار المزدوج</option>
+                    <option value="outer">الإطار الخارجي فقط</option>
+                    <option value="inner">الإطار الداخلي فقط</option>
+                    <option value="none">بدون إطار</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- لوحة المعاينة -->
+        <div class="preview-panel">
+            <div class="invitation-card card-portrait" id="invitationCard">
+                <div class="card-overlay" id="cardOverlay"></div>
+                <div class="card-background"></div>
+                <div class="card-content" id="cardContent">
+                    <div class="invitation-title" id="displayTitle">دعوة زواج</div>
+                    <div class="couple-names" id="displayNames">فاطمة & أحمد</div>
+                    
+                    <!-- التصميم الجديد للتاريخ والمكان -->
+                    <div class="date-venue-container">
+                        <div class="wedding-date" id="displayDate">الجمعة ١٥ ديسمبر ٢٠٢٤</div>
+                        <div class="separator"></div>
+                        <div class="venue-info" id="displayVenue">قاعة الأحلام الذهبية<br>شارع الملك فهد - الرياض<br>الساعة ٧:٠٠ مساءً</div>
+                    </div>
+                    
+                    <div class="additional-text" id="displayAdditional">وبحضوركم يتم لنا الفرح والسرور</div>
+                </div>
+                <div class="decorative-frame" id="decorativeFrame"></div>
+            </div>
+            
+<div class="controls">
+                <button class="btn btn-primary" onclick="previewFullscreen()">معاينة كاملة</button>
+                <button class="btn btn-secondary" onclick="downloadInvitation()">تحميل الدعوة</button>
+                <button class="btn btn-warning" onclick="printInvitation()">طباعة الدعوة</button>
+                <button class="btn btn-success" onclick="shareWhatsApp()">مشاركة واتساب</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
