@@ -6,8 +6,8 @@ function updatePreview() {
 const title = document.getElementById(‘invitationTitle’).value || ‘دعوة زواج’;
 const brideName = document.getElementById(‘brideName’).value || ‘العروس’;
 const groomName = document.getElementById(‘groomName’).value || ‘العريس’;
-const date = document.getElementById(‘weddingDate’).value.replace(/\n/g, ‘<br>’) || ‘تاريخ الزفاف’;
-const venue = document.getElementById(‘venueInfo’).value.replace(/\n/g, ‘<br>’) || ‘معلومات المكان’;
+const dateText = document.getElementById(‘weddingDate’).value || ‘تاريخ الزفاف’;
+const venueText = document.getElementById(‘venueInfo’).value || ‘معلومات المكان’;
 const additional = document.getElementById(‘additionalText’).value || ‘’;
 const textColor = document.getElementById(‘textColor’).value;
 const fontFamily = document.getElementById(‘fontFamily’).value;
@@ -19,8 +19,14 @@ const coupleNamesFont = document.getElementById(‘coupleNamesFont’).value;
 ```
 document.getElementById('displayTitle').textContent = title;
 document.getElementById('displayNames').textContent = `${brideName} & ${groomName}`;
-document.getElementById('displayDate').innerHTML = date;
-document.getElementById('displayVenue').innerHTML = venue;
+
+// تحويل النص مع الحفاظ على الأسطر الجديدة فقط
+const dateLines = dateText.split('\n').filter(line => line.trim() !== '');
+document.getElementById('displayDate').innerHTML = dateLines.join('<br>');
+
+const venueLines = venueText.split('\n').filter(line => line.trim() !== '');
+document.getElementById('displayVenue').innerHTML = venueLines.join('<br>');
+
 document.getElementById('displayAdditional').textContent = additional;
 
 // تطبيق نوع الخط
@@ -50,19 +56,28 @@ content.classList.remove(
     'text-style-neon-silver'
 );
 
-// تطبيق نمط النص
+// إزالة أنماط الظل
+content.classList.remove('shadow-outer', 'shadow-inner', 'shadow-both', 'shadow-none');
+
+// تطبيق نمط النص أولاً
 if (textStyle === 'normal') {
     content.style.color = textColor;
+    // إزالة الفلاتر
+    const elements = content.querySelectorAll('.invitation-title, .couple-names, .wedding-date, .venue-info, .additional-text');
+    elements.forEach(el => {
+        el.style.background = '';
+        el.style.webkitBackgroundClip = '';
+        el.style.webkitTextFillColor = '';
+        el.style.backgroundClip = '';
+        el.style.color = textColor;
+    });
 } else {
     content.classList.add('text-style-' + textStyle);
     content.style.color = '';
 }
 
-// تطبيق نوع الظل
-content.classList.remove('shadow-outer', 'shadow-inner', 'shadow-both', 'shadow-none');
+// ثم تطبيق الظل
 content.classList.add('shadow-' + shadowType);
-
-// تطبيق شدة الظل
 updateShadowIntensity(shadowType, shadowIntensity);
 
 // تحديث القيمة المعروضة
@@ -80,18 +95,17 @@ const content = document.getElementById(‘cardContent’);
 const elements = content.querySelectorAll(’.invitation-title, .couple-names, .wedding-date, .venue-info, .additional-text’);
 
 ```
-const alpha = intensity / 10;
+const alpha = Math.min(intensity / 10, 0.9);
+const blur = intensity * 2;
 
 elements.forEach(element => {
     if (shadowType === 'outer') {
-        element.style.textShadow = `${intensity}px ${intensity}px ${intensity * 2}px rgba(0,0,0,${alpha * 0.5})`;
+        element.style.filter = `drop-shadow(${intensity}px ${intensity}px ${blur}px rgba(0,0,0,${alpha * 0.5}))`;
     } else if (shadowType === 'inner') {
-        element.style.textShadow = `inset ${intensity}px ${intensity}px ${intensity * 2}px rgba(0,0,0,${alpha * 0.7})`;
-        element.style.filter = 'brightness(0.9)';
+        element.style.filter = `drop-shadow(inset ${intensity}px ${intensity}px ${blur}px rgba(0,0,0,${alpha * 0.7}))`;
     } else if (shadowType === 'both') {
-        element.style.textShadow = `${intensity}px ${intensity}px ${intensity * 2}px rgba(0,0,0,${alpha * 0.4}), inset -${intensity}px -${intensity}px ${intensity * 2}px rgba(0,0,0,${alpha * 0.3})`;
+        element.style.filter = `drop-shadow(${intensity}px ${intensity}px ${blur}px rgba(0,0,0,${alpha * 0.4})) drop-shadow(inset -${intensity}px -${intensity}px ${blur}px rgba(0,0,0,${alpha * 0.3}))`;
     } else {
-        element.style.textShadow = 'none';
         element.style.filter = 'none';
     }
 });
@@ -333,9 +347,8 @@ const card = document.getElementById(‘invitationCard’);
 const orientation = document.getElementById(‘cardOrientation’).value;
 
 ```
-// استخدام html2canvas لحفظ الصورة مع التنسيق الصحيح
+// استخدام html2canvas لحفظ الصورة
 if (typeof html2canvas === 'undefined') {
-    // تحميل مكتبة html2canvas إذا لم تكن موجودة
     const script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
     script.onload = function() {
@@ -379,33 +392,20 @@ html2canvas(card, options).then(canvas => {
         URL.revokeObjectURL(url);
     }, 'image/png', 1.0);
 }).catch(function(error) {
-    console.error('حدث خطأ أثناء حفظ الصورة:', error);
-    downloadWithCanvas(orientation);
+    console.error('حدث خطأ:', error);
+    alert('عذراً، حدث خطأ أثناء حفظ الصورة');
 });
 ```
 
 }
 
-// مشاركة البطاقة عبر واتساب
+// مشاركة واتساب
 async function shareWhatsApp() {
 const card = document.getElementById(‘invitationCard’);
-const orientation = document.getElementById(‘cardOrientation’).value;
 const brideName = document.getElementById(‘brideName’).value || ‘العروس’;
 const groomName = document.getElementById(‘groomName’).value || ‘العريس’;
 
 ```
-// تحميل مكتبة jsPDF إذا لم تكن موجودة
-if (typeof jspdf === 'undefined') {
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-    await new Promise((resolve, reject) => {
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-    });
-}
-
-// تحميل html2canvas إذا لم تكن موجودة
 if (typeof html2canvas === 'undefined') {
     const script = document.createElement('script');
     script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
@@ -416,7 +416,6 @@ if (typeof html2canvas === 'undefined') {
     });
 }
 
-// التقاط البطاقة كصورة
 const options = {
     allowTaint: true,
     useCORS: true,
@@ -435,9 +434,7 @@ const options = {
 try {
     const canvas = await html2canvas(card, options);
     
-    // تحويل Canvas إلى Blob
     canvas.toBlob(async function(blob) {
-        // للأجهزة المحمولة التي تدعم Web Share API
         if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'invitation.png', { type: 'image/png' })] })) {
             const file = new File([blob], `دعوة-زواج-${brideName}-${groomName}.png`, { type: 'image/png' });
             const shareData = {
@@ -452,246 +449,32 @@ try {
                 console.log('تم إلغاء المشاركة');
             }
         } else {
-            // للأجهزة التي لا تدعم Web Share API
-            // تحويل الصورة إلى base64
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                const base64data = reader.result;
-                
-                // رسالة واتساب
-                const message = encodeURIComponent(`🎊 دعوة زواج 🎊\n\n${brideName} & ${groomName}\n\nيشرفنا حضوركم`);
-                
-                // فتح واتساب مع الرسالة
-                const whatsappUrl = `https://wa.me/?text=${message}`;
-                window.open(whatsappUrl, '_blank');
-                
-                // تحميل الصورة للمشاركة يدوياً
-                const downloadLink = document.createElement('a');
-                downloadLink.href = URL.createObjectURL(blob);
-                downloadLink.download = `دعوة-زواج-${brideName}-${groomName}.png`;
-                downloadLink.click();
-                
-                alert('تم فتح واتساب وتحميل الصورة. الرجاء إرفاق الصورة المحملة مع الرسالة في واتساب.');
-            };
-            reader.readAsDataURL(blob);
+            const message = encodeURIComponent(`دعوة زواج\n\n${brideName} & ${groomName}\n\nيشرفنا حضوركم`);
+            const whatsappUrl = `https://wa.me/?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+            
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = `دعوة-زواج-${brideName}-${groomName}.png`;
+            downloadLink.click();
+            
+            alert('تم فتح واتساب وتحميل الصورة. الرجاء إرفاق الصورة المحملة مع الرسالة.');
         }
     }, 'image/png', 1.0);
     
 } catch (error) {
-    console.error('حدث خطأ أثناء المشاركة:', error);
-    alert('عذراً، حدث خطأ أثناء المشاركة. الرجاء المحاولة مرة أخرى.');
+    console.error('خطأ:', error);
+    alert('عذراً، حدث خطأ أثناء المشاركة');
 }
 ```
 
-}
-
-// طريقة بديلة للحفظ باستخدام Canvas
-function downloadWithCanvas(orientation) {
-const dimensions = {
-portrait: { width: 1200, height: 1600 },
-landscape: { width: 1600, height: 1200 },
-story: { width: 1080, height: 1920 },
-square: { width: 1200, height: 1200 },
-postcard: { width: 1400, height: 900 }
-};
-
-```
-const dim = dimensions[orientation];
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = dim.width;
-canvas.height = dim.height;
-
-const backgroundType = document.getElementById('backgroundType').value;
-
-if (backgroundType === 'gradient') {
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    const cardColor = document.getElementById('cardColor').value;
-    gradient.addColorStop(0, cardColor);
-    gradient.addColorStop(1, adjustColor(cardColor, -20));
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    drawTextContent(ctx, orientation);
-} else if (backgroundType === 'image' && backgroundImageData) {
-    const img = new Image();
-    img.onload = function() {
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const overlayOpacity = document.getElementById('overlayOpacity').value;
-        ctx.fillStyle = `rgba(0,0,0,${overlayOpacity / 100})`;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        drawTextContent(ctx, orientation);
-        downloadCanvas(canvas, orientation);
-    };
-    img.src = backgroundImageData;
-    return;
-}
-
-drawTextContent(ctx, orientation);
-downloadCanvas(canvas, orientation);
-```
-
-}
-
-// رسم النصوص على الكانفاس
-function drawTextContent(ctx, orientation) {
-const canvasWidth = ctx.canvas.width;
-const canvasHeight = ctx.canvas.height;
-
-```
-// رسم الإطار الزخرفي
-const showFrame = document.getElementById('showFrame').value;
-const frameColor = document.getElementById('frameColor').value;
-const frameOpacity = document.getElementById('frameOpacity').value / 100;
-const frameMargin = document.getElementById('frameMargin').value;
-
-if (showFrame !== 'none') {
-    const r = parseInt(frameColor.slice(1, 3), 16);
-    const g = parseInt(frameColor.slice(3, 5), 16);
-    const b = parseInt(frameColor.slice(5, 7), 16);
-    const canvasMargin = frameMargin * (canvasWidth / 600);
-    
-    if (showFrame === 'both' || showFrame === 'outer') {
-        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${frameOpacity})`;
-        ctx.lineWidth = 6;
-        ctx.strokeRect(canvasMargin, canvasMargin, canvasWidth - (canvasMargin * 2), canvasHeight - (canvasMargin * 2));
-    }
-    
-    if (showFrame === 'both' || showFrame === 'inner') {
-        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${frameOpacity * 0.6})`;
-        ctx.lineWidth = 2;
-        const innerMargin = canvasMargin + 30;
-        ctx.strokeRect(innerMargin, innerMargin, canvasWidth - (innerMargin * 2), canvasHeight - (innerMargin * 2));
-    }
-}
-
-// أحجام النصوص
-const fontSizes = {
-    portrait: { title: 64, names: 96, date: 40, venue: 32, additional: 32 },
-    landscape: { title: 56, names: 84, date: 36, venue: 28, additional: 26 },
-    story: { title: 48, names: 72, date: 32, venue: 24, additional: 24 },
-    square: { title: 60, names: 88, date: 38, venue: 30, additional: 30 },
-    postcard: { title: 52, names: 76, date: 34, venue: 26, additional: 24 }
-};
-
-const sizes = fontSizes[orientation];
-const textColor = document.getElementById('textColor').value;
-const fontFamily = document.getElementById('fontFamily').value;
-
-ctx.fillStyle = textColor;
-ctx.textAlign = 'center';
-ctx.textBaseline = 'middle';
-ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-ctx.shadowBlur = 4;
-ctx.shadowOffsetX = 2;
-ctx.shadowOffsetY = 2;
-
-const canvasFontFamily = getImprovedFontForCanvas(fontFamily);
-const centerX = canvasWidth / 2;
-let currentY = canvasHeight * 0.25;
-const spacing = orientation === 'story' ? canvasHeight * 0.08 : canvasHeight * 0.1;
-
-// العنوان
-ctx.font = `bold ${sizes.title}px ${canvasFontFamily}`;
-ctx.fillText(document.getElementById('displayTitle').textContent, centerX, currentY);
-currentY += spacing;
-
-// أسماء العروسين
-ctx.font = `300 ${sizes.names}px ${canvasFontFamily}`;
-ctx.fillText(document.getElementById('displayNames').textContent, centerX, currentY);
-currentY += spacing * 0.8;
-
-// التصميم الجديد للتاريخ والمكان جنباً إلى جنب
-const dateVenueY = currentY + spacing * 0.5;
-const leftX = canvasWidth * 0.25;
-const rightX = canvasWidth * 0.75;
-
-// رسم التاريخ (يسار) - دعم أسطر متعددة
-ctx.font = `${sizes.date}px ${canvasFontFamily}`;
-const dateLines = document.getElementById('weddingDate').value.split('\n');
-let dateY = dateVenueY - (dateLines.length - 1) * sizes.date * 0.7;
-dateLines.forEach(line => {
-    if (line.trim()) {
-        ctx.fillText(line, leftX, dateY);
-        dateY += sizes.date * 1.4;
-    }
-});
-
-// رسم الخط الفاصل
-const separatorX = canvasWidth / 2;
-const separatorHeight = 80 * (canvasWidth / 600);
-ctx.fillStyle = `rgba(255, 255, 255, 0.5)`;
-ctx.fillRect(separatorX - 1, dateVenueY - separatorHeight / 2, 2, separatorHeight);
-
-// رسم الرمز الزخرفي
-ctx.font = `${sizes.date * 0.6}px ${canvasFontFamily}`;
-ctx.fillStyle = `rgba(255, 255, 255, 0.9)`;
-ctx.fillText('♦', separatorX, dateVenueY);
-
-// رسم معلومات المكان (يمين)
-ctx.font = `${sizes.venue}px ${canvasFontFamily}`;
-ctx.fillStyle = textColor;
-const venueLines = document.getElementById('venueInfo').value.split('\n');
-let venueY = dateVenueY - (venueLines.length - 1) * sizes.venue * 0.7;
-venueLines.forEach(line => {
-    if (line.trim()) {
-        ctx.fillText(line, rightX, venueY);
-        venueY += sizes.venue * 1.4;
-    }
-});
-
-// النص الإضافي
-if (document.getElementById('displayAdditional').textContent.trim()) {
-    ctx.font = `italic ${sizes.additional}px ${canvasFontFamily}`;
-    ctx.fillText(document.getElementById('displayAdditional').textContent, centerX, dateVenueY + spacing * 1.5);
-}
-```
-
-}
-
-// تحويل اسم الخط للاستخدام في الكانفاس
-function getImprovedFontForCanvas(fontFamily) {
-const fontMap = {
-‘Segoe UI’: ‘“Segoe UI”, “Segoe UI Arabic”, “Dubai”, “Tahoma”, Arial, sans-serif’,
-‘Arial’: ‘Arial, “Arial Unicode MS”, “Tahoma”, sans-serif’,
-‘Times New Roman’: ‘“Times New Roman”, “Traditional Arabic”, “Arabic Typesetting”, serif’,
-‘Georgia’: ‘Georgia, “Times New Roman”, serif’,
-‘Trebuchet MS’: ‘“Trebuchet MS”, “Segoe UI”, sans-serif’,
-‘Palatino Linotype’: ‘“Palatino Linotype”, “Book Antiqua”, serif’,
-‘Book Antiqua’: ‘“Book Antiqua”, “Palatino Linotype”, serif’,
-‘Garamond’: ‘Garamond, “Times New Roman”, serif’,
-‘Verdana’: ‘Verdana, “Segoe UI”, sans-serif’,
-‘Tahoma’: ‘Tahoma, “Segoe UI”, “Dubai”, sans-serif’,
-‘Cairo’: ‘“Segoe UI”, “Dubai”, “Tahoma”, Arial, sans-serif’,
-‘Amiri’: ‘“Traditional Arabic”, “Arabic Typesetting”, “Times New Roman”, serif’,
-‘Noto Sans Arabic’: ‘“Segoe UI”, “Dubai”, “Tahoma”, Arial, sans-serif’,
-‘IBM Plex Sans Arabic’: ‘“Segoe UI”, “Calibri”, “Dubai”, Arial, sans-serif’
-};
-
-```
-return fontMap[fontFamily] || '"Segoe UI", Arial, sans-serif';
-```
-
-}
-
-// تحميل الكانفاس كصورة
-function downloadCanvas(canvas, orientation) {
-canvas.toBlob(function(blob) {
-const url = URL.createObjectURL(blob);
-const a = document.createElement(‘a’);
-a.href = url;
-a.download = `wedding-invitation-${orientation}-${new Date().getTime()}.png`;
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
-URL.revokeObjectURL(url);
-});
 }
 
 // طباعة الدعوة
 function printInvitation() {
 const card = document.getElementById(‘invitationCard’).cloneNode(true);
 const printWindow = window.open(’’, ‘_blank’);
-printWindow.document.write(`<!DOCTYPE html> <html lang="ar" dir="rtl"> <head> <meta charset="UTF-8"> <title>طباعة دعوة الزواج</title> <style> @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@300;400;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&display=swap'); * { margin: 0; padding: 0; box-sizing: border-box; } body { margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f0f0f0; } .print-card { transform: scale(1); box-shadow: none; } @media print { body { background: white; padding: 0; } .print-card { width: 100% !important; height: auto !important; max-width: none !important; transform: none !important; } } .invitation-card { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 20px; position: relative; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.2); margin: 0 auto; background-size: cover; background-position: center; background-repeat: no-repeat; transition: all 0.3s ease; } .card-portrait { width: 600px; height: 800px; } .card-landscape { width: 800px; height: 600px; } .card-story { width: 400px; height: 700px; } .card-square { width: 600px; height: 600px; } .card-postcard { width: 700px; height: 450px; } .card-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1; display: none; } .card-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px 40px; color: white; } .decorative-frame { position: absolute; top: 30px; left: 30px; right: 30px; bottom: 30px; border: 3px solid rgba(255,255,255,0.3); border-radius: 15px; transition: all 0.3s ease; z-index: 3; pointer-events: none; } .decorative-frame::before { content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; transition: all 0.3s ease; } .frame-hidden { display: none; } .frame-outer-only::before { display: none; } .frame-inner-only { border: none; } .invitation-title { font-size: 32px; font-weight: bold; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); } .couple-names { font-size: 48px; font-weight: 300; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 2px; } .date-venue-container { display: flex; align-items: center; justify-content: center; margin: 30px 0; gap: 30px; width: 100%; flex-wrap: wrap; } .wedding-date { font-size: 24px; opacity: 0.9; text-align: center; flex: 1; min-width: 200px; } .venue-info { font-size: 18px; line-height: 1.6; opacity: 0.9; text-align: center; flex: 1; min-width: 200px; } .separator { width: 2px; height: 80px; background: rgba(255, 255, 255, 0.5); border-radius: 1px; position: relative; } .separator::before { content: '♦'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 10px; border-radius: 50%; font-size: 12px; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; } .additional-text { font-size: 16px; line-height: 1.5; opacity: 0.8; font-style: italic; margin-top: 30px; } .card-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hearts" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M10,6 C10,6 4,0 0,6 C0,12 10,20 10,20 C10,20 20,12 20,6 C16,0 10,6 10,6 Z" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23hearts)"/></svg>') repeat; opacity: 0.3; z-index: 0; } </style> </head> <body> <div class="print-card">${card.outerHTML}</div> </body> </html>`);
+printWindow.document.write(`<!DOCTYPE html> <html lang="ar" dir="rtl"> <head> <meta charset="UTF-8"> <title>طباعة دعوة الزواج</title> <style> @import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Aref+Ruqaa:wght@400;700&family=Aref+Ruqaa+Ink:wght@400;700&family=Katibeh&family=Rakkas&family=Scheherazade+New:wght@400;700&family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;600;700&family=Mirza:wght@400;600;700&family=Harmattan:wght@400;700&family=Mada:wght@400;600;700&family=Cairo:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap'); * { margin: 0; padding: 0; box-sizing: border-box; } body { margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f0f0f0; } .invitation-card { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 20px; position: relative; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.2); margin: 0 auto; background-size: cover; background-position: center; } .card-portrait { width: 600px; height: 800px; } .card-landscape { width: 800px; height: 600px; } .card-story { width: 400px; height: 700px; } .card-square { width: 600px; height: 600px; } .card-postcard { width: 700px; height: 450px; } .card-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: none; } .card-content { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px 40px; color: white; } .decorative-frame { position: absolute; top: 30px; left: 30px; right: 30px; bottom: 30px; border: 3px solid rgba(255,255,255,0.3); border-radius: 15px; z-index: 3; pointer-events: none; } .decorative-frame::before { content: ''; position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; } .invitation-title { font-size: 32px; font-weight: bold; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); } .couple-names { font-size: 48px; font-weight: 300; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 2px; } .date-venue-container { display: flex; align-items: center; justify-content: center; margin: 30px 0; gap: 15px; width: 100%; } .wedding-date { font-size: 16px; opacity: 0.9; text-align: center; flex: 1; min-width: 120px; } .venue-info { font-size: 16px; line-height: 1.6; opacity: 0.9; text-align: center; flex: 1; min-width: 120px; } .separator { width: 2px; height: 60px; background: rgba(255, 255, 255, 0.5); border-radius: 1px; flex-shrink: 0; } .additional-text { font-size: 16px; line-height: 1.5; opacity: 0.8; font-style: italic; margin-top: 30px; } @media print { body { background: white; padding: 0; } } </style> </head> <body>${card.outerHTML}</body> </html>`);
 
 ```
 printWindow.document.close();
