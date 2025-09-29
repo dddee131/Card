@@ -25,7 +25,6 @@
         margin: 0 auto;
     }
 
-    /* صفحة البطاقة */
     .card-view {
         background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
         border-radius: 20px;
@@ -46,6 +45,23 @@
         background-size: 100px;
         opacity: 0.1;
         pointer-events: none;
+    }
+
+    .logo-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .logo {
+        display: inline-block;
+        background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+        padding: 12px 30px;
+        border-radius: 50px;
+        color: #1a1a1a;
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
     }
 
     .photo-frame {
@@ -118,16 +134,38 @@
     .detail-item {
         text-align: center;
         color: #d4af37;
+        flex: 1;
     }
 
     .detail-icon {
-        font-size: 40px;
-        margin-bottom: 10px;
+        width: 50px;
+        height: 50px;
+        margin: 0 auto 10px;
+        background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .detail-icon svg {
+        width: 28px;
+        height: 28px;
+        fill: #1a1a1a;
+    }
+
+    .detail-label {
+        color: #d4af37;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 5px;
     }
 
     .detail-text {
         color: #fff;
         font-size: 14px;
+        line-height: 1.5;
     }
 
     .quran-verse {
@@ -141,7 +179,6 @@
         line-height: 1.8;
     }
 
-    /* صفحة النموذج */
     .form-view {
         background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
         border-radius: 20px;
@@ -191,14 +228,16 @@
         display: flex;
         gap: 15px;
         margin-top: 30px;
+        flex-wrap: wrap;
     }
 
     .btn {
         flex: 1;
+        min-width: 140px;
         padding: 15px;
         border: none;
         border-radius: 10px;
-        font-size: 18px;
+        font-size: 16px;
         cursor: pointer;
         transition: all 0.3s;
         font-weight: bold;
@@ -215,12 +254,22 @@
     }
 
     .btn-download {
-        background: #00bcd4;
+        background: #4caf50;
         color: #fff;
     }
 
     .btn-download:hover {
-        background: #0097a7;
+        background: #45a049;
+        transform: translateY(-2px);
+    }
+
+    .btn-whatsapp {
+        background: #25D366;
+        color: #fff;
+    }
+
+    .btn-whatsapp:hover {
+        background: #20ba5a;
         transform: translateY(-2px);
     }
 
@@ -290,20 +339,28 @@
         .quran-verse {
             font-size: 18px;
         }
+
+        .btn {
+            min-width: 100%;
+        }
     }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 ```
 
 </head>
 <body>
     <div class="container">
-        <!-- صفحة البطاقة -->
         <div class="card-view" id="cardView">
-            <div class="photo-frame" id="photoFrame">
-                <div class="photo-placeholder">صورة الدعوة</div>
+            <div class="logo-container">
+                <div class="logo">WEDDING</div>
             </div>
 
 ```
+        <div class="photo-frame" id="photoFrame">
+            <div class="photo-placeholder">صورة الدعوة</div>
+        </div>
+
         <div class="invitation-title">
             <h2 id="displayTitle">دعــــوة</h2>
         </div>
@@ -316,12 +373,22 @@
 
         <div class="event-details">
             <div class="detail-item">
-                <div class="detail-icon">📍</div>
-                <div class="detail-text" id="displayLocation">المكان</div>
+                <div class="detail-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                </div>
+                <div class="detail-label">المكان</div>
+                <div class="detail-text" id="displayLocation">القاعة الكبرى</div>
             </div>
             <div class="detail-item">
-                <div class="detail-icon">📅</div>
-                <div class="detail-text" id="displayDate">التاريخ</div>
+                <div class="detail-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/>
+                    </svg>
+                </div>
+                <div class="detail-label">التاريخ</div>
+                <div class="detail-text" id="displayDate">الجمعة<br>2025/01/15</div>
             </div>
         </div>
 
@@ -337,7 +404,6 @@
         </div>
     </div>
 
-    <!-- صفحة النموذج -->
     <div class="form-view" id="formView">
         <h3 class="form-title">فقط عدل النصوص، واختر صورتك ودامت أفراحكم<br>يارب</h3>
 
@@ -361,11 +427,11 @@
         </div>
 
         <div class="form-group">
-            <input type="text" id="dateInput" placeholder="اليوم">
+            <input type="text" id="dateInput" placeholder="اليوم (مثال: الجمعة)">
         </div>
 
         <div class="form-group">
-            <input type="text" id="timeInput" placeholder="التاريخ">
+            <input type="text" id="timeInput" placeholder="التاريخ (مثال: 2025/01/15)">
         </div>
 
         <div class="form-group">
@@ -384,13 +450,10 @@
             <input type="text" id="nameInput" placeholder="اسم العريس/الداعي">
         </div>
 
-        <div class="form-group">
-            <textarea id="contactInput" rows="3" placeholder="بيانات التواصل"></textarea>
-        </div>
-
         <div class="btn-group">
             <button class="btn btn-view" onclick="updateCard()">👁️ عرض</button>
-            <button class="btn btn-download" onclick="downloadCard()">📥 تحميل</button>
+            <button class="btn btn-download" onclick="downloadCard()">💾 تحميل</button>
+            <button class="btn btn-whatsapp" onclick="saveForWhatsApp()">📱 حالة واتساب</button>
         </div>
     </div>
 </div>
@@ -437,11 +500,11 @@
         if (host) document.getElementById('displayHost').textContent = host;
         if (name) document.getElementById('displayName').textContent = name;
 
-        const dateText = date && time ? `${date}\n${time}` : date || time || 'التاريخ';
-        document.getElementById('displayDate').textContent = dateText;
+        const dateText = date && time ? `${date}<br>${time}` : date || time || 'التاريخ';
+        document.getElementById('displayDate').innerHTML = dateText;
 
-        const locationText = location && locationDetails ? `${location}\n${locationDetails}` : location || locationDetails || 'المكان';
-        document.getElementById('displayLocation').textContent = locationText;
+        const locationText = location && locationDetails ? `${location}<br>${locationDetails}` : location || locationDetails || 'المكان';
+        document.getElementById('displayLocation').innerHTML = locationText;
     }
 
     document.getElementById('photoUpload').addEventListener('change', function(e) {
@@ -459,7 +522,73 @@
 
     function downloadCard() {
         updateCard();
-        alert('لتحميل البطاقة، يمكنك:\n1. التقاط لقطة شاشة للبطاقة\n2. استخدام أدوات المتصفح لحفظ الصفحة كصورة\n\nأو يمكنك نسخ الكود واستخدام مكتبات مثل html2canvas في بيئة تطوير كاملة.');
+        const cardView = document.getElementById('cardView');
+        const toggleBtn = document.getElementById('toggleBtn');
+        toggleBtn.style.display = 'none';
+
+        html2canvas(cardView, {
+            backgroundColor: '#1a1a1a',
+            scale: 2,
+            logging: false,
+            useCORS: true
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'wedding-invitation.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            toggleBtn.style.display = 'block';
+        });
+    }
+
+    function saveForWhatsApp() {
+        updateCard();
+        const cardView = document.getElementById('cardView');
+        const toggleBtn = document.getElementById('toggleBtn');
+        toggleBtn.style.display = 'none';
+
+        html2canvas(cardView, {
+            backgroundColor: '#1a1a1a',
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            width: 1080,
+            height: 1920
+        }).then(canvas => {
+            const whatsappCanvas = document.createElement('canvas');
+            whatsappCanvas.width = 1080;
+            whatsappCanvas.height = 1920;
+            const ctx = whatsappCanvas.getContext('2d');
+
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, 0, 1080, 1920);
+
+            const cardRatio = canvas.width / canvas.height;
+            const targetRatio = 1080 / 1920;
+            
+            let drawWidth, drawHeight, drawX, drawY;
+            
+            if (cardRatio > targetRatio) {
+                drawWidth = 1080;
+                drawHeight = 1080 / cardRatio;
+                drawX = 0;
+                drawY = (1920 - drawHeight) / 2;
+            } else {
+                drawHeight = 1920;
+                drawWidth = 1920 * cardRatio;
+                drawX = (1080 - drawWidth) / 2;
+                drawY = 0;
+            }
+
+            ctx.drawImage(canvas, drawX, drawY, drawWidth, drawHeight);
+
+            const link = document.createElement('a');
+            link.download = 'wedding-whatsapp-status.png';
+            link.href = whatsappCanvas.toDataURL('image/png');
+            link.click();
+            toggleBtn.style.display = 'block';
+
+            alert('تم حفظ الصورة بمقاس حالة واتساب (1080x1920)!\nيمكنك الآن رفعها كحالة على واتساب 💚');
+        });
     }
 </script>
 ```
