@@ -4,253 +4,464 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محرر دعوة الزواج</title>
-    <link rel="stylesheet" href="style.css">
+    <title>دعوة زواج</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* صفحة البطاقة */
+    .card-view {
+        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        border-radius: 20px;
+        padding: 40px 30px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-view::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10 L60 30 L80 35 L65 50 L68 70 L50 60 L32 70 L35 50 L20 35 L40 30 Z" fill="%23d4af37" opacity="0.1"/></svg>');
+        background-size: 100px;
+        opacity: 0.1;
+        pointer-events: none;
+    }
+
+    .photo-frame {
+        width: 280px;
+        height: 280px;
+        margin: 0 auto 30px;
+        border: 3px solid #d4af37;
+        background: #000;
+        border-radius: 10px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .photo-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .photo-placeholder {
+        color: #666;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .invitation-title {
+        background: #1a1a1a;
+        border: 2px solid #d4af37;
+        padding: 15px 30px;
+        text-align: center;
+        margin: 0 auto 20px;
+        width: fit-content;
+        border-radius: 5px;
+    }
+
+    .invitation-title h2 {
+        color: #fff;
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    .divider {
+        width: 80%;
+        height: 2px;
+        background: linear-gradient(to right, transparent, #d4af37, transparent);
+        margin: 20px auto;
+    }
+
+    .invitation-text {
+        color: #fff;
+        text-align: center;
+        margin: 20px 0;
+        line-height: 1.8;
+    }
+
+    .invitation-text p {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    .event-details {
+        display: flex;
+        justify-content: space-around;
+        margin: 30px 0;
+        gap: 20px;
+    }
+
+    .detail-item {
+        text-align: center;
+        color: #d4af37;
+    }
+
+    .detail-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .detail-text {
+        color: #fff;
+        font-size: 14px;
+    }
+
+    .quran-verse {
+        text-align: center;
+        color: #d4af37;
+        font-size: 24px;
+        margin: 30px 0;
+        padding: 20px;
+        border-top: 1px solid #d4af37;
+        border-bottom: 1px solid #d4af37;
+        line-height: 1.8;
+    }
+
+    /* صفحة النموذج */
+    .form-view {
+        background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        display: none;
+    }
+
+    .form-title {
+        text-align: center;
+        color: #2a2a2a;
+        margin-bottom: 30px;
+        font-size: 22px;
+        line-height: 1.6;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #d4af37;
+        border-radius: 10px;
+        font-size: 16px;
+        text-align: center;
+        background: #fff;
+        color: #2a2a2a;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #b8941f;
+        box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: #999;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: bold;
+    }
+
+    .btn-view {
+        background: #00bcd4;
+        color: #fff;
+    }
+
+    .btn-view:hover {
+        background: #0097a7;
+        transform: translateY(-2px);
+    }
+
+    .btn-download {
+        background: #00bcd4;
+        color: #fff;
+    }
+
+    .btn-download:hover {
+        background: #0097a7;
+        transform: translateY(-2px);
+    }
+
+    .toggle-btn {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #d4af37;
+        color: #1a1a1a;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        transition: all 0.3s;
+        z-index: 1000;
+    }
+
+    .toggle-btn:hover {
+        background: #b8941f;
+        transform: translateX(-50%) translateY(-3px);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
+    }
+
+    .file-upload-label {
+        display: block;
+        text-align: center;
+        padding: 40px;
+        border: 2px dashed #d4af37;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: #fafafa;
+    }
+
+    .file-upload-label:hover {
+        background: #f0f0f0;
+        border-color: #b8941f;
+    }
+
+    .file-upload-label input {
+        display: none;
+    }
+
+    .upload-text {
+        color: #666;
+        font-size: 16px;
+    }
+
+    @media (max-width: 600px) {
+        .container {
+            padding: 10px;
+        }
+
+        .photo-frame {
+            width: 200px;
+            height: 200px;
+        }
+
+        .invitation-title h2 {
+            font-size: 24px;
+        }
+
+        .quran-verse {
+            font-size: 18px;
+        }
+    }
+</style>
+```
+
 </head>
 <body>
     <div class="container">
-        <!-- لوحة التحرير -->
-        <div class="editor-panel">
-            <h2>تخصيص دعوة الزواج</h2>
-
-```
-        <div class="form-group">
-            <label for="invitationTitle">عنوان الدعوة:</label>
-            <input type="text" id="invitationTitle" value="دعوة زواج" placeholder="مثال: دعوة زواج">
-        </div>
-
-        <div class="form-group">
-            <label for="brideName">اسم العروس:</label>
-            <input type="text" id="brideName" value="فاطمة" placeholder="اسم العروس">
-        </div>
-
-        <div class="form-group">
-            <label for="groomName">اسم العريس:</label>
-            <input type="text" id="groomName" value="أحمد" placeholder="اسم العريس">
-        </div>
-
-        <div class="form-group">
-            <label for="weddingDate">تاريخ الزفاف:</label>
-            <textarea id="weddingDate" rows="2" placeholder="مثال: الجمعة ١٥ ديسمبر ٢٠٢٤
-```
-
-الساعة ٨:٠٠ مساءً”>الجمعة ١٥ ديسمبر ٢٠٢٤
-الساعة ٨:٠٠ مساءً</textarea>
-</div>
-
-```
-        <div class="form-group">
-            <label for="venueInfo">معلومات المكان:</label>
-            <textarea id="venueInfo" rows="3" placeholder="اسم القاعة، العنوان، الوقت">قاعة الأحلام الذهبية
-```
-
-شارع الملك فهد - الرياض
-الساعة ٧:٠٠ مساءً</textarea>
-</div>
-
-```
-        <div class="form-group">
-            <label for="additionalText">نص إضافي:</label>
-            <textarea id="additionalText" rows="2" placeholder="رسالة خاصة أو معلومات إضافية">يشرفنا حضوركم لمشاركتنا هذه المناسبة السعيدة</textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="cardOrientation">اتجاه البطاقة:</label>
-            <select id="cardOrientation">
-                <option value="portrait">طولي (عادي)</option>
-                <option value="landscape">عرضي</option>
-                <option value="story">ستوري إنستغرام</option>
-                <option value="square">مربع</option>
-                <option value="postcard">بطاقة بريدية</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="backgroundType">نوع الخلفية:</label>
-            <select id="backgroundType">
-                <option value="gradient">لون متدرج</option>
-                <option value="image">صورة مخصصة</option>
-            </select>
-        </div>
-
-        <div class="form-group" id="colorGroup">
-            <label for="cardColor">لون الخلفية:</label>
-            <input type="color" id="cardColor" class="color-input" value="#f093fb">
-        </div>
-
-        <div class="form-group" id="imageGroup" style="display: none;">
-            <label for="backgroundImage">صورة الخلفية:</label>
-            <input type="file" id="backgroundImage" accept="image/*">
-            <small style="color: #718096; margin-top: 5px; display: block;">اختر صورة للخلفية (JPG, PNG, GIF)</small>
-        </div>
-
-        <div class="form-group" id="overlayGroup" style="display: none;">
-            <label for="overlayOpacity">شفافية الطبقة العلوية:</label>
-            <input type="range" id="overlayOpacity" min="0" max="90" value="50" style="width: 100%;">
-            <small style="color: #718096;">لجعل النص أكثر وضوحاً على الصورة</small>
-        </div>
-
-        <div class="form-group">
-            <label for="fontFamily">نوع الخط:</label>
-            <select id="fontFamily">
-                <optgroup label="✍️ خطوط الرقعة">
-                    <option value="Aref Ruqaa">عارف رقعة - رقعة كلاسيكي</option>
-                    <option value="Aref Ruqaa Ink">عارف رقعة حبري - رقعة بقلم حبر</option>
-                </optgroup>
-                
-                <optgroup label="🎨 خطوط ديوانية وزخرفية">
-                    <option value="Rakkas">رقاص - ديواني زخرفي فاخر</option>
-                    <option value="Katibeh">كاتبة - ديواني راقي</option>
-                    <option value="Mirza">ميرزا - نستعليق ديواني</option>
-                </optgroup>
-                
-                <optgroup label="📖 خطوط نسخ تقليدية">
-                    <option value="Scheherazade New">شهرزاد - نسخ ديواني</option>
-                    <option value="Amiri">أميري - نسخ تقليدي</option>
-                </optgroup>
-                
-                <optgroup label="💎 خطوط كوفية">
-                    <option value="Reem Kufi">ريم كوفي - كوفي هندسي</option>
-                </optgroup>
-                
-                <optgroup label="🌟 خطوط عصرية">
-                    <option value="Almarai">المرعي - عصري واضح</option>
-                    <option value="Cairo">القاهرة - حديث أنيق</option>
-                    <option value="Tajawal">تجوال - عصري</option>
-                    <option value="Mada">مدى - بسيط</option>
-                    <option value="Harmattan">هرماتان - نظيف</option>
-                </optgroup>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="textColor">لون النص:</label>
-            <input type="color" id="textColor" class="color-input" value="#ffffff">
-        </div>
-
-        <div class="form-group">
-            <label for="textStyle">نمط النص:</label>
-            <select id="textStyle">
-                <option value="normal">عادي</option>
-                <option value="gold">ذهبي فاخر ✨</option>
-                <option value="silver">فضي راقي 💎</option>
-                <option value="rose-gold">ذهب وردي 🌹</option>
-                <option value="bronze">برونزي 🥉</option>
-                <option value="gradient-gold">تدرج ذهبي متحرك 🏆</option>
-                <option value="gradient-silver">تدرج فضي متحرك ⭐</option>
-                <option value="gradient-rainbow">تدرج قوس قزح 🌈</option>
-                <option value="3d-gold">ذهبي ثلاثي الأبعاد 🔆</option>
-                <option value="3d-silver">فضي ثلاثي الأبعاد 💫</option>
-                <option value="neon-gold">نيون ذهبي متوهج ⚡</option>
-                <option value="neon-silver">نيون فضي متوهج 🌟</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="shadowType">نوع الظل:</label>
-            <select id="shadowType">
-                <option value="outer">ظل خارجي (عادي)</option>
-                <option value="inner">ظل داخلي (محفور)</option>
-                <option value="both">ظل مزدوج (داخلي وخارجي)</option>
-                <option value="none">بدون ظل</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="shadowIntensity">شدة الظل:</label>
-            <input type="range" id="shadowIntensity" min="0" max="10" value="4" style="width: 100%;">
-            <small style="color: #718096; margin-top: 5px; display: block;">التحكم في قوة الظل (<span id="shadowIntensityValue">4</span>)</small>
-        </div>
-
-        <div class="form-group">
-            <label for="coupleNamesFont">خط أسماء العروسين:</label>
-            <select id="coupleNamesFont">
-                <option value="same">نفس خط البطاقة</option>
-                <optgroup label="✍️ خطوط الرقعة">
-                    <option value="Aref Ruqaa">عارف رقعة - رقعة كلاسيكي</option>
-                    <option value="Aref Ruqaa Ink">عارف رقعة حبري - رقعة بقلم حبر</option>
-                </optgroup>
-                <optgroup label="🎨 خطوط ديوانية وزخرفية">
-                    <option value="Rakkas">رقاص - ديواني زخرفي فاخر</option>
-                    <option value="Katibeh">كاتبة - ديواني راقي</option>
-                    <option value="Mirza">ميرزا - نستعليق ديواني</option>
-                </optgroup>
-                <optgroup label="📖 خطوط نسخ تقليدية">
-                    <option value="Scheherazade New">شهرزاد - نسخ ديواني</option>
-                    <option value="Amiri">أميري - نسخ تقليدي</option>
-                </optgroup>
-                <optgroup label="💎 خطوط كوفية">
-                    <option value="Reem Kufi">ريم كوفي - كوفي هندسي</option>
-                </optgroup>
-                <optgroup label="🌟 خطوط عصرية">
-                    <option value="Almarai">المرعي - عصري واضح</option>
-                    <option value="Cairo">القاهرة - حديث أنيق</option>
-                    <option value="Tajawal">تجوال - عصري</option>
-                    <option value="Mada">مدى - بسيط</option>
-                    <option value="Harmattan">هرماتان - نظيف</option>
-                </optgroup>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="frameColor">لون الإطار:</label>
-            <input type="color" id="frameColor" class="color-input" value="#ffffff">
-        </div>
-
-        <div class="form-group">
-            <label for="frameOpacity">شفافية الإطار:</label>
-            <input type="range" id="frameOpacity" min="0" max="100" value="30" style="width: 100%;">
-            <small style="color: #718096; margin-top: 5px; display: block;">تحكم في وضوح الإطار الزخرفي (<span id="frameOpacityValue">30</span>%)</small>
-        </div>
-
-        <div class="form-group">
-            <label for="frameMargin">هوامش الإطار:</label>
-            <input type="range" id="frameMargin" min="10" max="80" value="30" style="width: 100%;">
-            <small style="color: #718096; margin-top: 5px; display: block;">المسافة من حواف البطاقة (<span id="frameMarginValue">30</span>px)</small>
-        </div>
-
-        <div class="form-group">
-            <label for="showFrame">عرض الإطار:</label>
-            <select id="showFrame">
-                <option value="both">الإطار المزدوج</option>
-                <option value="outer">الإطار الخارجي فقط</option>
-                <option value="inner">الإطار الداخلي فقط</option>
-                <option value="none">بدون إطار</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- لوحة المعاينة -->
-    <div class="preview-panel">
-        <div class="invitation-card card-portrait" id="invitationCard">
-            <div class="card-overlay" id="cardOverlay"></div>
-            <div class="card-background"></div>
-            <div class="card-content" id="cardContent">
-                <div class="invitation-title" id="displayTitle">دعوة زواج</div>
-                <div class="couple-names" id="displayNames">فاطمة & أحمد</div>
-                
-                <!-- التصميم الجديد للتاريخ والمكان -->
-                <div class="date-venue-container">
-                    <div class="wedding-date" id="displayDate">الجمعة ١٥ ديسمبر ٢٠٢٤</div>
-                    <div class="separator"></div>
-                    <div class="venue-info" id="displayVenue">قاعة الأحلام الذهبية<br>شارع الملك فهد - الرياض<br>الساعة ٧:٠٠ مساءً</div>
-                </div>
-                
-                <div class="additional-text" id="displayAdditional">وبحضوركم يتم لنا الفرح والسرور</div>
+        <!-- صفحة البطاقة -->
+        <div class="card-view" id="cardView">
+            <div class="photo-frame" id="photoFrame">
+                <div class="photo-placeholder">صورة الدعوة</div>
             </div>
-            <div class="decorative-frame" id="decorativeFrame"></div>
+
+```
+        <div class="invitation-title">
+            <h2 id="displayTitle">دعــــوة</h2>
         </div>
-        
-        <div class="controls">
-            <button class="btn btn-primary" onclick="previewFullscreen()">معاينة كاملة</button>
-            <button class="btn btn-secondary" onclick="downloadInvitation()">تحميل الدعوة</button>
-            <button class="btn btn-warning" onclick="printInvitation()">طباعة الدعوة</button>
-            <button class="btn btn-success" onclick="shareWhatsApp()">مشاركة واتساب</button>
+
+        <div class="invitation-text">
+            <p id="displayWishes">بكل المحبة والتقدير</p>
+            <p id="displayInvite">اتشرف بدعوتكم لحضور</p>
+            <p id="displayEvent">حفل زواجي وتناول طعام العشاء</p>
+        </div>
+
+        <div class="event-details">
+            <div class="detail-item">
+                <div class="detail-icon">📍</div>
+                <div class="detail-text" id="displayLocation">المكان</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-icon">📅</div>
+                <div class="detail-text" id="displayDate">التاريخ</div>
+            </div>
+        </div>
+
+        <div class="quran-verse" id="displayVerse">
+            وَمِنۡ ءَايَٰتِهِۦٓ أَنۡ خَلَقَ لَكُم مِّنۡ أَنفُسِكُمۡ أَزۡوَٰجٗا لِّتَسۡكُنُوٓاْ إِلَيۡهَا وَجَعَلَ بَيۡنَكُم مَّوَدَّةٗ وَرَحۡمَةً
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="invitation-text">
+            <p id="displayHost">الداعي/ـة</p>
+            <p id="displayName">اسم العريس/الداعي</p>
+        </div>
+    </div>
+
+    <!-- صفحة النموذج -->
+    <div class="form-view" id="formView">
+        <h3 class="form-title">فقط عدل النصوص، واختر صورتك ودامت أفراحكم<br>يارب</h3>
+
+        <div class="form-group">
+            <label class="file-upload-label">
+                <input type="file" id="photoUpload" accept="image/*">
+                <span class="upload-text">📷 اختر صورة من جهازك</span>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="wishesInput" placeholder="بكل المحبة والتقدير">
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="inviteInput" placeholder="أتشرف بدعوتكم لحضور">
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="eventInput" placeholder="حفل زواجي وتناول طعام العشاء">
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="dateInput" placeholder="اليوم">
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="timeInput" placeholder="التاريخ">
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="locationInput" placeholder="اسم المكان">
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="locationDetailsInput" placeholder="وصف المكان">
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="hostInput" placeholder="الداعي/ـة">
+        </div>
+
+        <div class="form-group">
+            <input type="text" id="nameInput" placeholder="اسم العريس/الداعي">
+        </div>
+
+        <div class="form-group">
+            <textarea id="contactInput" rows="3" placeholder="بيانات التواصل"></textarea>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-view" onclick="updateCard()">👁️ عرض</button>
+            <button class="btn btn-download" onclick="downloadCard()">📥 تحميل</button>
         </div>
     </div>
 </div>
 
-<script src="script.js"></script>
+<button class="toggle-btn" id="toggleBtn" onclick="toggleView()">تعديل البيانات</button>
+
+<script>
+    let currentView = 'card';
+    let uploadedImage = null;
+
+    function toggleView() {
+        const cardView = document.getElementById('cardView');
+        const formView = document.getElementById('formView');
+        const toggleBtn = document.getElementById('toggleBtn');
+
+        if (currentView === 'card') {
+            cardView.style.display = 'none';
+            formView.style.display = 'block';
+            toggleBtn.textContent = 'عرض البطاقة';
+            currentView = 'form';
+        } else {
+            updateCard();
+            cardView.style.display = 'block';
+            formView.style.display = 'none';
+            toggleBtn.textContent = 'تعديل البيانات';
+            currentView = 'card';
+        }
+    }
+
+    function updateCard() {
+        const wishes = document.getElementById('wishesInput').value;
+        const invite = document.getElementById('inviteInput').value;
+        const event = document.getElementById('eventInput').value;
+        const date = document.getElementById('dateInput').value;
+        const time = document.getElementById('timeInput').value;
+        const location = document.getElementById('locationInput').value;
+        const locationDetails = document.getElementById('locationDetailsInput').value;
+        const host = document.getElementById('hostInput').value;
+        const name = document.getElementById('nameInput').value;
+
+        if (wishes) document.getElementById('displayWishes').textContent = wishes;
+        if (invite) document.getElementById('displayInvite').textContent = invite;
+        if (event) document.getElementById('displayEvent').textContent = event;
+        if (host) document.getElementById('displayHost').textContent = host;
+        if (name) document.getElementById('displayName').textContent = name;
+
+        const dateText = date && time ? `${date}\n${time}` : date || time || 'التاريخ';
+        document.getElementById('displayDate').textContent = dateText;
+
+        const locationText = location && locationDetails ? `${location}\n${locationDetails}` : location || locationDetails || 'المكان';
+        document.getElementById('displayLocation').textContent = locationText;
+    }
+
+    document.getElementById('photoUpload').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                uploadedImage = event.target.result;
+                const photoFrame = document.getElementById('photoFrame');
+                photoFrame.innerHTML = `<img src="${uploadedImage}" alt="صورة الدعوة">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function downloadCard() {
+        updateCard();
+        alert('لتحميل البطاقة، يمكنك:\n1. التقاط لقطة شاشة للبطاقة\n2. استخدام أدوات المتصفح لحفظ الصفحة كصورة\n\nأو يمكنك نسخ الكود واستخدام مكتبات مثل html2canvas في بيئة تطوير كاملة.');
+    }
+</script>
 ```
 
 </body>
