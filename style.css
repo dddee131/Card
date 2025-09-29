@@ -26,7 +26,7 @@ body {
     background: white;
     border-radius: 15px;
     padding: 25px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+   
 }
 
 .editor-panel h2 {
@@ -425,3 +425,4 @@ body {
         max-width: 250px;
     }
 }
+
