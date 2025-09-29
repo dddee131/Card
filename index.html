@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دعوة زواج - محسّنة</title>
+    <title>بطاقة تهنئة العيد</title>
     <style>
         * {
             margin: 0;
@@ -15,548 +15,198 @@
 ```
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         padding: 20px;
-        transition: background 0.5s ease;
-    }
-
-    body.theme-gold {
-        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    }
-
-    body.theme-rose {
-        background: linear-gradient(135deg, #2a1a1f 0%, #3d2d32 100%);
-    }
-
-    body.theme-blue {
-        background: linear-gradient(135deg, #1a1f2a 0%, #2d323d 100%);
-    }
-
-    body.theme-green {
-        background: linear-gradient(135deg, #1a2a1f 0%, #2d3d32 100%);
-    }
-
-    body.theme-purple {
-        background: linear-gradient(135deg, #231a2a 0%, #362d3d 100%);
     }
 
     .container {
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    .card-view {
-        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-        border-radius: 20px;
-        padding: 40px 30px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        position: relative;
-        overflow: hidden;
-        transition: all 0.5s ease;
-        animation: cardAppear 0.6s ease-out;
-    }
-
-    @keyframes cardAppear {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .card-view::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10 L60 30 L80 35 L65 50 L68 70 L50 60 L32 70 L35 50 L20 35 L40 30 Z" fill="%23d4af37" opacity="0.1"/></svg>');
-        background-size: 100px;
-        opacity: 0.1;
-        pointer-events: none;
-        animation: rotate 60s linear infinite;
-    }
-
-    @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-
-    .photo-frame {
-        width: 280px;
-        height: 280px;
-        margin: 0 auto 30px;
-        border: 3px solid var(--primary-color, #d4af37);
-        background: #000;
-        border-radius: 10px;
-        overflow: hidden;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.3s ease;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-
-    .photo-frame:hover {
-        transform: scale(1.02);
-    }
-
-    .photo-frame.has-image {
-        display: flex;
-    }
-
-    .photo-frame img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .photo-frame:hover img {
-        transform: scale(1.05);
-    }
-
-    .invitation-title {
-        background: #1a1a1a;
-        border: 2px solid var(--primary-color, #d4af37);
-        padding: 15px 30px;
-        text-align: center;
-        margin: 0 auto 20px;
-        width: fit-content;
-        border-radius: 5px;
-        transition: all 0.3s ease;
-        animation: titlePulse 2s ease-in-out infinite;
-    }
-
-    @keyframes titlePulse {
-        0%, 100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
-        50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
-    }
-
-    .invitation-title h2 {
-        color: #fff;
-        font-size: 32px;
-        font-weight: bold;
-    }
-
-    .divider {
-        width: 80%;
-        height: 2px;
-        background: linear-gradient(to right, transparent, var(--primary-color, #d4af37), transparent);
-        margin: 20px auto;
-    }
-
-    .invitation-text {
-        color: #fff;
-        text-align: center;
-        margin: 20px 0;
-        line-height: 1.8;
-    }
-
-    .invitation-text p {
-        font-size: 18px;
-        margin: 10px 0;
-        animation: fadeInUp 0.8s ease-out backwards;
-    }
-
-    .invitation-text p:nth-child(1) { animation-delay: 0.1s; }
-    .invitation-text p:nth-child(2) { animation-delay: 0.2s; }
-    .invitation-text p:nth-child(3) { animation-delay: 0.3s; }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .event-details {
-        display: flex;
-        justify-content: space-around;
-        margin: 30px 0;
-        gap: 20px;
-    }
-
-    .detail-item {
-        text-align: center;
-        color: var(--primary-color, #d4af37);
-        flex: 1;
-        animation: fadeInUp 0.8s ease-out backwards;
-    }
-
-    .detail-item:nth-child(1) { animation-delay: 0.4s; }
-    .detail-item:nth-child(2) { animation-delay: 0.5s; }
-
-    .detail-icon {
-        width: 50px;
-        height: 50px;
-        margin: 0 auto 10px;
-        background: linear-gradient(135deg, var(--primary-color, #d4af37) 0%, var(--secondary-color, #f4d03f) 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-        transition: transform 0.3s ease;
-    }
-
-    .detail-icon:hover {
-        transform: translateY(-5px) scale(1.1);
-    }
-
-    .detail-icon svg {
-        width: 28px;
-        height: 28px;
-        fill: #1a1a1a;
-    }
-
-    .detail-label {
-        color: var(--primary-color, #d4af37);
-        font-size: 14px;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .detail-text {
-        color: #fff;
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-    .host-section {
-        text-align: center;
-        margin: 20px 0;
-        animation: fadeInUp 0.8s ease-out 0.6s backwards;
-    }
-
-    .host-section p {
-        color: #fff;
-        font-size: 18px;
-        margin: 10px 0;
-    }
-
-    .form-view {
-        background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%);
+        background: white;
         border-radius: 20px;
         padding: 30px;
         box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        display: none;
-        animation: cardAppear 0.6s ease-out;
-    }
-
-    .form-title {
-        text-align: center;
-        color: #2a2a2a;
-        margin-bottom: 30px;
-        font-size: 22px;
-        line-height: 1.6;
-    }
-
-    .form-section {
-        margin-bottom: 30px;
-        padding: 20px;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .form-section-title {
-        color: var(--primary-color, #d4af37);
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 15px;
-        text-align: center;
-    }
-
-    .theme-selector {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-    }
-
-    .theme-option {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: 3px solid #ddd;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-    }
-
-    .theme-option:hover {
-        transform: scale(1.1);
-        border-color: #999;
-    }
-
-    .theme-option.active {
-        border-color: #333;
-        box-shadow: 0 0 15px rgba(0,0,0,0.3);
-    }
-
-    .theme-option.active::after {
-        content: '✓';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #fff;
-        font-size: 24px;
-        font-weight: bold;
-        text-shadow: 0 0 3px rgba(0,0,0,0.5);
-    }
-
-    .theme-gold { background: linear-gradient(135deg, #d4af37, #f4d03f); }
-    .theme-rose { background: linear-gradient(135deg, #ff6b9d, #ffc371); }
-    .theme-blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-    .theme-green { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-    .theme-purple { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
-
-    .font-selector {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .font-option {
-        padding: 10px 20px;
-        border: 2px solid #ddd;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        background: #fff;
-    }
-
-    .font-option:hover {
-        border-color: var(--primary-color, #d4af37);
-        transform: translateY(-2px);
-    }
-
-    .font-option.active {
-        border-color: var(--primary-color, #d4af37);
-        background: var(--primary-color, #d4af37);
-        color: #fff;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group input,
-    .form-group textarea {
+        max-width: 500px;
         width: 100%;
-        padding: 15px;
-        border: 2px solid var(--primary-color, #d4af37);
-        border-radius: 10px;
-        font-size: 16px;
+    }
+
+    h1 {
+        color: #333;
+        margin-bottom: 30px;
         text-align: center;
-        background: #fff;
-        color: #2a2a2a;
+        font-size: 28px;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: bold;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #f9f9f9;
+    }
+
+    .background-options {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .bg-option {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 3px solid transparent;
         transition: all 0.3s;
     }
 
-    .form-group input:focus,
-    .form-group textarea:focus {
-        outline: none;
-        border-color: var(--primary-color, #d4af37);
-        box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-        transform: translateY(-2px);
+    .bg-option:hover {
+        transform: scale(1.1);
     }
 
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-        color: #999;
+    .bg-option.active {
+        border-color: #667eea;
+        box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
     }
 
-    .btn-group {
+    .card-preview {
+        width: 100%;
+        height: 500px;
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 20px 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         display: flex;
-        gap: 15px;
-        margin-top: 30px;
-        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .card-content {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 40px;
+        border-radius: 20px;
+        backdrop-filter: blur(5px);
+        width: 90%;
+        max-width: 400px;
+    }
+
+    .quran-verse {
+        font-size: 24px;
+        margin-bottom: 20px;
+        line-height: 1.8;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .eid-message {
+        font-size: 18px;
+        margin-bottom: 30px;
+        color: #ffd700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .signature-box {
+        background: rgba(139, 69, 19, 0.9);
+        padding: 15px 30px;
+        border-radius: 10px;
+        display: inline-block;
+        margin: 20px 0;
+        border: 2px solid #ffd700;
+    }
+
+    .signature-label {
+        font-size: 20px;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .signature-name {
+        font-size: 32px;
+        color: #ffd700;
+        font-weight: bold;
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
     }
 
     .btn {
-        flex: 1;
-        min-width: 140px;
-        padding: 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px 40px;
         border: none;
-        border-radius: 10px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.3s;
-        font-weight: bold;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .btn::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.3);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }
-
-    .btn:hover::before {
-        width: 300px;
-        height: 300px;
-    }
-
-    .btn span {
-        position: relative;
-        z-index: 1;
-    }
-
-    .btn-view {
-        background: #00bcd4;
-        color: #fff;
-    }
-
-    .btn-view:hover {
-        background: #0097a7;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
-    }
-
-    .btn-download {
-        background: #4caf50;
-        color: #fff;
-    }
-
-    .btn-download:hover {
-        background: #45a049;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
-    }
-
-    .btn-whatsapp {
-        background: #25D366;
-        color: #fff;
-    }
-
-    .btn-whatsapp:hover {
-        background: #20ba5a;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
-    }
-
-    .btn-pdf {
-        background: #f44336;
-        color: #fff;
-    }
-
-    .btn-pdf:hover {
-        background: #da190b;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
-    }
-
-    .btn-instagram {
-        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-        color: #fff;
-    }
-
-    .btn-instagram:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(225, 48, 108, 0.4);
-    }
-
-    .toggle-btn {
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--primary-color, #d4af37);
-        color: #1a1a1a;
-        border: none;
-        padding: 15px 30px;
         border-radius: 50px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
-        transition: all 0.3s;
-        z-index: 1000;
-    }
-
-    .toggle-btn:hover {
-        background: var(--secondary-color, #b8941f);
-        transform: translateX(-50%) translateY(-3px);
-        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
-    }
-
-    .file-upload-label {
-        display: block;
-        text-align: center;
-        padding: 40px;
-        border: 2px dashed var(--primary-color, #d4af37);
-        border-radius: 10px;
+        font-size: 18px;
         cursor: pointer;
         transition: all 0.3s;
-        background: #fafafa;
-    }
-
-    .file-upload-label:hover {
-        background: #f0f0f0;
-        border-color: var(--secondary-color, #b8941f);
-        transform: scale(1.02);
-    }
-
-    .file-upload-label input {
-        display: none;
-    }
-
-    .upload-text {
-        color: #666;
-        font-size: 16px;
-    }
-
-    .photo-status {
-        text-align: center;
-        margin-top: 10px;
-        color: #4caf50;
-        font-size: 14px;
+        margin: 10px;
+        display: inline-block;
+        text-decoration: none;
         font-weight: bold;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn:active {
+        transform: translateY(-1px);
+    }
+
+    .buttons {
+        text-align: center;
+        margin-top: 20px;
     }
 
     .loading {
         display: none;
         text-align: center;
-        padding: 20px;
-        color: var(--primary-color, #d4af37);
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .loading.active {
-        display: block;
+        margin: 20px 0;
+        color: #667eea;
     }
 
     .spinner {
-        border: 4px solid rgba(212, 175, 55, 0.3);
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
         border-radius: 50%;
-        border-top: 4px solid var(--primary-color, #d4af37);
         width: 40px;
         height: 40px;
         animation: spin 1s linear infinite;
-        margin: 0 auto 10px;
+        margin: 0 auto;
     }
 
     @keyframes spin {
@@ -564,490 +214,174 @@
         100% { transform: rotate(360deg); }
     }
 
-    @media (max-width: 600px) {
-        .container {
-            padding: 10px;
-        }
-
-        .photo-frame {
-            width: 200px;
-            height: 200px;
-        }
-
-        .invitation-title h2 {
-            font-size: 24px;
-        }
-
-        .btn {
-            min-width: 100%;
-        }
-
-        .theme-option {
-            width: 45px;
-            height: 45px;
-        }
-    }
-
-    :root {
-        --primary-color: #d4af37;
-        --secondary-color: #f4d03f;
-    }
-
-    .theme-rose-active {
-        --primary-color: #ff6b9d;
-        --secondary-color: #ffc371;
-    }
-
-    .theme-blue-active {
-        --primary-color: #4facfe;
-        --secondary-color: #00f2fe;
-    }
-
-    .theme-green-active {
-        --primary-color: #43e97b;
-        --secondary-color: #38f9d7;
-    }
-
-    .theme-purple-active {
-        --primary-color: #a18cd1;
-        --secondary-color: #fbc2eb;
-    }
-
-    .help-text {
-        text-align: center;
-        color: #666;
-        font-size: 14px;
-        margin-top: 10px;
-        font-style: italic;
-    }
+    /* Predefined backgrounds */
+    .bg1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .bg2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .bg3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+    .bg4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+    .bg5 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+    .bg6 { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 ```
 
 </head>
 <body>
     <div class="container">
-        <div class="card-view" id="cardView">
-            <div class="photo-frame" id="photoFrame">
-                <img id="photoImage" src="" alt="صورة الدعوة">
-            </div>
+        <h1>🌙 بطاقة تهنئة العيد 🌙</h1>
 
 ```
-        <div class="invitation-title">
-            <h2 id="displayTitle">دعــــوة</h2>
-        </div>
+    <div class="input-group">
+        <label for="userName">اكتب اسمك:</label>
+        <input type="text" id="userName" placeholder="عبدالمجيد مرهج القاسمي" value="عبدالمجيد مرهج القاسمي">
+    </div>
 
-        <div class="invitation-text">
-            <p id="displayWishes">بكل المحبة والتقدير</p>
-            <p id="displayInvite">أتشرف بدعوتكم لحضور</p>
-            <p id="displayEvent">حفل زواجي وتناول طعام العشاء</p>
-        </div>
-
-        <div class="event-details">
-            <div class="detail-item">
-                <div class="detail-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </svg>
-                </div>
-                <div class="detail-label">المكان</div>
-                <div class="detail-text" id="displayLocation">القاعة الكبرى</div>
-            </div>
-            <div class="detail-item">
-                <div class="detail-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/>
-                    </svg>
-                </div>
-                <div class="detail-label">التاريخ</div>
-                <div class="detail-text" id="displayDate">الجمعة<br>2025/01/15</div>
-            </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="host-section">
-            <p id="displayHost">الداعي/ـة</p>
+    <div class="input-group">
+        <label>اختر خلفية:</label>
+        <div class="background-options">
+            <div class="bg-option bg1 active" data-bg="gradient1"></div>
+            <div class="bg-option bg2" data-bg="gradient2"></div>
+            <div class="bg-option bg3" data-bg="gradient3"></div>
+            <div class="bg-option bg4" data-bg="gradient4"></div>
+            <div class="bg-option bg5" data-bg="gradient5"></div>
+            <div class="bg-option bg6" data-bg="gradient6"></div>
         </div>
     </div>
 
-    <div class="form-view" id="formView">
-        <h3 class="form-title">✨ صمم دعوة زواجك بلمستك الخاصة ✨<br>عدّل، خصّص، وشارك بكل سهولة</h3>
+    <div class="input-group">
+        <label for="customBg">أو ارفع صورة خلفية:</label>
+        <input type="file" id="customBg" accept="image/*">
+    </div>
 
-        <div class="form-section">
-            <div class="form-section-title">🎨 اختر لون البطاقة</div>
-            <div class="theme-selector">
-                <div class="theme-option theme-gold active" onclick="changeTheme('gold')" title="ذهبي كلاسيكي"></div>
-                <div class="theme-option theme-rose" onclick="changeTheme('rose')" title="وردي رومانسي"></div>
-                <div class="theme-option theme-blue" onclick="changeTheme('blue')" title="أزرق سماوي"></div>
-                <div class="theme-option theme-green" onclick="changeTheme('green')" title="أخضر طبيعي"></div>
-                <div class="theme-option theme-purple" onclick="changeTheme('purple')" title="بنفسجي ملكي"></div>
+    <div id="cardPreview" class="card-preview bg1">
+        <div class="card-content">
+            <div class="quran-verse">
+                وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا
             </div>
-            <p class="help-text">اختر اللون الذي يعبر عن ذوقك</p>
-        </div>
-
-        <div class="form-section">
-            <div class="form-section-title">✍️ اختر نوع الخط</div>
-            <div class="font-selector">
-                <div class="font-option active" onclick="changeFont('Segoe UI')" style="font-family: 'Segoe UI'">عادي</div>
-                <div class="font-option" onclick="changeFont('Arial')" style="font-family: Arial">أنيق</div>
-                <div class="font-option" onclick="changeFont('Georgia')" style="font-family: Georgia">كلاسيكي</div>
-                <div class="font-option" onclick="changeFont('Courier New')" style="font-family: 'Courier New'">عصري</div>
+            <div class="eid-message">
+                الحمد لله الذي بنعمته تتم الصالحات<br>
+                تم بحمد الله وفضله
             </div>
-            <p class="help-text">جرّب الخطوط المختلفة لتجد الأنسب</p>
-        </div>
-
-        <div class="form-section">
-            <div class="form-section-title">📷 أضف صورتك</div>
-            <div class="form-group">
-                <label class="file-upload-label">
-                    <input type="file" id="photoUpload" accept="image/*">
-                    <span class="upload-text">📷 اختر صورة من جهازك (اختياري)</span>
-                </label>
-                <div class="photo-status" id="photoStatus"></div>
-            </div>
-            <p class="help-text">يمكنك إضافة صورة شخصية أو تركها فارغة</p>
-        </div>
-
-        <div class="form-section">
-            <div class="form-section-title">📝 النصوص والمعلومات</div>
-            <div class="form-group">
-                <input type="text" id="wishesInput" placeholder="بكل المحبة والتقدير">
-            </div>
-
-            <div class="form-group">
-                <input type="text" id="inviteInput" placeholder="أتشرف بدعوتكم لحضور">
-            </div>
-
-            <div class="form-group">
-                <input type="text" id="eventInput" placeholder="حفل زواجي وتناول طعام العشاء">
-            </div>
-
-            <div class="form-group">
-                <input type="text" id="dateInput" placeholder="اليوم (مثال: الجمعة)">
-            </div>
-
-            <div class="form-group">
-                <input type="text" id="timeInput" placeholder="التاريخ (مثال: 2025/01/15)">
-            </div>
-
-            <div class="form-group">
-                <input type="text" id="locationInput" placeholder="اسم المكان">
-            </div>
-
-            <div class="form-group">
-                <input type="text" id="locationDetailsInput" placeholder="وصف المكان">
-            </div>
-
-            <div class="form-group">
-                <input type="text" id="hostInput" placeholder="الداعي/ـة">
+            <div class="signature-box">
+                <div class="signature-label">عقد قراني</div>
+                <div class="signature-name" id="displayName">عبدالمجيد مرهج القاسمي</div>
             </div>
         </div>
+    </div>
 
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            جاري المعالجة...
-        </div>
+    <div class="buttons">
+        <button class="btn" onclick="downloadCard()">📥 تحميل البطاقة</button>
+        <button class="btn" onclick="shareCard()">📤 مشاركة</button>
+    </div>
 
-        <div class="btn-group">
-            <button class="btn btn-view" onclick="updateCard()"><span>👁️ عرض</span></button>
-            <button class="btn btn-download" onclick="downloadCard()"><span>💾 تحميل</span></button>
-            <button class="btn btn-whatsapp" onclick="saveForWhatsApp()"><span>📱 واتساب</span></button>
-            <button class="btn btn-instagram" onclick="saveForInstagram()"><span>📸 انستقرام</span></button>
-        </div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>جاري إنشاء البطاقة...</p>
     </div>
 </div>
 
-<button class="toggle-btn" id="toggleBtn" onclick="toggleView()">تعديل البيانات</button>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-    let currentView = 'card';
-    let uploadedImage = null;
-    let currentTheme = 'gold';
-    let currentFont = 'Segoe UI';
+    // Update name in real-time
+    document.getElementById('userName').addEventListener('input', function(e) {
+        document.getElementById('displayName').textContent = e.target.value || 'اسمك هنا';
+    });
 
-    const themeColors = {
-        gold: { primary: '#d4af37', secondary: '#f4d03f' },
-        rose: { primary: '#ff6b9d', secondary: '#ffc371' },
-        blue: { primary: '#4facfe', secondary: '#00f2fe' },
-        green: { primary: '#43e97b', secondary: '#38f9d7' },
-        purple: { primary: '#a18cd1', secondary: '#fbc2eb' }
-    };
+    // Background selection
+    const bgOptions = document.querySelectorAll('.bg-option');
+    const cardPreview = document.getElementById('cardPreview');
+    
+    bgOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            bgOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Remove all bg classes
+            cardPreview.className = 'card-preview';
+            
+            // Add selected bg class
+            const bgClass = this.classList[1];
+            cardPreview.classList.add(bgClass);
+            
+            // Clear custom background
+            cardPreview.style.backgroundImage = '';
+        });
+    });
 
-    function changeTheme(theme) {
-        currentTheme = theme;
-        document.body.className = `theme-${theme}`;
-        document.documentElement.className = `theme-${theme}-active`;
-        
-        document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('active'));
-        document.querySelector(`.theme-option.theme-${theme}`).classList.add('active');
-
-        const colors = themeColors[theme];
-        document.documentElement.style.setProperty('--primary-color', colors.primary);
-        document.documentElement.style.setProperty('--secondary-color', colors.secondary);
-
-        updateCard();
-    }
-
-    function changeFont(font) {
-        currentFont = font;
-        document.querySelectorAll('.font-option').forEach(opt => opt.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        const cardView = document.getElementById('cardView');
-        cardView.style.fontFamily = font;
-        updateCard();
-    }
-
-    function toggleView() {
-        const cardView = document.getElementById('cardView');
-        const formView = document.getElementById('formView');
-        const toggleBtn = document.getElementById('toggleBtn');
-
-        if (currentView === 'card') {
-            cardView.style.display = 'none';
-            formView.style.display = 'block';
-            toggleBtn.textContent = 'عرض البطاقة';
-            currentView = 'form';
-        } else {
-            updateCard();
-            cardView.style.display = 'block';
-            formView.style.display = 'none';
-            toggleBtn.textContent = 'تعديل البيانات';
-            currentView = 'card';
-        }
-    }
-
-    function updateCard() {
-        const wishes = document.getElementById('wishesInput').value;
-        const invite = document.getElementById('inviteInput').value;
-        const event = document.getElementById('eventInput').value;
-        const date = document.getElementById('dateInput').value;
-        const time = document.getElementById('timeInput').value;
-        const location = document.getElementById('locationInput').value;
-        const locationDetails = document.getElementById('locationDetailsInput').value;
-        const host = document.getElementById('hostInput').value;
-
-        if (wishes) document.getElementById('displayWishes').textContent = wishes;
-        if (invite) document.getElementById('displayInvite').textContent = invite;
-        if (event) document.getElementById('displayEvent').textContent = event;
-        if (host) document.getElementById('displayHost').textContent = host;
-
-        const dateText = date && time ? `${date}<br>${time}` : date || time || 'التاريخ';
-        document.getElementById('displayDate').innerHTML = dateText;
-
-        const locationText = location && locationDetails ? `${location}<br>${locationDetails}` : location || locationDetails || 'المكان';
-        document.getElementById('displayLocation').innerHTML = locationText;
-    }
-
-    document.getElementById('photoUpload').addEventListener('change', function(e) {
+    // Custom background upload
+    document.getElementById('customBg').addEventListener('change', function(e) {
         const file = e.target.files[0];
-        if (file) {
-            if (file.size > 5000000) {
-                alert('⚠️ حجم الصورة كبير جداً! يرجى اختيار صورة أصغر من 5 ميجابايت');
-                return;
-            }
-
+        if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
-            reader.onload = function(event) {
-                uploadedImage = event.target.result;
-                const photoFrame = document.getElementById('photoFrame');
-                const photoImage = document.getElementById('photoImage');
-                
-                photoImage.src = uploadedImage;
-                photoFrame.classList.add('has-image');
-                
-                document.getElementById('photoStatus').textContent = '✅ تم رفع الصورة بنجاح';
+            reader.onload = function(e) {
+                cardPreview.style.backgroundImage = `url(${e.target.result})`;
+                // Remove active from all bg options
+                bgOptions.forEach(opt => opt.classList.remove('active'));
             };
             reader.readAsDataURL(file);
         }
     });
 
-    function showLoading() {
-        document.getElementById('loading').classList.add('active');
+    // Download card function
+    function downloadCard() {
+        const loading = document.getElementById('loading');
+        loading.style.display = 'block';
+        
+        // Use html2canvas to capture the card
+        html2canvas(document.getElementById('cardPreview'), {
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            allowTaint: true
+        }).then(canvas => {
+            // Convert to blob and download
+            canvas.toBlob(function(blob) {
+                const link = document.createElement('a');
+                link.download = 'بطاقة_تهنئة_العيد.png';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                URL.revokeObjectURL(link.href);
+                loading.style.display = 'none';
+            }, 'image/png');
+        }).catch(err => {
+            console.error('Error generating image:', err);
+            loading.style.display = 'none';
+            alert('حدث خطأ في إنشاء الصورة. يرجى المحاولة مرة أخرى.');
+        });
     }
 
-    function hideLoading() {
-        document.getElementById('loading').classList.remove('active');
-    }
-
-    async function downloadCard() {
-        updateCard();
-        showLoading();
-        const cardView = document.getElementById('cardView');
-        const toggleBtn = document.getElementById('toggleBtn');
-        toggleBtn.style.display = 'none';
-
-        try {
-            const canvas = await html2canvas(cardView, {
-                backgroundColor: getComputedStyle(cardView).background,
-                scale: 3,
+    // Share card function
+    function shareCard() {
+        if (navigator.share) {
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            
+            html2canvas(document.getElementById('cardPreview'), {
+                scale: 2,
                 logging: false,
                 useCORS: true,
-                allowTaint: true,
-                foreignObjectRendering: false,
-                imageTimeout: 0,
-                removeContainer: true
+                allowTaint: true
+            }).then(canvas => {
+                canvas.toBlob(async function(blob) {
+                    const file = new File([blob], 'بطاقة_تهنئة.png', { type: 'image/png' });
+                    try {
+                        await navigator.share({
+                            title: 'بطاقة تهنئة العيد',
+                            text: 'عقد قراني - تم بحمد الله وفضله',
+                            files: [file]
+                        });
+                    } catch (err) {
+                        console.log('Share cancelled or failed:', err);
+                    }
+                    loading.style.display = 'none';
+                }, 'image/png');
+            }).catch(err => {
+                console.error('Error generating image:', err);
+                loading.style.display = 'none';
             });
-
-            canvas.toBlob((blob) => {
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                const date = new Date().toISOString().slice(0,10);
-                link.download = `wedding-invitation-${date}.png`;
-                link.href = url;
-                link.click();
-                URL.revokeObjectURL(url);
-                toggleBtn.style.display = 'block';
-                hideLoading();
-                alert('✅ تم تحميل البطاقة بجودة عالية بنجاح!');
-            }, 'image/png', 1.0);
-        } catch (error) {
-            console.error('خطأ في الحفظ:', error);
-            toggleBtn.style.display = 'block';
-            hideLoading();
-            alert('❌ حدث خطأ في حفظ الصورة. حاول مرة أخرى.');
+        } else {
+            alert('المشاركة غير مدعومة في هذا المتصفح. يمكنك تحميل الصورة ومشاركتها يدوياً.');
         }
     }
-
-    async function saveForWhatsApp() {
-        updateCard();
-        showLoading();
-        const cardView = document.getElementById('cardView');
-        const toggleBtn = document.getElementById('toggleBtn');
-        toggleBtn.style.display = 'none';
-
-        try {
-            const canvas = await html2canvas(cardView, {
-                backgroundColor: getComputedStyle(cardView).background,
-                scale: 3,
-                logging: false,
-                useCORS: true,
-                allowTaint: true,
-                foreignObjectRendering: false,
-                imageTimeout: 0,
-                removeContainer: true
-            });
-
-            const whatsappCanvas = document.createElement('canvas');
-            whatsappCanvas.width = 1080;
-            whatsappCanvas.height = 1920;
-            const ctx = whatsappCanvas.getContext('2d');
-
-            const bgColor = getComputedStyle(document.body).background;
-            ctx.fillStyle = '#1a1a1a';
-            ctx.fillRect(0, 0, 1080, 1920);
-
-            const cardRatio = canvas.width / canvas.height;
-            const targetRatio = 1080 / 1920;
-            
-            let drawWidth, drawHeight, drawX, drawY;
-            
-            if (cardRatio > targetRatio) {
-                drawWidth = 1080;
-                drawHeight = 1080 / cardRatio;
-                drawX = 0;
-                drawY = (1920 - drawHeight) / 2;
-            } else {
-                drawHeight = 1920;
-                drawWidth = 1920 * cardRatio;
-                drawX = (1080 - drawWidth) / 2;
-                drawY = 0;
-            }
-
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(canvas, drawX, drawY, drawWidth, drawHeight);
-
-            whatsappCanvas.toBlob((blob) => {
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                const date = new Date().toISOString().slice(0,10);
-                link.download = `wedding-whatsapp-${date}.png`;
-                link.href = url;
-                link.click();
-                URL.revokeObjectURL(url);
-                toggleBtn.style.display = 'block';
-                hideLoading();
-                alert('✅ تم حفظ الصورة بمقاس حالة واتساب بنجاح!\n📱 المقاس: 1080×1920 بكسل\n💚 جاهزة للنشر على حالة واتساب');
-            }, 'image/png', 1.0);
-        } catch (error) {
-            console.error('خطأ في الحفظ:', error);
-            toggleBtn.style.display = 'block';
-            hideLoading();
-            alert('❌ حدث خطأ في حفظ الصورة. حاول مرة أخرى.');
-        }
-    }
-
-    async function saveForInstagram() {
-        updateCard();
-        showLoading();
-        const cardView = document.getElementById('cardView');
-        const toggleBtn = document.getElementById('toggleBtn');
-        toggleBtn.style.display = 'none';
-
-        try {
-            const canvas = await html2canvas(cardView, {
-                backgroundColor: getComputedStyle(cardView).background,
-                scale: 3,
-                logging: false,
-                useCORS: true,
-                allowTaint: true,
-                foreignObjectRendering: false,
-                imageTimeout: 0,
-                removeContainer: true
-            });
-
-            const instagramCanvas = document.createElement('canvas');
-            instagramCanvas.width = 1080;
-            instagramCanvas.height = 1080;
-            const ctx = instagramCanvas.getContext('2d');
-
-            ctx.fillStyle = '#1a1a1a';
-            ctx.fillRect(0, 0, 1080, 1080);
-
-            const cardRatio = canvas.width / canvas.height;
-            let drawWidth, drawHeight, drawX, drawY;
-            
-            if (cardRatio > 1) {
-                drawWidth = 1080;
-                drawHeight = 1080 / cardRatio;
-                drawX = 0;
-                drawY = (1080 - drawHeight) / 2;
-            } else {
-                drawHeight = 1080;
-                drawWidth = 1080 * cardRatio;
-                drawX = (1080 - drawWidth) / 2;
-                drawY = 0;
-            }
-
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(canvas, drawX, drawY, drawWidth, drawHeight);
-
-            instagramCanvas.toBlob((blob) => {
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                const date = new Date().toISOString().slice(0,10);
-                link.download = `wedding-instagram-${date}.png`;
-                link.href = url;
-                link.click();
-                URL.revokeObjectURL(url);
-                toggleBtn.style.display = 'block';
-                hideLoading();
-                alert('✅ تم حفظ الصورة بمقاس انستقرام بنجاح!\n📸 المقاس: 1080×1080 بكسل (مربع)\n💖 جاهزة للنشر على انستقرام');
-            }, 'image/png', 1.0);
-        } catch (error) {
-            console.error('خطأ في الحفظ:', error);
-            toggleBtn.style.display = 'block';
-            hideLoading();
-            alert('❌ حدث خطأ في حفظ الصورة. حاول مرة أخرى.');
-        }
-    }
-
-    window.addEventListener('load', function() {
-        changeTheme('gold');
-    });
 </script>
 ```
 
