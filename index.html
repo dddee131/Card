@@ -1,389 +1,103 @@
 <!DOCTYPE html>
-
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بطاقة تهنئة العيد</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-```
+  <meta charset="UTF-8">
+  <title>بطاقة عقد قران</title>
+  <style>
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
+      direction: rtl;
+      font-family: "Tajawal", sans-serif;
+      text-align: center;
+      background: #f5f5f5;
     }
 
-    .container {
-        background: white;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        max-width: 500px;
-        width: 100%;
+    #card {
+      width: 1080px;
+      height: 1920px;
+      margin: auto;
+      position: relative;
+      background: url('https://i.ibb.co/0h0h5mK/bg.jpg') center/cover no-repeat;
+      border: 2px solid #ccc;
+      overflow: hidden;
     }
 
-    h1 {
-        color: #333;
-        margin-bottom: 30px;
-        text-align: center;
-        font-size: 28px;
+    .overlay {
+      position: absolute;
+      bottom: 200px;
+      width: 100%;
+      text-align: center;
+      color: #000;
     }
 
-    .input-group {
-        margin-bottom: 20px;
+    h2 {
+      font-size: 60px;
+      background: rgba(255,255,255,0.7);
+      display: inline-block;
+      padding: 20px 40px;
+      border-radius: 20px;
     }
 
-    label {
-        display: block;
-        margin-bottom: 8px;
-        color: #555;
-        font-weight: bold;
+    input, button {
+      margin: 15px;
+      padding: 10px;
+      font-size: 18px;
     }
 
-    input[type="text"] {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #ddd;
-        border-radius: 8px;
-        font-size: 16px;
-        transition: border-color 0.3s;
-    }
-
-    input[type="text"]:focus {
-        outline: none;
-        border-color: #667eea;
-    }
-
-    input[type="file"] {
-        width: 100%;
-        padding: 10px;
-        border: 2px dashed #ddd;
-        border-radius: 8px;
-        cursor: pointer;
-        background: #f9f9f9;
-    }
-
-    .background-options {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-    }
-
-    .bg-option {
-        width: 60px;
-        height: 60px;
-        border-radius: 8px;
-        cursor: pointer;
-        border: 3px solid transparent;
-        transition: all 0.3s;
-    }
-
-    .bg-option:hover {
-        transform: scale(1.1);
-    }
-
-    .bg-option.active {
-        border-color: #667eea;
-        box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
-    }
-
-    .card-preview {
-        width: 100%;
-        height: 500px;
-        position: relative;
-        border-radius: 10px;
-        overflow: hidden;
-        margin: 20px 0;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .card-content {
-        background: rgba(0, 0, 0, 0.5);
-        padding: 40px;
-        border-radius: 20px;
-        backdrop-filter: blur(5px);
-        width: 90%;
-        max-width: 400px;
-    }
-
-    .quran-verse {
-        font-size: 24px;
-        margin-bottom: 20px;
-        line-height: 1.8;
-        font-weight: bold;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-
-    .eid-message {
-        font-size: 18px;
-        margin-bottom: 30px;
-        color: #ffd700;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-
-    .signature-box {
-        background: rgba(139, 69, 19, 0.9);
-        padding: 15px 30px;
-        border-radius: 10px;
-        display: inline-block;
-        margin: 20px 0;
-        border: 2px solid #ffd700;
-    }
-
-    .signature-label {
-        font-size: 20px;
-        color: #fff;
-        margin-bottom: 10px;
-    }
-
-    .signature-name {
-        font-size: 32px;
-        color: #ffd700;
-        font-weight: bold;
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
-    }
-
-    .btn {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 15px 40px;
-        border: none;
-        border-radius: 50px;
-        font-size: 18px;
-        cursor: pointer;
-        transition: all 0.3s;
-        margin: 10px;
-        display: inline-block;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-
-    .btn:active {
-        transform: translateY(-1px);
-    }
-
-    .buttons {
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .loading {
-        display: none;
-        text-align: center;
-        margin: 20px 0;
-        color: #667eea;
-    }
-
-    .spinner {
-        border: 3px solid #f3f3f3;
-        border-top: 3px solid #667eea;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-        margin: 0 auto;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    /* Predefined backgrounds */
-    .bg1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .bg2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-    .bg3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-    .bg4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-    .bg5 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-    .bg6 { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
-</style>
-```
-
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🌙 بطاقة تهنئة العيد 🌙</h1>
 
-```
-    <div class="input-group">
-        <label for="userName">اكتب اسمك:</label>
-        <input type="text" id="userName" placeholder="عبدالمجيد مرهج القاسمي" value="عبدالمجيد مرهج القاسمي">
+  <h1>✦ بطاقة عقد قران ✦</h1>
+  <input type="text" id="nameInput" placeholder="أدخل اسمك هنا">
+  <input type="file" id="bgInput" accept="image/*">
+  <button onclick="updateCard()">تحديث البطاقة</button>
+  <button onclick="downloadCard()">تحميل البطاقة</button>
+
+  <div id="card">
+    <div class="overlay">
+      <h2 id="nameText">اسمك هنا</h2>
+      <p>عقد قراني</p>
     </div>
+  </div>
 
-    <div class="input-group">
-        <label>اختر خلفية:</label>
-        <div class="background-options">
-            <div class="bg-option bg1 active" data-bg="gradient1"></div>
-            <div class="bg-option bg2" data-bg="gradient2"></div>
-            <div class="bg-option bg3" data-bg="gradient3"></div>
-            <div class="bg-option bg4" data-bg="gradient4"></div>
-            <div class="bg-option bg5" data-bg="gradient5"></div>
-            <div class="bg-option bg6" data-bg="gradient6"></div>
-        </div>
-    </div>
+  <canvas id="canvas" style="display:none;"></canvas>
 
-    <div class="input-group">
-        <label for="customBg">أو ارفع صورة خلفية:</label>
-        <input type="file" id="customBg" accept="image/*">
-    </div>
+  <script>
+    function updateCard() {
+      let name = document.getElementById("nameInput").value;
+      document.getElementById("nameText").innerText = name || "اسمك هنا";
 
-    <div id="cardPreview" class="card-preview bg1">
-        <div class="card-content">
-            <div class="quran-verse">
-                وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا
-            </div>
-            <div class="eid-message">
-                الحمد لله الذي بنعمته تتم الصالحات<br>
-                تم بحمد الله وفضله
-            </div>
-            <div class="signature-box">
-                <div class="signature-label">عقد قراني</div>
-                <div class="signature-name" id="displayName">عبدالمجيد مرهج القاسمي</div>
-            </div>
-        </div>
-    </div>
+      // تغيير الخلفية
+      let file = document.getElementById("bgInput").files[0];
+      if (file) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById("card").style.backgroundImage = `url(${e.target.result})`;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
 
-    <div class="buttons">
-        <button class="btn" onclick="downloadCard()">📥 تحميل البطاقة</button>
-        <button class="btn" onclick="shareCard()">📤 مشاركة</button>
-    </div>
-
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <p>جاري إنشاء البطاقة...</p>
-    </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script>
-    // Update name in real-time
-    document.getElementById('userName').addEventListener('input', function(e) {
-        document.getElementById('displayName').textContent = e.target.value || 'اسمك هنا';
-    });
-
-    // Background selection
-    const bgOptions = document.querySelectorAll('.bg-option');
-    const cardPreview = document.getElementById('cardPreview');
-    
-    bgOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            bgOptions.forEach(opt => opt.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Remove all bg classes
-            cardPreview.className = 'card-preview';
-            
-            // Add selected bg class
-            const bgClass = this.classList[1];
-            cardPreview.classList.add(bgClass);
-            
-            // Clear custom background
-            cardPreview.style.backgroundImage = '';
-        });
-    });
-
-    // Custom background upload
-    document.getElementById('customBg').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                cardPreview.style.backgroundImage = `url(${e.target.result})`;
-                // Remove active from all bg options
-                bgOptions.forEach(opt => opt.classList.remove('active'));
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-
-    // Download card function
     function downloadCard() {
-        const loading = document.getElementById('loading');
-        loading.style.display = 'block';
-        
-        // Use html2canvas to capture the card
-        html2canvas(document.getElementById('cardPreview'), {
-            scale: 2,
-            logging: false,
-            useCORS: true,
-            allowTaint: true
-        }).then(canvas => {
-            // Convert to blob and download
-            canvas.toBlob(function(blob) {
-                const link = document.createElement('a');
-                link.download = 'بطاقة_تهنئة_العيد.png';
-                link.href = URL.createObjectURL(blob);
-                link.click();
-                URL.revokeObjectURL(link.href);
-                loading.style.display = 'none';
-            }, 'image/png');
-        }).catch(err => {
-            console.error('Error generating image:', err);
-            loading.style.display = 'none';
-            alert('حدث خطأ في إنشاء الصورة. يرجى المحاولة مرة أخرى.');
-        });
-    }
+      let card = document.getElementById("card");
+      let canvas = document.getElementById("canvas");
+      let ctx = canvas.getContext("2d");
 
-    // Share card function
-    function shareCard() {
-        if (navigator.share) {
-            const loading = document.getElementById('loading');
-            loading.style.display = 'block';
-            
-            html2canvas(document.getElementById('cardPreview'), {
-                scale: 2,
-                logging: false,
-                useCORS: true,
-                allowTaint: true
-            }).then(canvas => {
-                canvas.toBlob(async function(blob) {
-                    const file = new File([blob], 'بطاقة_تهنئة.png', { type: 'image/png' });
-                    try {
-                        await navigator.share({
-                            title: 'بطاقة تهنئة العيد',
-                            text: 'عقد قراني - تم بحمد الله وفضله',
-                            files: [file]
-                        });
-                    } catch (err) {
-                        console.log('Share cancelled or failed:', err);
-                    }
-                    loading.style.display = 'none';
-                }, 'image/png');
-            }).catch(err => {
-                console.error('Error generating image:', err);
-                loading.style.display = 'none';
-            });
-        } else {
-            alert('المشاركة غير مدعومة في هذا المتصفح. يمكنك تحميل الصورة ومشاركتها يدوياً.');
-        }
+      canvas.width = card.offsetWidth;
+      canvas.height = card.offsetHeight;
+
+      // استخدام html2canvas لتحويل البطاقة لصورة
+      html2canvas(card).then(function(canvas) {
+        let link = document.createElement("a");
+        link.download = "بطاقة-عقد-قران.png";
+        link.href = canvas.toDataURL();
+        link.click();
+      });
     }
-</script>
-```
+  </script>
+
+  <!-- مكتبة لتحويل الـ div إلى صورة -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 </body>
 </html>
