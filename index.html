@@ -180,6 +180,27 @@
         background-position: center;
     }
 
+    /* Full page gradient overlay */
+    .card-preview::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to top, 
+            rgba(255,255,255,0.95) 0%, 
+            rgba(255,255,255,0.85) 15%, 
+            rgba(255,255,255,0.7) 30%, 
+            rgba(255,255,255,0.5) 45%, 
+            rgba(255,255,255,0.3) 60%, 
+            rgba(255,255,255,0.15) 75%, 
+            rgba(255,255,255,0.05) 90%, 
+            transparent 100%);
+        pointer-events: none;
+        z-index: 1;
+    }
+
     /* Islamic pattern overlay */
     .islamic-pattern {
         position: absolute;
@@ -194,7 +215,6 @@
     .card-header {
         padding: 30px;
         text-align: center;
-        background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
         position: relative;
         z-index: 2;
     }
@@ -233,7 +253,6 @@
         padding: 20px;
         position: relative;
         z-index: 2;
-        background: linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 30%, rgba(255,255,255,0.3) 60%, transparent 100%);
     }
 
     .message-box {
@@ -297,7 +316,6 @@
 
     .card-footer {
         padding: 20px;
-        background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.95) 100%);
         text-align: center;
         position: relative;
         z-index: 2;
