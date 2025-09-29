@@ -520,40 +520,59 @@
         }
     });
 
-    function downloadCard() {
+    async function downloadCard() {
         updateCard();
         const cardView = document.getElementById('cardView');
         const toggleBtn = document.getElementById('toggleBtn');
         toggleBtn.style.display = 'none';
 
-        html2canvas(cardView, {
-            backgroundColor: '#1a1a1a',
-            scale: 2,
-            logging: false,
-            useCORS: true
-        }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'wedding-invitation.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
+        try {
+            const canvas = await html2canvas(cardView, {
+                backgroundColor: '#1a1a1a',
+                scale: 3,
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                foreignObjectRendering: false,
+                imageTimeout: 0,
+                removeContainer: true
+            });
+
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = 'wedding-invitation-hq.png';
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+                toggleBtn.style.display = 'block';
+                alert('تم تحميل البطاقة بجودة عالية! ✅');
+            }, 'image/png', 1.0);
+        } catch (error) {
+            console.error('خطأ في الحفظ:', error);
             toggleBtn.style.display = 'block';
-        });
+            alert('حدث خطأ في حفظ الصورة. حاول مرة أخرى.');
+        }
     }
 
-    function saveForWhatsApp() {
+    async function saveForWhatsApp() {
         updateCard();
         const cardView = document.getElementById('cardView');
         const toggleBtn = document.getElementById('toggleBtn');
         toggleBtn.style.display = 'none';
 
-        html2canvas(cardView, {
-            backgroundColor: '#1a1a1a',
-            scale: 2,
-            logging: false,
-            useCORS: true,
-            width: 1080,
-            height: 1920
-        }).then(canvas => {
+        try {
+            const canvas = await html2canvas(cardView, {
+                backgroundColor: '#1a1a1a',
+                scale: 3,
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                foreignObjectRendering: false,
+                imageTimeout: 0,
+                removeContainer: true
+            });
+
             const whatsappCanvas = document.createElement('canvas');
             whatsappCanvas.width = 1080;
             whatsappCanvas.height = 1920;
@@ -579,16 +598,25 @@
                 drawY = 0;
             }
 
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
             ctx.drawImage(canvas, drawX, drawY, drawWidth, drawHeight);
 
-            const link = document.createElement('a');
-            link.download = 'wedding-whatsapp-status.png';
-            link.href = whatsappCanvas.toDataURL('image/png');
-            link.click();
+            whatsappCanvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = 'wedding-whatsapp-status-hq.png';
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+                toggleBtn.style.display = 'block';
+                alert('تم حفظ الصورة بمقاس حالة واتساب بجودة عالية! 💚\n(1080×1920 بكسل)');
+            }, 'image/png', 1.0);
+        } catch (error) {
+            console.error('خطأ في الحفظ:', error);
             toggleBtn.style.display = 'block';
-
-            alert('تم حفظ الصورة بمقاس حالة واتساب (1080x1920)!\nيمكنك الآن رفعها كحالة على واتساب 💚');
-        });
+            alert('حدث خطأ في حفظ الصورة. حاول مرة أخرى.');
+        }
     }
 </script>
 ```
