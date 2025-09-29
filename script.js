@@ -11,6 +11,10 @@ function updatePreview() {
     const additional = document.getElementById('additionalText').value || '';
     const textColor = document.getElementById('textColor').value;
     const fontFamily = document.getElementById('fontFamily').value;
+    const textStyle = document.getElementById('textStyle').value;
+    const shadowType = document.getElementById('shadowType').value;
+    const shadowIntensity = document.getElementById('shadowIntensity').value;
+    const coupleNamesFont = document.getElementById('coupleNamesFont').value;
 
     document.getElementById('displayTitle').textContent = title;
     document.getElementById('displayNames').textContent = `${brideName} & ${groomName}`;
@@ -18,13 +22,63 @@ function updatePreview() {
     document.getElementById('displayVenue').innerHTML = venue;
     document.getElementById('displayAdditional').textContent = additional;
 
-    // تطبيق لون ونوع النص
+    // تطبيق نوع الخط
     const content = document.getElementById('cardContent');
-    content.style.color = textColor;
     content.style.fontFamily = `"${fontFamily}", sans-serif`;
+    
+    // تطبيق خط خاص لأسماء العروسين
+    const namesElement = document.getElementById('displayNames');
+    if (coupleNamesFont === 'same') {
+        namesElement.style.fontFamily = `"${fontFamily}", sans-serif`;
+    } else {
+        namesElement.style.fontFamily = `"${coupleNamesFont}", sans-serif`;
+    }
+    
+    // إزالة جميع أنماط النص السابقة
+    content.classList.remove('text-style-gold', 'text-style-silver', 'text-style-rose-gold', 'text-style-bronze', 'text-style-gradient-gold', 'text-style-gradient-silver', 'text-style-gradient-rainbow');
+    
+    // تطبيق نمط النص
+    if (textStyle === 'normal') {
+        content.style.color = textColor;
+    } else {
+        content.classList.add('text-style-' + textStyle);
+        content.style.color = '';
+    }
+    
+    // تطبيق نوع الظل
+    content.classList.remove('shadow-outer', 'shadow-inner', 'shadow-both', 'shadow-none');
+    content.classList.add('shadow-' + shadowType);
+    
+    // تطبيق شدة الظل
+    updateShadowIntensity(shadowType, shadowIntensity);
+    
+    // تحديث القيمة المعروضة
+    document.getElementById('shadowIntensityValue').textContent = shadowIntensity;
 
     // تطبيق الخلفية حسب النوع
     updateBackground();
+}
+
+// تحديث شدة الظل
+function updateShadowIntensity(shadowType, intensity) {
+    const content = document.getElementById('cardContent');
+    const elements = content.querySelectorAll('.invitation-title, .couple-names, .wedding-date, .venue-info, .additional-text');
+    
+    const alpha = intensity / 10;
+    
+    elements.forEach(element => {
+        if (shadowType === 'outer') {
+            element.style.textShadow = `${intensity}px ${intensity}px ${intensity * 2}px rgba(0,0,0,${alpha * 0.5})`;
+        } else if (shadowType === 'inner') {
+            element.style.textShadow = `inset ${intensity}px ${intensity}px ${intensity * 2}px rgba(0,0,0,${alpha * 0.7})`;
+            element.style.filter = 'brightness(0.9)';
+        } else if (shadowType === 'both') {
+            element.style.textShadow = `${intensity}px ${intensity}px ${intensity * 2}px rgba(0,0,0,${alpha * 0.4}), inset -${intensity}px -${intensity}px ${intensity * 2}px rgba(0,0,0,${alpha * 0.3})`;
+        } else {
+            element.style.textShadow = 'none';
+            element.style.filter = 'none';
+        }
+    });
 }
 
 // تحديث الخلفية
@@ -656,8 +710,10 @@ document.querySelectorAll('input, textarea, select').forEach(element => {
         element.addEventListener('change', handleImageUpload);
     } else if (element.id === 'frameColor' || element.id === 'frameOpacity' || element.id === 'frameMargin' || element.id === 'showFrame') {
         element.addEventListener(element.type === 'range' ? 'input' : 'change', updateFrame);
-    } else if (element.id === 'fontFamily') {
+    } else if (element.id === 'fontFamily' || element.id === 'textStyle' || element.id === 'shadowType' || element.id === 'coupleNamesFont') {
         element.addEventListener('change', updatePreview);
+    } else if (element.id === 'shadowIntensity') {
+        element.addEventListener('input', updatePreview);
     } else {
         element.addEventListener('input', updatePreview);
     }
