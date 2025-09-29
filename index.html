@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دعوة زواج</title>
+    <title>دعوة زواج - محسّنة</title>
     <style>
         * {
             margin: 0;
@@ -18,6 +18,27 @@
         background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
         min-height: 100vh;
         padding: 20px;
+        transition: background 0.5s ease;
+    }
+
+    body.theme-gold {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    }
+
+    body.theme-rose {
+        background: linear-gradient(135deg, #2a1a1f 0%, #3d2d32 100%);
+    }
+
+    body.theme-blue {
+        background: linear-gradient(135deg, #1a1f2a 0%, #2d323d 100%);
+    }
+
+    body.theme-green {
+        background: linear-gradient(135deg, #1a2a1f 0%, #2d3d32 100%);
+    }
+
+    body.theme-purple {
+        background: linear-gradient(135deg, #231a2a 0%, #362d3d 100%);
     }
 
     .container {
@@ -32,6 +53,19 @@
         box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         position: relative;
         overflow: hidden;
+        transition: all 0.5s ease;
+        animation: cardAppear 0.6s ease-out;
+    }
+
+    @keyframes cardAppear {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .card-view::before {
@@ -45,36 +79,31 @@
         background-size: 100px;
         opacity: 0.1;
         pointer-events: none;
+        animation: rotate 60s linear infinite;
     }
 
-    .logo-container {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .logo {
-        display: inline-block;
-        background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-        padding: 12px 30px;
-        border-radius: 50px;
-        color: #1a1a1a;
-        font-size: 20px;
-        font-weight: bold;
-        letter-spacing: 2px;
-        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
     }
 
     .photo-frame {
         width: 280px;
         height: 280px;
         margin: 0 auto 30px;
-        border: 3px solid #d4af37;
+        border: 3px solid var(--primary-color, #d4af37);
         background: #000;
         border-radius: 10px;
         overflow: hidden;
         display: none;
         align-items: center;
         justify-content: center;
+        transition: transform 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .photo-frame:hover {
+        transform: scale(1.02);
     }
 
     .photo-frame.has-image {
@@ -85,16 +114,28 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .photo-frame:hover img {
+        transform: scale(1.05);
     }
 
     .invitation-title {
         background: #1a1a1a;
-        border: 2px solid #d4af37;
+        border: 2px solid var(--primary-color, #d4af37);
         padding: 15px 30px;
         text-align: center;
         margin: 0 auto 20px;
         width: fit-content;
         border-radius: 5px;
+        transition: all 0.3s ease;
+        animation: titlePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes titlePulse {
+        0%, 100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+        50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
     }
 
     .invitation-title h2 {
@@ -106,7 +147,7 @@
     .divider {
         width: 80%;
         height: 2px;
-        background: linear-gradient(to right, transparent, #d4af37, transparent);
+        background: linear-gradient(to right, transparent, var(--primary-color, #d4af37), transparent);
         margin: 20px auto;
     }
 
@@ -120,6 +161,22 @@
     .invitation-text p {
         font-size: 18px;
         margin: 10px 0;
+        animation: fadeInUp 0.8s ease-out backwards;
+    }
+
+    .invitation-text p:nth-child(1) { animation-delay: 0.1s; }
+    .invitation-text p:nth-child(2) { animation-delay: 0.2s; }
+    .invitation-text p:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .event-details {
@@ -131,20 +188,29 @@
 
     .detail-item {
         text-align: center;
-        color: #d4af37;
+        color: var(--primary-color, #d4af37);
         flex: 1;
+        animation: fadeInUp 0.8s ease-out backwards;
     }
+
+    .detail-item:nth-child(1) { animation-delay: 0.4s; }
+    .detail-item:nth-child(2) { animation-delay: 0.5s; }
 
     .detail-icon {
         width: 50px;
         height: 50px;
         margin: 0 auto 10px;
-        background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+        background: linear-gradient(135deg, var(--primary-color, #d4af37) 0%, var(--secondary-color, #f4d03f) 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .detail-icon:hover {
+        transform: translateY(-5px) scale(1.1);
     }
 
     .detail-icon svg {
@@ -154,7 +220,7 @@
     }
 
     .detail-label {
-        color: #d4af37;
+        color: var(--primary-color, #d4af37);
         font-size: 14px;
         font-weight: bold;
         margin-bottom: 5px;
@@ -169,6 +235,7 @@
     .host-section {
         text-align: center;
         margin: 20px 0;
+        animation: fadeInUp 0.8s ease-out 0.6s backwards;
     }
 
     .host-section p {
@@ -183,6 +250,7 @@
         padding: 30px;
         box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         display: none;
+        animation: cardAppear 0.6s ease-out;
     }
 
     .form-title {
@@ -193,6 +261,95 @@
         line-height: 1.6;
     }
 
+    .form-section {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .form-section-title {
+        color: var(--primary-color, #d4af37);
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .theme-selector {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .theme-option {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 3px solid #ddd;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .theme-option:hover {
+        transform: scale(1.1);
+        border-color: #999;
+    }
+
+    .theme-option.active {
+        border-color: #333;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    .theme-option.active::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+        text-shadow: 0 0 3px rgba(0,0,0,0.5);
+    }
+
+    .theme-gold { background: linear-gradient(135deg, #d4af37, #f4d03f); }
+    .theme-rose { background: linear-gradient(135deg, #ff6b9d, #ffc371); }
+    .theme-blue { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+    .theme-green { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+    .theme-purple { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+
+    .font-selector {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .font-option {
+        padding: 10px 20px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: #fff;
+    }
+
+    .font-option:hover {
+        border-color: var(--primary-color, #d4af37);
+        transform: translateY(-2px);
+    }
+
+    .font-option.active {
+        border-color: var(--primary-color, #d4af37);
+        background: var(--primary-color, #d4af37);
+        color: #fff;
+    }
+
     .form-group {
         margin-bottom: 20px;
     }
@@ -201,7 +358,7 @@
     .form-group textarea {
         width: 100%;
         padding: 15px;
-        border: 2px solid #d4af37;
+        border: 2px solid var(--primary-color, #d4af37);
         border-radius: 10px;
         font-size: 16px;
         text-align: center;
@@ -213,8 +370,9 @@
     .form-group input:focus,
     .form-group textarea:focus {
         outline: none;
-        border-color: #b8941f;
+        border-color: var(--primary-color, #d4af37);
         box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        transform: translateY(-2px);
     }
 
     .form-group input::placeholder,
@@ -239,6 +397,31 @@
         cursor: pointer;
         transition: all 0.3s;
         font-weight: bold;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .btn span {
+        position: relative;
+        z-index: 1;
     }
 
     .btn-view {
@@ -249,6 +432,7 @@
     .btn-view:hover {
         background: #0097a7;
         transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
     }
 
     .btn-download {
@@ -259,6 +443,7 @@
     .btn-download:hover {
         background: #45a049;
         transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
     }
 
     .btn-whatsapp {
@@ -269,6 +454,28 @@
     .btn-whatsapp:hover {
         background: #20ba5a;
         transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+    }
+
+    .btn-pdf {
+        background: #f44336;
+        color: #fff;
+    }
+
+    .btn-pdf:hover {
+        background: #da190b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+    }
+
+    .btn-instagram {
+        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        color: #fff;
+    }
+
+    .btn-instagram:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(225, 48, 108, 0.4);
     }
 
     .toggle-btn {
@@ -276,7 +483,7 @@
         bottom: 30px;
         left: 50%;
         transform: translateX(-50%);
-        background: #d4af37;
+        background: var(--primary-color, #d4af37);
         color: #1a1a1a;
         border: none;
         padding: 15px 30px;
@@ -290,7 +497,7 @@
     }
 
     .toggle-btn:hover {
-        background: #b8941f;
+        background: var(--secondary-color, #b8941f);
         transform: translateX(-50%) translateY(-3px);
         box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
     }
@@ -299,7 +506,7 @@
         display: block;
         text-align: center;
         padding: 40px;
-        border: 2px dashed #d4af37;
+        border: 2px dashed var(--primary-color, #d4af37);
         border-radius: 10px;
         cursor: pointer;
         transition: all 0.3s;
@@ -308,7 +515,8 @@
 
     .file-upload-label:hover {
         background: #f0f0f0;
-        border-color: #b8941f;
+        border-color: var(--secondary-color, #b8941f);
+        transform: scale(1.02);
     }
 
     .file-upload-label input {
@@ -325,6 +533,35 @@
         margin-top: 10px;
         color: #4caf50;
         font-size: 14px;
+        font-weight: bold;
+    }
+
+    .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        color: var(--primary-color, #d4af37);
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .loading.active {
+        display: block;
+    }
+
+    .spinner {
+        border: 4px solid rgba(212, 175, 55, 0.3);
+        border-radius: 50%;
+        border-top: 4px solid var(--primary-color, #d4af37);
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 10px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 
     @media (max-width: 600px) {
@@ -344,6 +581,44 @@
         .btn {
             min-width: 100%;
         }
+
+        .theme-option {
+            width: 45px;
+            height: 45px;
+        }
+    }
+
+    :root {
+        --primary-color: #d4af37;
+        --secondary-color: #f4d03f;
+    }
+
+    .theme-rose-active {
+        --primary-color: #ff6b9d;
+        --secondary-color: #ffc371;
+    }
+
+    .theme-blue-active {
+        --primary-color: #4facfe;
+        --secondary-color: #00f2fe;
+    }
+
+    .theme-green-active {
+        --primary-color: #43e97b;
+        --secondary-color: #38f9d7;
+    }
+
+    .theme-purple-active {
+        --primary-color: #a18cd1;
+        --secondary-color: #fbc2eb;
+    }
+
+    .help-text {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        margin-top: 10px;
+        font-style: italic;
     }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -353,12 +628,11 @@
 <body>
     <div class="container">
         <div class="card-view" id="cardView">
+            <div class="photo-frame" id="photoFrame">
+                <img id="photoImage" src="" alt="صورة الدعوة">
+            </div>
 
 ```
-        <div class="photo-frame" id="photoFrame">
-            <img id="photoImage" src="" alt="صورة الدعوة">
-        </div>
-
         <div class="invitation-title">
             <h2 id="displayTitle">دعــــوة</h2>
         </div>
@@ -398,52 +672,88 @@
     </div>
 
     <div class="form-view" id="formView">
-        <h3 class="form-title">فقط عدل النصوص، واختر صورتك ودامت أفراحكم<br>يارب</h3>
+        <h3 class="form-title">✨ صمم دعوة زواجك بلمستك الخاصة ✨<br>عدّل، خصّص، وشارك بكل سهولة</h3>
 
-        <div class="form-group">
-            <label class="file-upload-label">
-                <input type="file" id="photoUpload" accept="image/*">
-                <span class="upload-text">📷 اختر صورة من جهازك (اختياري)</span>
-            </label>
-            <div class="photo-status" id="photoStatus"></div>
+        <div class="form-section">
+            <div class="form-section-title">🎨 اختر لون البطاقة</div>
+            <div class="theme-selector">
+                <div class="theme-option theme-gold active" onclick="changeTheme('gold')" title="ذهبي كلاسيكي"></div>
+                <div class="theme-option theme-rose" onclick="changeTheme('rose')" title="وردي رومانسي"></div>
+                <div class="theme-option theme-blue" onclick="changeTheme('blue')" title="أزرق سماوي"></div>
+                <div class="theme-option theme-green" onclick="changeTheme('green')" title="أخضر طبيعي"></div>
+                <div class="theme-option theme-purple" onclick="changeTheme('purple')" title="بنفسجي ملكي"></div>
+            </div>
+            <p class="help-text">اختر اللون الذي يعبر عن ذوقك</p>
         </div>
 
-        <div class="form-group">
-            <input type="text" id="wishesInput" placeholder="بكل المحبة والتقدير">
+        <div class="form-section">
+            <div class="form-section-title">✍️ اختر نوع الخط</div>
+            <div class="font-selector">
+                <div class="font-option active" onclick="changeFont('Segoe UI')" style="font-family: 'Segoe UI'">عادي</div>
+                <div class="font-option" onclick="changeFont('Arial')" style="font-family: Arial">أنيق</div>
+                <div class="font-option" onclick="changeFont('Georgia')" style="font-family: Georgia">كلاسيكي</div>
+                <div class="font-option" onclick="changeFont('Courier New')" style="font-family: 'Courier New'">عصري</div>
+            </div>
+            <p class="help-text">جرّب الخطوط المختلفة لتجد الأنسب</p>
         </div>
 
-        <div class="form-group">
-            <input type="text" id="inviteInput" placeholder="أتشرف بدعوتكم لحضور">
+        <div class="form-section">
+            <div class="form-section-title">📷 أضف صورتك</div>
+            <div class="form-group">
+                <label class="file-upload-label">
+                    <input type="file" id="photoUpload" accept="image/*">
+                    <span class="upload-text">📷 اختر صورة من جهازك (اختياري)</span>
+                </label>
+                <div class="photo-status" id="photoStatus"></div>
+            </div>
+            <p class="help-text">يمكنك إضافة صورة شخصية أو تركها فارغة</p>
         </div>
 
-        <div class="form-group">
-            <input type="text" id="eventInput" placeholder="حفل زواجي وتناول طعام العشاء">
+        <div class="form-section">
+            <div class="form-section-title">📝 النصوص والمعلومات</div>
+            <div class="form-group">
+                <input type="text" id="wishesInput" placeholder="بكل المحبة والتقدير">
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="inviteInput" placeholder="أتشرف بدعوتكم لحضور">
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="eventInput" placeholder="حفل زواجي وتناول طعام العشاء">
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="dateInput" placeholder="اليوم (مثال: الجمعة)">
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="timeInput" placeholder="التاريخ (مثال: 2025/01/15)">
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="locationInput" placeholder="اسم المكان">
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="locationDetailsInput" placeholder="وصف المكان">
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="hostInput" placeholder="الداعي/ـة">
+            </div>
         </div>
 
-        <div class="form-group">
-            <input type="text" id="dateInput" placeholder="اليوم (مثال: الجمعة)">
-        </div>
-
-        <div class="form-group">
-            <input type="text" id="timeInput" placeholder="التاريخ (مثال: 2025/01/15)">
-        </div>
-
-        <div class="form-group">
-            <input type="text" id="locationInput" placeholder="اسم المكان">
-        </div>
-
-        <div class="form-group">
-            <input type="text" id="locationDetailsInput" placeholder="وصف المكان">
-        </div>
-
-        <div class="form-group">
-            <input type="text" id="hostInput" placeholder="الداعي/ـة">
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            جاري المعالجة...
         </div>
 
         <div class="btn-group">
-            <button class="btn btn-view" onclick="updateCard()">👁️ عرض</button>
-            <button class="btn btn-download" onclick="downloadCard()">💾 تحميل</button>
-            <button class="btn btn-whatsapp" onclick="saveForWhatsApp()">📱 حالة واتساب</button>
+            <button class="btn btn-view" onclick="updateCard()"><span>👁️ عرض</span></button>
+            <button class="btn btn-download" onclick="downloadCard()"><span>💾 تحميل</span></button>
+            <button class="btn btn-whatsapp" onclick="saveForWhatsApp()"><span>📱 واتساب</span></button>
+            <button class="btn btn-instagram" onclick="saveForInstagram()"><span>📸 انستقرام</span></button>
         </div>
     </div>
 </div>
@@ -453,6 +763,41 @@
 <script>
     let currentView = 'card';
     let uploadedImage = null;
+    let currentTheme = 'gold';
+    let currentFont = 'Segoe UI';
+
+    const themeColors = {
+        gold: { primary: '#d4af37', secondary: '#f4d03f' },
+        rose: { primary: '#ff6b9d', secondary: '#ffc371' },
+        blue: { primary: '#4facfe', secondary: '#00f2fe' },
+        green: { primary: '#43e97b', secondary: '#38f9d7' },
+        purple: { primary: '#a18cd1', secondary: '#fbc2eb' }
+    };
+
+    function changeTheme(theme) {
+        currentTheme = theme;
+        document.body.className = `theme-${theme}`;
+        document.documentElement.className = `theme-${theme}-active`;
+        
+        document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('active'));
+        document.querySelector(`.theme-option.theme-${theme}`).classList.add('active');
+
+        const colors = themeColors[theme];
+        document.documentElement.style.setProperty('--primary-color', colors.primary);
+        document.documentElement.style.setProperty('--secondary-color', colors.secondary);
+
+        updateCard();
+    }
+
+    function changeFont(font) {
+        currentFont = font;
+        document.querySelectorAll('.font-option').forEach(opt => opt.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        const cardView = document.getElementById('cardView');
+        cardView.style.fontFamily = font;
+        updateCard();
+    }
 
     function toggleView() {
         const cardView = document.getElementById('cardView');
@@ -498,6 +843,11 @@
     document.getElementById('photoUpload').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
+            if (file.size > 5000000) {
+                alert('⚠️ حجم الصورة كبير جداً! يرجى اختيار صورة أصغر من 5 ميجابايت');
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function(event) {
                 uploadedImage = event.target.result;
@@ -513,15 +863,24 @@
         }
     });
 
+    function showLoading() {
+        document.getElementById('loading').classList.add('active');
+    }
+
+    function hideLoading() {
+        document.getElementById('loading').classList.remove('active');
+    }
+
     async function downloadCard() {
         updateCard();
+        showLoading();
         const cardView = document.getElementById('cardView');
         const toggleBtn = document.getElementById('toggleBtn');
         toggleBtn.style.display = 'none';
 
         try {
             const canvas = await html2canvas(cardView, {
-                backgroundColor: '#1a1a1a',
+                backgroundColor: getComputedStyle(cardView).background,
                 scale: 3,
                 logging: false,
                 useCORS: true,
@@ -534,29 +893,33 @@
             canvas.toBlob((blob) => {
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
-                link.download = 'wedding-invitation-hq.png';
+                const date = new Date().toISOString().slice(0,10);
+                link.download = `wedding-invitation-${date}.png`;
                 link.href = url;
                 link.click();
                 URL.revokeObjectURL(url);
                 toggleBtn.style.display = 'block';
-                alert('تم تحميل البطاقة بجودة عالية! ✅');
+                hideLoading();
+                alert('✅ تم تحميل البطاقة بجودة عالية بنجاح!');
             }, 'image/png', 1.0);
         } catch (error) {
             console.error('خطأ في الحفظ:', error);
             toggleBtn.style.display = 'block';
-            alert('حدث خطأ في حفظ الصورة. حاول مرة أخرى.');
+            hideLoading();
+            alert('❌ حدث خطأ في حفظ الصورة. حاول مرة أخرى.');
         }
     }
 
     async function saveForWhatsApp() {
         updateCard();
+        showLoading();
         const cardView = document.getElementById('cardView');
         const toggleBtn = document.getElementById('toggleBtn');
         toggleBtn.style.display = 'none';
 
         try {
             const canvas = await html2canvas(cardView, {
-                backgroundColor: '#1a1a1a',
+                backgroundColor: getComputedStyle(cardView).background,
                 scale: 3,
                 logging: false,
                 useCORS: true,
@@ -571,6 +934,7 @@
             whatsappCanvas.height = 1920;
             const ctx = whatsappCanvas.getContext('2d');
 
+            const bgColor = getComputedStyle(document.body).background;
             ctx.fillStyle = '#1a1a1a';
             ctx.fillRect(0, 0, 1080, 1920);
 
@@ -598,19 +962,92 @@
             whatsappCanvas.toBlob((blob) => {
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
-                link.download = 'wedding-whatsapp-status-hq.png';
+                const date = new Date().toISOString().slice(0,10);
+                link.download = `wedding-whatsapp-${date}.png`;
                 link.href = url;
                 link.click();
                 URL.revokeObjectURL(url);
                 toggleBtn.style.display = 'block';
-                alert('تم حفظ الصورة بمقاس حالة واتساب بجودة عالية! 💚\n(1080×1920 بكسل)');
+                hideLoading();
+                alert('✅ تم حفظ الصورة بمقاس حالة واتساب بنجاح!\n📱 المقاس: 1080×1920 بكسل\n💚 جاهزة للنشر على حالة واتساب');
             }, 'image/png', 1.0);
         } catch (error) {
             console.error('خطأ في الحفظ:', error);
             toggleBtn.style.display = 'block';
-            alert('حدث خطأ في حفظ الصورة. حاول مرة أخرى.');
+            hideLoading();
+            alert('❌ حدث خطأ في حفظ الصورة. حاول مرة أخرى.');
         }
     }
+
+    async function saveForInstagram() {
+        updateCard();
+        showLoading();
+        const cardView = document.getElementById('cardView');
+        const toggleBtn = document.getElementById('toggleBtn');
+        toggleBtn.style.display = 'none';
+
+        try {
+            const canvas = await html2canvas(cardView, {
+                backgroundColor: getComputedStyle(cardView).background,
+                scale: 3,
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                foreignObjectRendering: false,
+                imageTimeout: 0,
+                removeContainer: true
+            });
+
+            const instagramCanvas = document.createElement('canvas');
+            instagramCanvas.width = 1080;
+            instagramCanvas.height = 1080;
+            const ctx = instagramCanvas.getContext('2d');
+
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(0, 0, 1080, 1080);
+
+            const cardRatio = canvas.width / canvas.height;
+            let drawWidth, drawHeight, drawX, drawY;
+            
+            if (cardRatio > 1) {
+                drawWidth = 1080;
+                drawHeight = 1080 / cardRatio;
+                drawX = 0;
+                drawY = (1080 - drawHeight) / 2;
+            } else {
+                drawHeight = 1080;
+                drawWidth = 1080 * cardRatio;
+                drawX = (1080 - drawWidth) / 2;
+                drawY = 0;
+            }
+
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(canvas, drawX, drawY, drawWidth, drawHeight);
+
+            instagramCanvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                const date = new Date().toISOString().slice(0,10);
+                link.download = `wedding-instagram-${date}.png`;
+                link.href = url;
+                link.click();
+                URL.revokeObjectURL(url);
+                toggleBtn.style.display = 'block';
+                hideLoading();
+                alert('✅ تم حفظ الصورة بمقاس انستقرام بنجاح!\n📸 المقاس: 1080×1080 بكسل (مربع)\n💖 جاهزة للنشر على انستقرام');
+            }, 'image/png', 1.0);
+        } catch (error) {
+            console.error('خطأ في الحفظ:', error);
+            toggleBtn.style.display = 'block';
+            hideLoading();
+            alert('❌ حدث خطأ في حفظ الصورة. حاول مرة أخرى.');
+        }
+    }
+
+    window.addEventListener('load', function() {
+        changeTheme('gold');
+    });
 </script>
 ```
 
