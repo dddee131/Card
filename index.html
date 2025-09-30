@@ -181,6 +181,7 @@
         justify-content: space-between;
         background-size: cover;
         background-position: center;
+        background-repeat: no-repeat;
         transition: transform 0.3s;
         transform-style: preserve-3d;
     }
@@ -612,7 +613,19 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 currentBackground = e.target.result;
-                document.getElementById('cardPreview').style.backgroundImage = `url(${e.target.result})`;
+                const cardPreview = document.getElementById('cardPreview');
+                
+                // Create a temporary image to get dimensions
+                const tempImg = new Image();
+                tempImg.onload = function() {
+                    // Apply background with cover to prevent stretching
+                    cardPreview.style.backgroundImage = `url(${e.target.result})`;
+                    cardPreview.style.backgroundSize = 'cover';
+                    cardPreview.style.backgroundPosition = 'center';
+                    cardPreview.style.backgroundRepeat = 'no-repeat';
+                };
+                tempImg.src = e.target.result;
+                
                 showNotification('تم تحميل الخلفية بنجاح! 🎨');
             };
             reader.readAsDataURL(file);
@@ -624,7 +637,7 @@
         const canvas = document.getElementById('canvasResult');
         const ctx = canvas.getContext('2d');
         
-        // Set canvas dimensions
+        // Set canvas dimensions matching the preview card exactly
         canvas.width = 800;
         canvas.height = 1200;
         
@@ -632,7 +645,28 @@
         if (currentBackground) {
             const img = new Image();
             img.onload = function() {
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                // Calculate aspect ratio to prevent stretching
+                const imgAspect = img.width / img.height;
+                const canvasAspect = canvas.width / canvas.height;
+                
+                let drawWidth, drawHeight, drawX, drawY;
+                
+                if (imgAspect > canvasAspect) {
+                    // Image is wider - fit height and crop width
+                    drawHeight = canvas.height;
+                    drawWidth = img.width * (canvas.height / img.height);
+                    drawX = (canvas.width - drawWidth) / 2;
+                    drawY = 0;
+                } else {
+                    // Image is taller - fit width and crop height
+                    drawWidth = canvas.width;
+                    drawHeight = img.height * (canvas.width / img.width);
+                    drawX = 0;
+                    drawY = (canvas.height - drawHeight) / 2;
+                }
+                
+                // Draw image with proper aspect ratio
+                ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
                 drawCardContent();
             };
             img.src = currentBackground;
@@ -651,11 +685,13 @@
         const canvas = document.getElementById('canvasResult');
         const ctx = canvas.getContext('2d');
         
-        // Add white overlay gradient
+        // Add white overlay gradient matching the preview
         const overlayGradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
         overlayGradient.addColorStop(0, 'rgba(255,255,255,1)');
-        overlayGradient.addColorStop(0.3, 'rgba(255,255,255,0.9)');
-        overlayGradient.addColorStop(0.6, 'rgba(255,255,255,0.5)');
+        overlayGradient.addColorStop(0.2, 'rgba(255,255,255,0.95)');
+        overlayGradient.addColorStop(0.4, 'rgba(255,255,255,0.85)');
+        overlayGradient.addColorStop(0.6, 'rgba(255,255,255,0.6)');
+        overlayGradient.addColorStop(0.8, 'rgba(255,255,255,0.3)');
         overlayGradient.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = overlayGradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -671,35 +707,48 @@
         };
         const selectedFont = fontMap[currentFontClass] || 'Tajawal';
         
-        // Draw text
+        // Draw text with proper positioning (centered in lower portion)
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#2c3e50';
+        ctx.textBaseline = 'middle';
+        
+        // Calculate vertical center for text group
+        const textCenterY = canvas.height * 0.75; // Position text in lower quarter
+        
+        // Add shadow for better readability
+        ctx.shadowColor = 'rgba(0,0,0,0.1)';
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
         
         // First line
-        ctx.font = `bold 36px ${selectedFont}`;
-        ctx.fillText('الحمد لله الذي بنعمته تتم الصالحات', canvas.width / 2, canvas.height - 400);
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = `bold 44px ${selectedFont}`;
+        ctx.fillText('الحمد لله الذي بنعمته تتم الصالحات', canvas.width / 2, textCenterY - 120);
         
         // Second line
-        ctx.font = `bold 32px ${selectedFont}`;
-        ctx.fillText('تم بحمد الله وفضله', canvas.width / 2, canvas.height - 340);
+        ctx.font = `bold 40px ${selectedFont}`;
+        ctx.fillText('تم بحمد الله وفضله', canvas.width / 2, textCenterY - 60);
+        
+        // Draw decorative line
+        ctx.shadowColor = 'transparent';
+        ctx.strokeStyle = '#8B4513';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2 - 180, textCenterY - 10);
+        ctx.lineTo(canvas.width / 2 + 180, textCenterY - 10);
+        ctx.stroke();
         
         // Label
+        ctx.shadowColor = 'rgba(0,0,0,0.15)';
+        ctx.shadowBlur = 6;
         ctx.fillStyle = '#8B4513';
-        ctx.font = `bold 40px ${selectedFont}`;
-        ctx.fillText('عقد قراني', canvas.width / 2, canvas.height - 250);
+        ctx.font = `bold 48px ${selectedFont}`;
+        ctx.fillText('عقد قراني', canvas.width / 2, textCenterY + 40);
         
         // Name
         const userName = document.getElementById('userName').value || 'اسمك هنا';
-        ctx.font = `bold 48px ${selectedFont}`;
-        ctx.fillText(userName, canvas.width / 2, canvas.height - 180);
-        
-        // Add decorative elements
-        ctx.strokeStyle = '#8B4513';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(canvas.width / 2 - 150, canvas.height - 280);
-        ctx.lineTo(canvas.width / 2 + 150, canvas.height - 280);
-        ctx.stroke();
+        ctx.font = `bold 56px ${selectedFont}`;
+        ctx.fillText(userName, canvas.width / 2, textCenterY + 110);
         
         // Show modal
         document.getElementById('previewModal').style.display = 'flex';
