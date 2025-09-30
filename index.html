@@ -824,6 +824,47 @@
         }
     });
 </script>
+<script>
+    // دالة ترجع التاريخ بصيغة YYYY-MM-DD (علشان نعرف اليوم)
+    function getTodayDate() {
+        const now = new Date();
+        return now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
+    }
+
+    // جلب البيانات المخزنة
+    let visitsData = JSON.parse(localStorage.getItem("visitsData")) || {
+        date: getTodayDate(),
+        count: 0
+    };
+
+    // لو التاريخ تغير (يعني دخل يوم جديد) نصفر العداد
+    if (visitsData.date !== getTodayDate()) {
+        visitsData.date = getTodayDate();
+        visitsData.count = 0;
+    }
+
+    // نزيد العداد
+    visitsData.count += 1;
+
+    // نخزن التحديث الجديد
+    localStorage.setItem("visitsData", JSON.stringify(visitsData));
+
+    // عرض العدد في الصفحة
+    document.addEventListener("DOMContentLoaded", function() {
+        const counterBox = document.createElement("div");
+        counterBox.style.position = "fixed";
+        counterBox.style.bottom = "20px";
+        counterBox.style.left = "20px";
+        counterBox.style.padding = "10px 20px";
+        counterBox.style.background = "rgba(0,0,0,0.6)";
+        counterBox.style.color = "white";
+        counterBox.style.borderRadius = "10px";
+        counterBox.style.fontFamily = "Tajawal, sans-serif";
+        counterBox.style.fontSize = "16px";
+        counterBox.innerText = "👥 عدد الزوار اليوم: " + visitsData.count;
+        document.body.appendChild(counterBox);
+    });
+</script>
 ```
 
 </body>
