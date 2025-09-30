@@ -430,8 +430,15 @@
     </div>
 </div>
 
-<!-- Load html2canvas from CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<!-- Alternative method: Use different CDN -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<!-- Backup CDN -->
+<script>
+    if (typeof html2canvas === 'undefined') {
+        document.write('<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.js"><\/script>');
+    }
+</script>
 
 <script>
     // Check if html2canvas loaded
@@ -486,77 +493,68 @@
         }
     });
 
-    // Download function with better error handling
+    // Download function - simplified and more compatible
     function downloadCard() {
         const loadingOverlay = document.getElementById('loadingOverlay');
         const errorMessage = document.getElementById('errorMessage');
         
-        // Hide error message if visible
+        // Hide error message
         errorMessage.style.display = 'none';
         loadingOverlay.style.display = 'flex';
         
-        // Check if html2canvas is available
-        if (typeof html2canvas === 'undefined') {
-            loadingOverlay.style.display = 'none';
-            errorMessage.style.display = 'block';
-            errorMessage.textContent = 'المكتبة غير متوفرة. يرجى إعادة تحميل الصفحة.';
-            return;
-        }
+        // Get the card element
+        const cardElement = document.getElementById('cardPreview');
         
-        // Add delay for fonts to render
-        setTimeout(() => {
-            const cardElement = document.getElementById('cardPreview');
-            
-            // Configuration for html2canvas
-            const options = {
-                scale: 2, // Good quality
-                logging: false,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: null,
-                imageTimeout: 15000,
-                onclone: function(clonedDoc) {
-                    // Ensure fonts are loaded in the clone
-                    const clonedCard = clonedDoc.getElementById('cardPreview');
-                    if (clonedCard) {
-                        clonedCard.style.fontFamily = window.getComputedStyle(cardElement).fontFamily;
-                    }
-                }
-            };
-            
-            html2canvas(cardElement, options).then(canvas => {
-                // Convert to blob
-                canvas.toBlob(function(blob) {
-                    if (!blob) {
-                        throw new Error('Failed to create image blob');
-                    }
-                    
-                    // Create download link
+        // Simple configuration
+        const options = {
+            scale: 2,
+            logging: true, // Enable logging to see errors
+            useCORS: true,
+            allowTaint: true
+        };
+        
+        // Use html2canvas
+        html2canvas(cardElement, options).then(function(canvas) {
+            try {
+                // Method 1: Try using toBlob
+                if (canvas.toBlob) {
+                    canvas.toBlob(function(blob) {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.download = 'card.png';
+                        link.href = url;
+                        link.click();
+                        URL.revokeObjectURL(url);
+                        loadingOverlay.style.display = 'none';
+                    }, 'image/png');
+                } else {
+                    // Method 2: Fallback to toDataURL
+                    const dataUrl = canvas.toDataURL('image/png');
                     const link = document.createElement('a');
-                    const userName = userNameInput.value || 'عقد_قران';
-                    link.download = `بطاقة_عقد_قران_${userName}.png`;
-                    link.href = URL.createObjectURL(blob);
-                    
-                    // Trigger download
-                    document.body.appendChild(link);
+                    link.download = 'card.png';
+                    link.href = dataUrl;
                     link.click();
-                    document.body.removeChild(link);
-                    
-                    // Clean up
-                    URL.revokeObjectURL(link.href);
                     loadingOverlay.style.display = 'none';
-                    
-                }, 'image/png', 1.0);
-            }).catch(err => {
-                console.error('Download error:', err);
+                }
+            } catch (error) {
+                console.error('Error in download:', error);
+                // Method 3: Final fallback - open in new tab
+                const dataUrl = canvas.toDataURL('image/png');
+                const newTab = window.open();
+                newTab.document.write('<img src="' + dataUrl + '" />');
                 loadingOverlay.style.display = 'none';
                 errorMessage.style.display = 'block';
-                errorMessage.textContent = 'حدث خطأ في إنشاء الصورة. يرجى المحاولة مرة أخرى.';
-            });
-        }, 500); // Wait for fonts to render
+                errorMessage.textContent = 'تم فتح الصورة في نافذة جديدة. يمكنك حفظها بالضغط على زر الماوس الأيمن واختيار "حفظ الصورة".';
+            }
+        }).catch(function(error) {
+            console.error('html2canvas error:', error);
+            loadingOverlay.style.display = 'none';
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = 'خطأ: ' + error.message;
+        });
     }
 
-    // Share function
+    // Share function - simplified
     function shareCard() {
         const loadingOverlay = document.getElementById('loadingOverlay');
         const errorMessage = document.getElementById('errorMessage');
@@ -571,42 +569,31 @@
         
         loadingOverlay.style.display = 'flex';
         
-        setTimeout(() => {
-            html2canvas(document.getElementById('cardPreview'), {
-                scale: 2,
-                logging: false,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: null
-            }).then(canvas => {
-                canvas.toBlob(async function(blob) {
-                    if (!blob) {
-                        throw new Error('Failed to create image blob');
-                    }
-                    
-                    const file = new File([blob], 'عقد_قران.png', { type: 'image/png' });
-                    
+        const cardElement = document.getElementById('cardPreview');
+        
+        html2canvas(cardElement, { scale: 2, useCORS: true, allowTaint: true }).then(function(canvas) {
+            canvas.toBlob(async function(blob) {
+                if (blob) {
+                    const file = new File([blob], 'card.png', { type: 'image/png' });
                     try {
                         await navigator.share({
+                            files: [file],
                             title: 'بطاقة عقد القران',
-                            text: 'تم بحمد الله وفضله عقد قراني',
-                            files: [file]
+                            text: 'تم بحمد الله وفضله'
                         });
                     } catch (err) {
-                        if (err.name !== 'AbortError') {
-                            console.error('Share error:', err);
-                            downloadCard(); // Fallback to download
-                        }
+                        downloadCard();
                     }
-                    loadingOverlay.style.display = 'none';
-                }, 'image/png', 1.0);
-            }).catch(err => {
-                console.error('Share error:', err);
+                } else {
+                    downloadCard();
+                }
                 loadingOverlay.style.display = 'none';
-                alert('حدث خطأ. سيتم تحميل الصورة بدلاً من ذلك.');
-                downloadCard();
-            });
-        }, 500);
+            }, 'image/png');
+        }).catch(function(error) {
+            console.error('Share error:', error);
+            loadingOverlay.style.display = 'none';
+            downloadCard();
+        });
     }
 
     // Add event listeners to buttons
