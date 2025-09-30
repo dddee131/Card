@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بطاقة تهنئة عقد القران</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700&family=Cairo:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Lateef&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -80,54 +80,23 @@
         box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
     }
 
-    .patterns-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        margin-bottom: 15px;
-    }
-
-    .pattern-option {
+    .font-selector {
         width: 100%;
-        aspect-ratio: 1;
-        border-radius: 8px;
-        cursor: pointer;
-        border: 3px solid transparent;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: 'Tajawal', sans-serif;
         transition: all 0.3s;
-        position: relative;
-        overflow: hidden;
+        background: white;
+        cursor: pointer;
     }
 
-    .pattern-option:hover {
-        transform: scale(1.05);
-    }
-
-    .pattern-option.active {
+    .font-selector:focus {
+        outline: none;
         border-color: #3498db;
-        box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
     }
-
-    .pattern-option.active::after {
-        content: '✓';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: 24px;
-        font-weight: bold;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-
-    /* Pattern styles */
-    .pattern-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .pattern-2 { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
-    .pattern-3 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
-    .pattern-4 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
-    .pattern-5 { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); }
-    .pattern-6 { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
-    .pattern-7 { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); }
-    .pattern-8 { background: linear-gradient(135deg, #96e6a1 0%, #d4fc79 100%); }
 
     .file-input-wrapper {
         position: relative;
@@ -189,17 +158,17 @@
         right: 0;
         bottom: 0;
         background: linear-gradient(to top, 
-            rgba(255,255,255,1) 0%,        /* من الأسفل - أبيض كامل 100% */
-            rgba(255,255,255,1) 15%,       /* ارتفاع 15% - أبيض كامل */
-            rgba(255,255,255,0.98) 25%,    /* ارتفاع 25% - شفافية 98% */
-            rgba(255,255,255,0.95) 35%,    /* ارتفاع 35% - شفافية 95% */
-            rgba(255,255,255,0.85) 45%,    /* منتصف البطاقة - شفافية 85% */
-            rgba(255,255,255,0.7) 55%,     /* ارتفاع 55% - شفافية 70% */
-            rgba(255,255,255,0.5) 65%,     /* ارتفاع 65% - شفافية 50% */
-            rgba(255,255,255,0.3) 75%,     /* ارتفاع 75% - شفافية 30% */
-            rgba(255,255,255,0.15) 85%,    /* ارتفاع 85% - شفافية 15% */
-            rgba(255,255,255,0.05) 95%,    /* قرب الأعلى - شفافية 5% */
-            transparent 100%);              /* في الأعلى - شفاف تماماً */
+            rgba(255,255,255,1) 0%,        
+            rgba(255,255,255,1) 15%,       
+            rgba(255,255,255,0.98) 25%,    
+            rgba(255,255,255,0.95) 35%,    
+            rgba(255,255,255,0.85) 45%,    
+            rgba(255,255,255,0.7) 55%,     
+            rgba(255,255,255,0.5) 65%,     
+            rgba(255,255,255,0.3) 75%,     
+            rgba(255,255,255,0.15) 85%,    
+            rgba(255,255,255,0.05) 95%,    
+            transparent 100%);              
         pointer-events: none;
         z-index: 1;
     }
@@ -213,38 +182,6 @@
         bottom: 0;
         opacity: 0.1;
         background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .card-header {
-        padding: 30px;
-        text-align: center;
-        position: relative;
-        z-index: 2;
-    }
-
-    .decoration-line {
-        width: 60px;
-        height: 3px;
-        background: linear-gradient(90deg, #d4af37, #f4e4c1, #d4af37);
-        margin: 0 auto 20px;
-        border-radius: 2px;
-    }
-
-    .quran-verse {
-        font-family: 'Amiri', serif;
-        font-size: 28px;
-        line-height: 1.8;
-        color: #2c3e50;
-        font-weight: 700;
-        margin-bottom: 15px;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    }
-
-    .verse-translation {
-        font-size: 14px;
-        color: #7f8c8d;
-        font-style: italic;
-        margin-top: 10px;
     }
 
     .card-body {
@@ -277,28 +214,44 @@
         color: #8B4513;
         margin-bottom: 10px;
         font-weight: 700;
-        font-family: 'Amiri', serif;
     }
 
     .name-display {
         font-size: 28px;
         color: #8B4513;
         font-weight: bold;
-        font-family: 'Amiri', serif;
         margin-bottom: 10px;
+    }
+
+    /* Font classes for dynamic switching */
+    .font-amiri {
+        font-family: 'Amiri', serif !important;
+    }
+    
+    .font-cairo {
+        font-family: 'Cairo', sans-serif !important;
+    }
+    
+    .font-tajawal {
+        font-family: 'Tajawal', sans-serif !important;
+    }
+    
+    .font-noto {
+        font-family: 'Noto Naskh Arabic', serif !important;
+    }
+    
+    .font-lateef {
+        font-family: 'Lateef', serif !important;
+    }
+    
+    .font-scheherazade {
+        font-family: 'Scheherazade New', serif !important;
     }
 
     .card-footer {
         padding: 10px;
         position: relative;
         z-index: 2;
-    }
-
-    .brand-logo {
-        width: 40px;
-        height: 40px;
-        margin: 0 auto;
-        opacity: 0.7;
     }
 
     .buttons-group {
@@ -378,6 +331,13 @@
         100% { transform: rotate(360deg); }
     }
 
+    .error-message {
+        color: #e74c3c;
+        font-size: 14px;
+        margin-top: 10px;
+        display: none;
+    }
+
     @media (max-width: 768px) {
         .main-container {
             flex-direction: column;
@@ -405,6 +365,18 @@
         </div>
 
         <div class="input-group">
+            <label>🔤 اختر نوع الخط:</label>
+            <select class="font-selector" id="fontSelector">
+                <option value="font-amiri">الأميري - Amiri</option>
+                <option value="font-cairo">القاهرة - Cairo</option>
+                <option value="font-tajawal">تجوال - Tajawal</option>
+                <option value="font-noto">نوتو نسخ - Noto Naskh</option>
+                <option value="font-lateef">لطيف - Lateef</option>
+                <option value="font-scheherazade">شهرزاد - Scheherazade</option>
+            </select>
+        </div>
+
+        <div class="input-group">
             <label>📷 ارفع صورة خلفية:</label>
             <div class="file-input-wrapper">
                 <input type="file" id="customBg" accept="image/*">
@@ -415,14 +387,18 @@
         </div>
 
         <div class="buttons-group">
-            <button class="action-btn download-btn" onclick="downloadCard()">
+            <button class="action-btn download-btn" id="downloadBtn">
                 <span>💾</span>
                 <span>تحميل</span>
             </button>
-            <button class="action-btn share-btn" onclick="shareCard()">
+            <button class="action-btn share-btn" id="shareBtn">
                 <span>📱</span>
                 <span>مشاركة</span>
             </button>
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            حدث خطأ في التحميل. يرجى المحاولة مرة أخرى.
         </div>
     </div>
 
@@ -432,12 +408,12 @@
             
             <div class="card-body">
                 <div class="message-box">
-                    <div class="celebration-text">
+                    <div class="celebration-text font-amiri">
                         الحمد لله الذي بنعمته تتم الصالحات<br>
                         تم بحمد الله وفضله
                     </div>
-                    <div class="name-label">عقد قراني</div>
-                    <div class="name-display" id="displayName">عبدالمجيد مرهج القاسمي</div>
+                    <div class="name-label font-amiri">عقد قراني</div>
+                    <div class="name-display font-amiri" id="displayName">عبدالمجيد مرهج القاسمي</div>
                 </div>
             </div>
 
@@ -454,8 +430,17 @@
     </div>
 </div>
 
+<!-- Load html2canvas from CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <script>
+    // Check if html2canvas loaded
+    if (typeof html2canvas === 'undefined') {
+        console.error('html2canvas library failed to load');
+        document.getElementById('errorMessage').style.display = 'block';
+        document.getElementById('errorMessage').textContent = 'فشل تحميل المكتبة. يرجى إعادة تحميل الصفحة.';
+    }
+
     // Update name in real-time
     const userNameInput = document.getElementById('userName');
     const displayName = document.getElementById('displayName');
@@ -464,24 +449,26 @@
         displayName.textContent = e.target.value || 'اسمك هنا';
     });
 
-    // Pattern selection
-    const patternOptions = document.querySelectorAll('.pattern-option');
-    const cardPreview = document.getElementById('cardPreview');
+    // Font selection
+    const fontSelector = document.getElementById('fontSelector');
+    const celebrationText = document.querySelector('.celebration-text');
+    const nameLabel = document.querySelector('.name-label');
     
-    patternOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            // Remove active class from all
-            patternOptions.forEach(opt => opt.classList.remove('active'));
-            // Add active to clicked
-            this.classList.add('active');
-            
-            // Update card background
-            const patternNumber = this.dataset.pattern;
-            cardPreview.className = 'card-preview pattern-' + patternNumber;
-            
-            // Clear custom background if any
-            cardPreview.style.backgroundImage = '';
+    fontSelector.addEventListener('change', function(e) {
+        const selectedFont = e.target.value;
+        
+        // Remove all font classes
+        const fontClasses = ['font-amiri', 'font-cairo', 'font-tajawal', 'font-noto', 'font-lateef', 'font-scheherazade'];
+        fontClasses.forEach(cls => {
+            celebrationText.classList.remove(cls);
+            nameLabel.classList.remove(cls);
+            displayName.classList.remove(cls);
         });
+        
+        // Add selected font class
+        celebrationText.classList.add(selectedFont);
+        nameLabel.classList.add(selectedFont);
+        displayName.classList.add(selectedFont);
     });
 
     // Custom background upload
@@ -490,95 +477,152 @@
         if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = function(e) {
+                const cardPreview = document.getElementById('cardPreview');
                 cardPreview.style.backgroundImage = `url(${e.target.result})`;
                 cardPreview.style.backgroundSize = 'cover';
                 cardPreview.style.backgroundPosition = 'center';
-                // Remove active from all patterns
-                patternOptions.forEach(opt => opt.classList.remove('active'));
             };
             reader.readAsDataURL(file);
         }
     });
 
-    // Download function
+    // Download function with better error handling
     function downloadCard() {
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        // Hide error message if visible
+        errorMessage.style.display = 'none';
         loadingOverlay.style.display = 'flex';
         
-        // Wait a bit for any animations to complete
+        // Check if html2canvas is available
+        if (typeof html2canvas === 'undefined') {
+            loadingOverlay.style.display = 'none';
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = 'المكتبة غير متوفرة. يرجى إعادة تحميل الصفحة.';
+            return;
+        }
+        
+        // Add delay for fonts to render
         setTimeout(() => {
-            html2canvas(document.getElementById('cardPreview'), {
-                scale: 3, // Higher quality
+            const cardElement = document.getElementById('cardPreview');
+            
+            // Configuration for html2canvas
+            const options = {
+                scale: 2, // Good quality
                 logging: false,
                 useCORS: true,
                 allowTaint: true,
-                backgroundColor: null
-            }).then(canvas => {
+                backgroundColor: null,
+                imageTimeout: 15000,
+                onclone: function(clonedDoc) {
+                    // Ensure fonts are loaded in the clone
+                    const clonedCard = clonedDoc.getElementById('cardPreview');
+                    if (clonedCard) {
+                        clonedCard.style.fontFamily = window.getComputedStyle(cardElement).fontFamily;
+                    }
+                }
+            };
+            
+            html2canvas(cardElement, options).then(canvas => {
+                // Convert to blob
                 canvas.toBlob(function(blob) {
+                    if (!blob) {
+                        throw new Error('Failed to create image blob');
+                    }
+                    
+                    // Create download link
                     const link = document.createElement('a');
                     const userName = userNameInput.value || 'عقد_قران';
                     link.download = `بطاقة_عقد_قران_${userName}.png`;
                     link.href = URL.createObjectURL(blob);
+                    
+                    // Trigger download
+                    document.body.appendChild(link);
                     link.click();
+                    document.body.removeChild(link);
+                    
+                    // Clean up
                     URL.revokeObjectURL(link.href);
                     loadingOverlay.style.display = 'none';
-                }, 'image/png', 1.0); // Maximum quality
+                    
+                }, 'image/png', 1.0);
             }).catch(err => {
-                console.error('Error:', err);
+                console.error('Download error:', err);
                 loadingOverlay.style.display = 'none';
-                alert('عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.');
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'حدث خطأ في إنشاء الصورة. يرجى المحاولة مرة أخرى.';
             });
-        }, 100);
+        }, 500); // Wait for fonts to render
     }
 
     // Share function
     function shareCard() {
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const errorMessage = document.getElementById('errorMessage');
         
-        if (navigator.share && navigator.canShare) {
-            loadingOverlay.style.display = 'flex';
-            
-            setTimeout(() => {
-                html2canvas(document.getElementById('cardPreview'), {
-                    scale: 3,
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: true,
-                    backgroundColor: null
-                }).then(canvas => {
-                    canvas.toBlob(async function(blob) {
-                        const file = new File([blob], 'عقد_قران.png', { type: 'image/png' });
-                        
-                        // Check if we can share files
-                        if (navigator.canShare({ files: [file] })) {
-                            try {
-                                await navigator.share({
-                                    title: 'بطاقة عقد القران',
-                                    text: 'تم بحمد الله وفضله عقد قراني',
-                                    files: [file]
-                                });
-                            } catch (err) {
-                                console.log('Share cancelled:', err);
-                            }
-                        } else {
-                            // Fallback: download the image
-                            downloadCard();
-                        }
-                        loadingOverlay.style.display = 'none';
-                    }, 'image/png', 1.0);
-                }).catch(err => {
-                    console.error('Error:', err);
-                    loadingOverlay.style.display = 'none';
-                    alert('عذراً، المشاركة غير متاحة. سيتم تحميل الصورة بدلاً من ذلك.');
-                    downloadCard();
-                });
-            }, 100);
-        } else {
-            // Browser doesn't support sharing
-            alert('المشاركة غير مدعومة في هذا المتصفح. سيتم تحميل الصورة لمشاركتها يدوياً.');
+        errorMessage.style.display = 'none';
+        
+        if (!navigator.share) {
+            alert('المشاركة غير مدعومة في هذا المتصفح. سيتم تحميل الصورة بدلاً من ذلك.');
             downloadCard();
+            return;
         }
+        
+        loadingOverlay.style.display = 'flex';
+        
+        setTimeout(() => {
+            html2canvas(document.getElementById('cardPreview'), {
+                scale: 2,
+                logging: false,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: null
+            }).then(canvas => {
+                canvas.toBlob(async function(blob) {
+                    if (!blob) {
+                        throw new Error('Failed to create image blob');
+                    }
+                    
+                    const file = new File([blob], 'عقد_قران.png', { type: 'image/png' });
+                    
+                    try {
+                        await navigator.share({
+                            title: 'بطاقة عقد القران',
+                            text: 'تم بحمد الله وفضله عقد قراني',
+                            files: [file]
+                        });
+                    } catch (err) {
+                        if (err.name !== 'AbortError') {
+                            console.error('Share error:', err);
+                            downloadCard(); // Fallback to download
+                        }
+                    }
+                    loadingOverlay.style.display = 'none';
+                }, 'image/png', 1.0);
+            }).catch(err => {
+                console.error('Share error:', err);
+                loadingOverlay.style.display = 'none';
+                alert('حدث خطأ. سيتم تحميل الصورة بدلاً من ذلك.');
+                downloadCard();
+            });
+        }, 500);
     }
+
+    // Add event listeners to buttons
+    document.getElementById('downloadBtn').addEventListener('click', downloadCard);
+    document.getElementById('shareBtn').addEventListener('click', shareCard);
+    
+    // Test html2canvas on page load
+    window.addEventListener('load', function() {
+        if (typeof html2canvas === 'undefined') {
+            console.error('html2canvas is not loaded');
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('errorMessage').textContent = 'تحذير: قد تواجه مشاكل في التحميل. يرجى إعادة تحميل الصفحة.';
+        } else {
+            console.log('html2canvas loaded successfully');
+        }
+    });
 </script>
 ```
 
