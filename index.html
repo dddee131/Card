@@ -171,7 +171,7 @@
         position: relative;
         border-radius: 20px;
         overflow: hidden;
-        background: #f5f5f0;
+        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
         box-shadow: 0 25px 70px rgba(0,0,0,0.4);
         display: flex;
         flex-direction: column;
@@ -189,13 +189,16 @@
         right: 0;
         bottom: 0;
         background: linear-gradient(to top, 
-            rgba(255,255,255,0.95) 0%,     /* من الأسفل - شفافية بيضاء 95% */
-            rgba(255,255,255,0.85) 15%,    /* ارتفاع 15% - شفافية 85% */
-            rgba(255,255,255,0.7) 30%,     /* ارتفاع 30% - شفافية 70% */
-            rgba(255,255,255,0.5) 45%,     /* منتصف البطاقة - شفافية 50% */
-            rgba(255,255,255,0.3) 60%,     /* ارتفاع 60% - شفافية 30% */
-            rgba(255,255,255,0.15) 75%,    /* ارتفاع 75% - شفافية 15% */
-            rgba(255,255,255,0.05) 90%,    /* قرب الأعلى - شفافية 5% */
+            rgba(255,255,255,1) 0%,        /* من الأسفل - أبيض كامل 100% */
+            rgba(255,255,255,1) 15%,       /* ارتفاع 15% - أبيض كامل */
+            rgba(255,255,255,0.98) 25%,    /* ارتفاع 25% - شفافية 98% */
+            rgba(255,255,255,0.95) 35%,    /* ارتفاع 35% - شفافية 95% */
+            rgba(255,255,255,0.85) 45%,    /* منتصف البطاقة - شفافية 85% */
+            rgba(255,255,255,0.7) 55%,     /* ارتفاع 55% - شفافية 70% */
+            rgba(255,255,255,0.5) 65%,     /* ارتفاع 65% - شفافية 50% */
+            rgba(255,255,255,0.3) 75%,     /* ارتفاع 75% - شفافية 30% */
+            rgba(255,255,255,0.15) 85%,    /* ارتفاع 85% - شفافية 15% */
+            rgba(255,255,255,0.05) 95%,    /* قرب الأعلى - شفافية 5% */
             transparent 100%);              /* في الأعلى - شفاف تماماً */
         pointer-events: none;
         z-index: 1;
@@ -248,9 +251,10 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
         padding: 20px;
+        padding-bottom: 60px;
         position: relative;
         z-index: 2;
     }
@@ -261,57 +265,27 @@
     }
 
     .celebration-text {
-        font-size: 18px;
+        font-size: 20px;
         color: #2c3e50;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         line-height: 1.8;
         font-weight: 600;
-        text-shadow: 1px 1px 3px rgba(255,255,255,0.8), -1px -1px 3px rgba(255,255,255,0.8);
-    }
-
-    .name-section {
-        background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
-        padding: 20px 35px;
-        border-radius: 12px;
-        box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4);
-        border: 2px solid #d4af37;
-        position: relative;
-        overflow: hidden;
-        backdrop-filter: blur(5px);
-    }
-
-    .name-section::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
-        animation: shimmer 3s infinite;
-    }
-
-    @keyframes shimmer {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
     }
 
     .name-label {
-        font-size: 18px;
-        color: #fff;
-        margin-bottom: 8px;
-        font-weight: 600;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        font-size: 22px;
+        color: #8B4513;
+        margin-bottom: 10px;
+        font-weight: 700;
+        font-family: 'Amiri', serif;
     }
 
     .name-display {
-        font-size: 26px;
-        color: #ffd700;
+        font-size: 28px;
+        color: #8B4513;
         font-weight: bold;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
         font-family: 'Amiri', serif;
-        position: relative;
-        z-index: 1;
+        margin-bottom: 10px;
     }
 
     .card-footer {
@@ -430,10 +404,8 @@
             <input type="text" class="text-input" id="userName" placeholder="أدخل اسمك هنا..." value="عبدالمجيد مرهج القاسمي">
         </div>
 
-    
-
         <div class="input-group">
-            <label>📷 أو ارفع صورة خاصة:</label>
+            <label>📷 ارفع صورة خلفية:</label>
             <div class="file-input-wrapper">
                 <input type="file" id="customBg" accept="image/*">
                 <label for="customBg" class="file-input-label">
@@ -455,22 +427,17 @@
     </div>
 
     <div class="card-container">
-        <div id="cardPreview" class="card-preview pattern-1">
+        <div id="cardPreview" class="card-preview">
             <div class="islamic-pattern"></div>
             
-
             <div class="card-body">
                 <div class="message-box">
                     <div class="celebration-text">
-                        الحمد لله 
-                        <br>
-                        الذي بنعمته تتم الصالحات<br>
+                        الحمد لله الذي بنعمته تتم الصالحات<br>
                         تم بحمد الله وفضله
                     </div>
-                    <div class="name-section">
-                        <div class="name-label">عقد قراني</div>
-                        <div class="name-display" id="displayName">عبدالمجيد مرهج القاسمي</div>
-                    </div>
+                    <div class="name-label">عقد قراني</div>
+                    <div class="name-display" id="displayName">عبدالمجيد مرهج القاسمي</div>
                 </div>
             </div>
 
