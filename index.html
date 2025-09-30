@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بطاقة تهنئة عقد القران</title>
+    <title>بطاقة تهنئة عقد القران - نسخة متطورة</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700&family=Cairo:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Lateef&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -16,12 +16,18 @@
 ```
     body {
         font-family: 'Tajawal', 'Amiri', serif;
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 20px;
+        animation: backgroundShift 10s ease-in-out infinite;
+    }
+
+    @keyframes backgroundShift {
+        0%, 100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        50% { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
     }
 
     .main-container {
@@ -35,67 +41,69 @@
     }
 
     .controls-panel {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        width: 350px;
-        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.98);
+        border-radius: 25px;
+        padding: 35px;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+        width: 380px;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.3);
+        animation: slideInLeft 0.6s ease-out;
+    }
+
+    @keyframes slideInLeft {
+        from { opacity: 0; transform: translateX(50px); }
+        to { opacity: 1; transform: translateX(0); }
     }
 
     .controls-panel h2 {
-        color: #2c3e50;
-        margin-bottom: 25px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 30px;
         text-align: center;
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 700;
     }
 
     .input-group {
         margin-bottom: 25px;
+        animation: fadeIn 0.8s ease-out forwards;
+        opacity: 0;
+    }
+
+    .input-group:nth-child(1) { animation-delay: 0.1s; }
+    .input-group:nth-child(2) { animation-delay: 0.2s; }
+    .input-group:nth-child(3) { animation-delay: 0.3s; }
+
+    @keyframes fadeIn {
+        to { opacity: 1; }
     }
 
     .input-group label {
         display: block;
         margin-bottom: 10px;
-        color: #34495e;
+        color: #4a5568;
         font-weight: 600;
-        font-size: 14px;
+        font-size: 15px;
     }
 
-    .text-input {
+    .text-input, .font-selector {
         width: 100%;
-        padding: 12px 15px;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
+        padding: 14px 18px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
         font-size: 16px;
         font-family: 'Tajawal', sans-serif;
         transition: all 0.3s;
         background: white;
     }
 
-    .text-input:focus {
+    .text-input:focus, .font-selector:focus {
         outline: none;
-        border-color: #3498db;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-    }
-
-    .font-selector {
-        width: 100%;
-        padding: 12px 15px;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        font-size: 16px;
-        font-family: 'Tajawal', sans-serif;
-        transition: all 0.3s;
-        background: white;
-        cursor: pointer;
-    }
-
-    .font-selector:focus {
-        outline: none;
-        border-color: #3498db;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        border-color: #667eea;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        transform: translateY(-2px);
     }
 
     .file-input-wrapper {
@@ -112,44 +120,75 @@
 
     .file-input-label {
         display: block;
-        padding: 12px;
-        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        padding: 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
-        border-radius: 10px;
+        border-radius: 12px;
         cursor: pointer;
         text-align: center;
         transition: all 0.3s;
         font-weight: 600;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .file-input-label::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255,255,255,0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .file-input-label:hover::before {
+        width: 300px;
+        height: 300px;
     }
 
     .file-input-label:hover {
-        background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
     }
 
     .card-container {
-        width: 360px;
-        height: 640px;
+        width: 400px;
+        height: 600px;
         position: relative;
+        perspective: 1000px;
+        animation: slideInRight 0.6s ease-out;
+    }
+
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(-50px); }
+        to { opacity: 1; transform: translateX(0); }
     }
 
     .card-preview {
         width: 100%;
         height: 100%;
         position: relative;
-        border-radius: 20px;
+        border-radius: 25px;
         overflow: hidden;
         background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.3);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         background-size: cover;
         background-position: center;
+        transition: transform 0.3s;
+        transform-style: preserve-3d;
     }
 
-    /* Full page gradient overlay */
+    .card-preview:hover {
+        transform: rotateY(5deg) rotateX(5deg);
+    }
+
     .card-preview::before {
         content: '';
         position: absolute;
@@ -158,30 +197,30 @@
         right: 0;
         bottom: 0;
         background: linear-gradient(to top, 
-            rgba(255,255,255,1) 0%,        
-            rgba(255,255,255,1) 15%,       
-            rgba(255,255,255,0.98) 25%,    
-            rgba(255,255,255,0.95) 35%,    
-            rgba(255,255,255,0.85) 45%,    
-            rgba(255,255,255,0.7) 55%,     
-            rgba(255,255,255,0.5) 65%,     
-            rgba(255,255,255,0.3) 75%,     
-            rgba(255,255,255,0.15) 85%,    
-            rgba(255,255,255,0.05) 95%,    
-            transparent 100%);              
+            rgba(255,255,255,1) 0%,
+            rgba(255,255,255,0.95) 20%,
+            rgba(255,255,255,0.85) 40%,
+            rgba(255,255,255,0.6) 60%,
+            rgba(255,255,255,0.3) 80%,
+            transparent 100%);
         pointer-events: none;
         z-index: 1;
     }
 
-    /* Islamic pattern overlay */
     .islamic-pattern {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        opacity: 0.1;
+        opacity: 0.08;
         background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        animation: patternMove 20s linear infinite;
+    }
+
+    @keyframes patternMove {
+        from { transform: translateX(0); }
+        to { transform: translateX(60px); }
     }
 
     .card-body {
@@ -190,7 +229,7 @@
         flex-direction: column;
         justify-content: flex-end;
         align-items: center;
-        padding: 20px;
+        padding: 30px;
         padding-bottom: 60px;
         position: relative;
         z-index: 2;
@@ -199,72 +238,80 @@
     .message-box {
         text-align: center;
         max-width: 90%;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .celebration-text {
-        font-size: 20px;
+        font-size: 22px;
         color: #2c3e50;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         line-height: 1.8;
         font-weight: 600;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
 
     .name-label {
-        font-size: 22px;
+        font-size: 24px;
         color: #8B4513;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         font-weight: 700;
+        position: relative;
+        display: inline-block;
+    }
+
+    .name-label::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 20%;
+        right: 20%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #8B4513, transparent);
+        animation: lineGrow 1.5s ease-out;
+    }
+
+    @keyframes lineGrow {
+        from { width: 0; left: 50%; right: 50%; }
+        to { width: 60%; left: 20%; right: 20%; }
     }
 
     .name-display {
-        font-size: 28px;
+        font-size: 32px;
         color: #8B4513;
         font-weight: bold;
         margin-bottom: 10px;
+        text-shadow: 3px 3px 6px rgba(0,0,0,0.15);
+        animation: pulse 2s ease-in-out infinite;
     }
 
-    /* Font classes for dynamic switching */
-    .font-amiri {
-        font-family: 'Amiri', serif !important;
-    }
-    
-    .font-cairo {
-        font-family: 'Cairo', sans-serif !important;
-    }
-    
-    .font-tajawal {
-        font-family: 'Tajawal', sans-serif !important;
-    }
-    
-    .font-noto {
-        font-family: 'Noto Naskh Arabic', serif !important;
-    }
-    
-    .font-lateef {
-        font-family: 'Lateef', serif !important;
-    }
-    
-    .font-scheherazade {
-        font-family: 'Scheherazade New', serif !important;
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.02); }
     }
 
-    .card-footer {
-        padding: 10px;
-        position: relative;
-        z-index: 2;
-    }
+    .font-amiri { font-family: 'Amiri', serif !important; }
+    .font-cairo { font-family: 'Cairo', sans-serif !important; }
+    .font-tajawal { font-family: 'Tajawal', sans-serif !important; }
+    .font-noto { font-family: 'Noto Naskh Arabic', serif !important; }
+    .font-lateef { font-family: 'Lateef', serif !important; }
+    .font-scheherazade { font-family: 'Scheherazade New', serif !important; }
 
     .buttons-group {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 15px;
-        margin-top: 25px;
+        margin-top: 30px;
     }
 
     .action-btn {
-        flex: 1;
-        padding: 14px 24px;
+        padding: 16px 24px;
         border: none;
-        border-radius: 12px;
+        border-radius: 14px;
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
@@ -274,68 +321,152 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
+        position: relative;
+        overflow: hidden;
     }
 
-    .download-btn {
-        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    .action-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .action-btn:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    .save-btn {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+        grid-column: span 2;
+    }
+
+    .save-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(72, 187, 120, 0.3);
+    }
+
+    .copy-btn {
+        background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
         color: white;
     }
 
-    .download-btn:hover {
+    .copy-btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(46, 204, 113, 0.3);
+        box-shadow: 0 12px 30px rgba(237, 137, 54, 0.3);
     }
 
-    .share-btn {
-        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    .preview-btn {
+        background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);
         color: white;
     }
 
-    .share-btn:hover {
+    .preview-btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 12px 30px rgba(159, 122, 234, 0.3);
     }
 
-    .loading-overlay {
+    .modal {
+        display: none;
         position: fixed;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        display: none;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        z-index: 10000;
         justify-content: center;
         align-items: center;
-        z-index: 9999;
+        animation: fadeInModal 0.3s ease-out;
     }
 
-    .loading-content {
+    @keyframes fadeInModal {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .modal-content {
         background: white;
+        border-radius: 20px;
         padding: 30px;
+        max-width: 90%;
+        max-height: 90%;
+        overflow: auto;
+        position: relative;
+        animation: slideUpModal 0.3s ease-out;
+    }
+
+    @keyframes slideUpModal {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 30px;
+        cursor: pointer;
+        color: #666;
+        transition: color 0.3s;
+    }
+
+    .close-modal:hover {
+        color: #000;
+    }
+
+    #canvasResult {
+        max-width: 100%;
+        height: auto;
         border-radius: 15px;
-        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    .spinner {
-        width: 50px;
-        height: 50px;
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #3498db;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 15px;
+    .download-final-btn {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        padding: 16px;
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
     }
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+    .download-final-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(72, 187, 120, 0.3);
     }
 
-    .error-message {
-        color: #e74c3c;
-        font-size: 14px;
-        margin-top: 10px;
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #48bb78, #38a169);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         display: none;
+        animation: slideInNotification 0.5s ease-out;
+        z-index: 10001;
+    }
+
+    @keyframes slideInNotification {
+        from { transform: translateX(400px); }
+        to { transform: translateX(0); }
     }
 
     @media (max-width: 768px) {
@@ -344,9 +475,13 @@
             align-items: center;
         }
         
-        .controls-panel {
+        .controls-panel, .card-container {
             width: 100%;
-            max-width: 360px;
+            max-width: 400px;
+        }
+
+        .card-container {
+            height: 500px;
         }
     }
 </style>
@@ -354,22 +489,26 @@
 
 </head>
 <body>
-    <div class="main-container">
-        <div class="controls-panel">
-            <h2>✨ تصميم بطاقة عقد القران ✨</h2>
+    <div class="notification" id="notification">
+        <span id="notificationText">تم الحفظ بنجاح! ✨</span>
+    </div>
 
 ```
+<div class="main-container">
+    <div class="controls-panel">
+        <h2>✨ مصمم بطاقات عقد القران الذكي ✨</h2>
+
         <div class="input-group">
-            <label>💍 اكتب اسمك الكامل:</label>
+            <label>💍 اسمك الكامل:</label>
             <input type="text" class="text-input" id="userName" placeholder="أدخل اسمك هنا..." value="عبدالمجيد مرهج القاسمي">
         </div>
 
         <div class="input-group">
-            <label>🔤 اختر نوع الخط:</label>
+            <label>🎨 نوع الخط:</label>
             <select class="font-selector" id="fontSelector">
                 <option value="font-amiri">الأميري - Amiri</option>
                 <option value="font-cairo">القاهرة - Cairo</option>
-                <option value="font-tajawal">تجوال - Tajawal</option>
+                <option value="font-tajawal" selected>تجوال - Tajawal</option>
                 <option value="font-noto">نوتو نسخ - Noto Naskh</option>
                 <option value="font-lateef">لطيف - Lateef</option>
                 <option value="font-scheherazade">شهرزاد - Scheherazade</option>
@@ -377,7 +516,7 @@
         </div>
 
         <div class="input-group">
-            <label>📷 ارفع صورة خلفية:</label>
+            <label>🖼️ خلفية مخصصة:</label>
             <div class="file-input-wrapper">
                 <input type="file" id="customBg" accept="image/*">
                 <label for="customBg" class="file-input-label">
@@ -387,18 +526,18 @@
         </div>
 
         <div class="buttons-group">
-            <button class="action-btn download-btn" id="downloadBtn">
-                <span>💾</span>
-                <span>تحميل</span>
+            <button class="action-btn save-btn" id="modernSaveBtn">
+                <span>🎯</span>
+                <span>حفظ البطاقة بتقنية Canvas</span>
             </button>
-            <button class="action-btn share-btn" id="shareBtn">
-                <span>📱</span>
-                <span>مشاركة</span>
+            <button class="action-btn copy-btn" id="copyBtn">
+                <span>📋</span>
+                <span>نسخ</span>
             </button>
-        </div>
-        
-        <div class="error-message" id="errorMessage">
-            حدث خطأ في التحميل. يرجى المحاولة مرة أخرى.
+            <button class="action-btn preview-btn" id="previewBtn">
+                <span>👁️</span>
+                <span>معاينة</span>
+            </button>
         </div>
     </div>
 
@@ -408,74 +547,62 @@
             
             <div class="card-body">
                 <div class="message-box">
-                    <div class="celebration-text font-amiri">
+                    <div class="celebration-text font-tajawal">
                         الحمد لله الذي بنعمته تتم الصالحات<br>
                         تم بحمد الله وفضله
                     </div>
-                    <div class="name-label font-amiri">عقد قراني</div>
-                    <div class="name-display font-amiri" id="displayName">عبدالمجيد مرهج القاسمي</div>
+                    <div class="name-label font-tajawal">عقد قراني</div>
+                    <div class="name-display font-tajawal" id="displayName">عبدالمجيد مرهج القاسمي</div>
                 </div>
-            </div>
-
-            <div class="card-footer">
             </div>
         </div>
     </div>
 </div>
 
-<div class="loading-overlay" id="loadingOverlay">
-    <div class="loading-content">
-        <div class="spinner"></div>
-        <p>جاري إنشاء البطاقة...</p>
+<!-- Modal for preview -->
+<div class="modal" id="previewModal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <canvas id="canvasResult"></canvas>
+        <button class="download-final-btn" onclick="downloadFinal()">
+            💾 تحميل البطاقة النهائية
+        </button>
     </div>
 </div>
 
-<!-- Alternative method: Use different CDN -->
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
-<!-- Backup CDN -->
 <script>
-    if (typeof html2canvas === 'undefined') {
-        document.write('<script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.js"><\/script>');
-    }
-</script>
+    // Initialize variables
+    let currentBackground = null;
+    let currentFontClass = 'font-tajawal';
 
-<script>
-    // Check if html2canvas loaded
-    if (typeof html2canvas === 'undefined') {
-        console.error('html2canvas library failed to load');
-        document.getElementById('errorMessage').style.display = 'block';
-        document.getElementById('errorMessage').textContent = 'فشل تحميل المكتبة. يرجى إعادة تحميل الصفحة.';
+    // Show notification
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        notificationText.textContent = message;
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
     }
 
     // Update name in real-time
-    const userNameInput = document.getElementById('userName');
-    const displayName = document.getElementById('displayName');
-    
-    userNameInput.addEventListener('input', function(e) {
-        displayName.textContent = e.target.value || 'اسمك هنا';
+    document.getElementById('userName').addEventListener('input', function(e) {
+        document.getElementById('displayName').textContent = e.target.value || 'اسمك هنا';
     });
 
     // Font selection
-    const fontSelector = document.getElementById('fontSelector');
-    const celebrationText = document.querySelector('.celebration-text');
-    const nameLabel = document.querySelector('.name-label');
-    
-    fontSelector.addEventListener('change', function(e) {
+    document.getElementById('fontSelector').addEventListener('change', function(e) {
         const selectedFont = e.target.value;
+        currentFontClass = selectedFont;
         
-        // Remove all font classes
+        const elements = document.querySelectorAll('.celebration-text, .name-label, #displayName');
         const fontClasses = ['font-amiri', 'font-cairo', 'font-tajawal', 'font-noto', 'font-lateef', 'font-scheherazade'];
-        fontClasses.forEach(cls => {
-            celebrationText.classList.remove(cls);
-            nameLabel.classList.remove(cls);
-            displayName.classList.remove(cls);
-        });
         
-        // Add selected font class
-        celebrationText.classList.add(selectedFont);
-        nameLabel.classList.add(selectedFont);
-        displayName.classList.add(selectedFont);
+        elements.forEach(el => {
+            fontClasses.forEach(cls => el.classList.remove(cls));
+            el.classList.add(selectedFont);
+        });
     });
 
     // Custom background upload
@@ -484,130 +611,167 @@
         if (file && file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const cardPreview = document.getElementById('cardPreview');
-                cardPreview.style.backgroundImage = `url(${e.target.result})`;
-                cardPreview.style.backgroundSize = 'cover';
-                cardPreview.style.backgroundPosition = 'center';
+                currentBackground = e.target.result;
+                document.getElementById('cardPreview').style.backgroundImage = `url(${e.target.result})`;
+                showNotification('تم تحميل الخلفية بنجاح! 🎨');
             };
             reader.readAsDataURL(file);
         }
     });
 
-    // Download function - simplified and more compatible
-    function downloadCard() {
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const errorMessage = document.getElementById('errorMessage');
+    // Modern Canvas-based save method
+    function modernSave() {
+        const canvas = document.getElementById('canvasResult');
+        const ctx = canvas.getContext('2d');
         
-        // Hide error message
-        errorMessage.style.display = 'none';
-        loadingOverlay.style.display = 'flex';
+        // Set canvas dimensions
+        canvas.width = 800;
+        canvas.height = 1200;
         
-        // Get the card element
-        const cardElement = document.getElementById('cardPreview');
-        
-        // Simple configuration
-        const options = {
-            scale: 2,
-            logging: true, // Enable logging to see errors
-            useCORS: true,
-            allowTaint: true
-        };
-        
-        // Use html2canvas
-        html2canvas(cardElement, options).then(function(canvas) {
-            try {
-                // Method 1: Try using toBlob
-                if (canvas.toBlob) {
-                    canvas.toBlob(function(blob) {
-                        const url = URL.createObjectURL(blob);
-                        const link = document.createElement('a');
-                        link.download = 'card.png';
-                        link.href = url;
-                        link.click();
-                        URL.revokeObjectURL(url);
-                        loadingOverlay.style.display = 'none';
-                    }, 'image/png');
-                } else {
-                    // Method 2: Fallback to toDataURL
-                    const dataUrl = canvas.toDataURL('image/png');
-                    const link = document.createElement('a');
-                    link.download = 'card.png';
-                    link.href = dataUrl;
-                    link.click();
-                    loadingOverlay.style.display = 'none';
-                }
-            } catch (error) {
-                console.error('Error in download:', error);
-                // Method 3: Final fallback - open in new tab
-                const dataUrl = canvas.toDataURL('image/png');
-                const newTab = window.open();
-                newTab.document.write('<img src="' + dataUrl + '" />');
-                loadingOverlay.style.display = 'none';
-                errorMessage.style.display = 'block';
-                errorMessage.textContent = 'تم فتح الصورة في نافذة جديدة. يمكنك حفظها بالضغط على زر الماوس الأيمن واختيار "حفظ الصورة".';
-            }
-        }).catch(function(error) {
-            console.error('html2canvas error:', error);
-            loadingOverlay.style.display = 'none';
-            errorMessage.style.display = 'block';
-            errorMessage.textContent = 'خطأ: ' + error.message;
-        });
-    }
-
-    // Share function - simplified
-    function shareCard() {
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const errorMessage = document.getElementById('errorMessage');
-        
-        errorMessage.style.display = 'none';
-        
-        if (!navigator.share) {
-            alert('المشاركة غير مدعومة في هذا المتصفح. سيتم تحميل الصورة بدلاً من ذلك.');
-            downloadCard();
-            return;
-        }
-        
-        loadingOverlay.style.display = 'flex';
-        
-        const cardElement = document.getElementById('cardPreview');
-        
-        html2canvas(cardElement, { scale: 2, useCORS: true, allowTaint: true }).then(function(canvas) {
-            canvas.toBlob(async function(blob) {
-                if (blob) {
-                    const file = new File([blob], 'card.png', { type: 'image/png' });
-                    try {
-                        await navigator.share({
-                            files: [file],
-                            title: 'بطاقة عقد القران',
-                            text: 'تم بحمد الله وفضله'
-                        });
-                    } catch (err) {
-                        downloadCard();
-                    }
-                } else {
-                    downloadCard();
-                }
-                loadingOverlay.style.display = 'none';
-            }, 'image/png');
-        }).catch(function(error) {
-            console.error('Share error:', error);
-            loadingOverlay.style.display = 'none';
-            downloadCard();
-        });
-    }
-
-    // Add event listeners to buttons
-    document.getElementById('downloadBtn').addEventListener('click', downloadCard);
-    document.getElementById('shareBtn').addEventListener('click', shareCard);
-    
-    // Test html2canvas on page load
-    window.addEventListener('load', function() {
-        if (typeof html2canvas === 'undefined') {
-            console.error('html2canvas is not loaded');
-            document.getElementById('errorMessage').style.display = 'block';
-            document.getElementById('errorMessage').textContent = 'تحذير: قد تواجه مشاكل في التحميل. يرجى إعادة تحميل الصفحة.';
+        // Create gradient background or use custom image
+        if (currentBackground) {
+            const img = new Image();
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                drawCardContent();
+            };
+            img.src = currentBackground;
         } else {
-            console.log('html2canvas loaded successfully');
+            // Default gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#ffecd2');
+            gradient.addColorStop(1, '#fcb69f');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawCardContent();
+        }
+    }
+
+    function drawCardContent() {
+        const canvas = document.getElementById('canvasResult');
+        const ctx = canvas.getContext('2d');
+        
+        // Add white overlay gradient
+        const overlayGradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
+        overlayGradient.addColorStop(0, 'rgba(255,255,255,1)');
+        overlayGradient.addColorStop(0.3, 'rgba(255,255,255,0.9)');
+        overlayGradient.addColorStop(0.6, 'rgba(255,255,255,0.5)');
+        overlayGradient.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = overlayGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Get font family
+        const fontMap = {
+            'font-amiri': 'Amiri',
+            'font-cairo': 'Cairo',
+            'font-tajawal': 'Tajawal',
+            'font-noto': 'Noto Naskh Arabic',
+            'font-lateef': 'Lateef',
+            'font-scheherazade': 'Scheherazade New'
+        };
+        const selectedFont = fontMap[currentFontClass] || 'Tajawal';
+        
+        // Draw text
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#2c3e50';
+        
+        // First line
+        ctx.font = `bold 36px ${selectedFont}`;
+        ctx.fillText('الحمد لله الذي بنعمته تتم الصالحات', canvas.width / 2, canvas.height - 400);
+        
+        // Second line
+        ctx.font = `bold 32px ${selectedFont}`;
+        ctx.fillText('تم بحمد الله وفضله', canvas.width / 2, canvas.height - 340);
+        
+        // Label
+        ctx.fillStyle = '#8B4513';
+        ctx.font = `bold 40px ${selectedFont}`;
+        ctx.fillText('عقد قراني', canvas.width / 2, canvas.height - 250);
+        
+        // Name
+        const userName = document.getElementById('userName').value || 'اسمك هنا';
+        ctx.font = `bold 48px ${selectedFont}`;
+        ctx.fillText(userName, canvas.width / 2, canvas.height - 180);
+        
+        // Add decorative elements
+        ctx.strokeStyle = '#8B4513';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2 - 150, canvas.height - 280);
+        ctx.lineTo(canvas.width / 2 + 150, canvas.height - 280);
+        ctx.stroke();
+        
+        // Show modal
+        document.getElementById('previewModal').style.display = 'flex';
+        showNotification('تم إنشاء البطاقة بنجاح! 🎉');
+    }
+
+    // Download final image
+    function downloadFinal() {
+        const canvas = document.getElementById('canvasResult');
+        const link = document.createElement('a');
+        link.download = 'wedding-card.png';
+        link.href = canvas.toDataURL('image/png', 1.0);
+        link.click();
+        showNotification('جاري التحميل... 📥');
+    }
+
+    // Copy to clipboard (modern approach)
+    async function copyToClipboard() {
+        const canvas = document.getElementById('canvasResult');
+        
+        // First create the canvas
+        modernSave();
+        
+        setTimeout(async () => {
+            try {
+                canvas.toBlob(async (blob) => {
+                    if (blob && navigator.clipboard && window.ClipboardItem) {
+                        const item = new ClipboardItem({ 'image/png': blob });
+                        await navigator.clipboard.write([item]);
+                        showNotification('تم النسخ إلى الحافظة! 📋');
+                        closeModal();
+                    } else {
+                        showNotification('المتصفح لا يدعم النسخ المباشر');
+                    }
+                }, 'image/png');
+            } catch (err) {
+                console.error('Copy failed:', err);
+                showNotification('فشل النسخ، يرجى استخدام زر التحميل');
+            }
+        }, 500);
+    }
+
+    // Preview function
+    function preview() {
+        modernSave();
+    }
+
+    // Close modal
+    function closeModal() {
+        document.getElementById('previewModal').style.display = 'none';
+    }
+
+    // Event listeners
+    document.getElementById('modernSaveBtn').addEventListener('click', modernSave);
+    document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+    document.getElementById('previewBtn').addEventListener('click', preview);
+
+    // Close modal when clicking outside
+    document.getElementById('previewModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            modernSave();
         }
     });
 </script>
