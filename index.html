@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بطاقة تهنئة عقد القران - نسخة متطورة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700&family=Cairo:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Lateef&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <title>إزالة خلفية الصور - خلفية سوداء</title>
     <style>
         * {
             margin: 0;
@@ -15,854 +14,504 @@
 
 ```
     body {
-        font-family: 'Tajawal', 'Amiri', serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: Arial, sans-serif;
+        background: #2c3e50;
         min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 20px;
-        animation: backgroundShift 10s ease-in-out infinite;
     }
-
-    @keyframes backgroundShift {
-        0%, 100% { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        50% { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-    }
-
-    .main-container {
-        display: flex;
-        gap: 30px;
-        max-width: 1200px;
-        width: 100%;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: flex-start;
-    }
-
-    .controls-panel {
-        background: rgba(255, 255, 255, 0.98);
-        border-radius: 25px;
-        padding: 35px;
-        box-shadow: 0 30px 80px rgba(0,0,0,0.25);
-        width: 380px;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.3);
-        animation: slideInLeft 0.6s ease-out;
-    }
-
-    @keyframes slideInLeft {
-        from { opacity: 0; transform: translateX(50px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-
-    .controls-panel h2 {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 30px;
-        text-align: center;
-        font-size: 26px;
-        font-weight: 700;
-    }
-
-    .input-group {
-        margin-bottom: 25px;
-        animation: fadeIn 0.8s ease-out forwards;
-        opacity: 0;
-    }
-
-    .input-group:nth-child(1) { animation-delay: 0.1s; }
-    .input-group:nth-child(2) { animation-delay: 0.2s; }
-    .input-group:nth-child(3) { animation-delay: 0.3s; }
-
-    @keyframes fadeIn {
-        to { opacity: 1; }
-    }
-
-    .input-group label {
-        display: block;
-        margin-bottom: 10px;
-        color: #4a5568;
-        font-weight: 600;
-        font-size: 15px;
-    }
-
-    .text-input, .font-selector {
-        width: 100%;
-        padding: 14px 18px;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        font-size: 16px;
-        font-family: 'Tajawal', sans-serif;
-        transition: all 0.3s;
-        background: white;
-    }
-
-    .text-input:focus, .font-selector:focus {
-        outline: none;
-        border-color: #667eea;
-        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        transform: translateY(-2px);
-    }
-
-    .file-input-wrapper {
-        position: relative;
-        overflow: hidden;
-        display: inline-block;
-        width: 100%;
-    }
-
-    .file-input-wrapper input[type=file] {
-        position: absolute;
-        left: -9999px;
-    }
-
-    .file-input-label {
-        display: block;
-        padding: 14px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 12px;
-        cursor: pointer;
-        text-align: center;
-        transition: all 0.3s;
-        font-weight: 600;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .file-input-label::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        background: rgba(255,255,255,0.3);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }
-
-    .file-input-label:hover::before {
-        width: 300px;
-        height: 300px;
-    }
-
-    .file-input-label:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-    }
-
-    .card-container {
-        width: 400px;
-        height: 600px;
-        position: relative;
-        perspective: 1000px;
-        animation: slideInRight 0.6s ease-out;
-    }
-
-    @keyframes slideInRight {
-        from { opacity: 0; transform: translateX(-50px); }
-        to { opacity: 1; transform: translateX(0); }
-    }
-
-    .card-preview {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        border-radius: 25px;
-        overflow: hidden;
-        background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-        box-shadow: 0 30px 80px rgba(0,0,0,0.3);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        transition: transform 0.3s;
-        transform-style: preserve-3d;
-    }
-
-    .card-preview:hover {
-        transform: rotateY(5deg) rotateX(5deg);
-    }
-
-    .card-preview::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to top, 
-            rgba(255,255,255,1) 0%,
-            rgba(255,255,255,0.95) 20%,
-            rgba(255,255,255,0.85) 40%,
-            rgba(255,255,255,0.6) 60%,
-            rgba(255,255,255,0.3) 80%,
-            transparent 100%);
-        pointer-events: none;
-        z-index: 1;
-    }
-
-    .islamic-pattern {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        opacity: 0.08;
-        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        animation: patternMove 20s linear infinite;
-    }
-
-    @keyframes patternMove {
-        from { transform: translateX(0); }
-        to { transform: translateX(60px); }
-    }
-
-    .card-body {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        align-items: center;
-        padding: 30px;
-        padding-bottom: 60px;
-        position: relative;
-        z-index: 2;
-    }
-
-    .message-box {
-        text-align: center;
-        max-width: 90%;
-        animation: fadeInUp 1s ease-out;
-    }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .celebration-text {
-        font-size: 22px;
-        color: #2c3e50;
-        margin-bottom: 25px;
-        line-height: 1.8;
-        font-weight: 600;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .name-label {
-        font-size: 24px;
-        color: #8B4513;
-        margin-bottom: 15px;
-        font-weight: 700;
-        position: relative;
-        display: inline-block;
-    }
-
-    .name-label::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 20%;
-        right: 20%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #8B4513, transparent);
-        animation: lineGrow 1.5s ease-out;
-    }
-
-    @keyframes lineGrow {
-        from { width: 0; left: 50%; right: 50%; }
-        to { width: 60%; left: 20%; right: 20%; }
-    }
-
-    .name-display {
-        font-size: 32px;
-        color: #8B4513;
-        font-weight: bold;
-        margin-bottom: 10px;
-        text-shadow: 3px 3px 6px rgba(0,0,0,0.15);
-        animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.02); }
-    }
-
-    .font-amiri { font-family: 'Amiri', serif !important; }
-    .font-cairo { font-family: 'Cairo', sans-serif !important; }
-    .font-tajawal { font-family: 'Tajawal', sans-serif !important; }
-    .font-noto { font-family: 'Noto Naskh Arabic', serif !important; }
-    .font-lateef { font-family: 'Lateef', serif !important; }
-    .font-scheherazade { font-family: 'Scheherazade New', serif !important; }
-
-    .buttons-group {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-top: 30px;
-    }
-
-    .action-btn {
-        padding: 16px 24px;
-        border: none;
-        border-radius: 14px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        font-family: 'Tajawal', sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .action-btn::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        background: rgba(255,255,255,0.2);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }
-
-    .action-btn:hover::before {
-        width: 300px;
-        height: 300px;
-    }
-
-    .save-btn {
-        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-        color: white;
-        grid-column: span 2;
-    }
-
-    .save-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(72, 187, 120, 0.3);
-    }
-
-    .copy-btn {
-        background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
-        color: white;
-    }
-
-    .copy-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(237, 137, 54, 0.3);
-    }
-
-    .preview-btn {
-        background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);
-        color: white;
-    }
-
-    .preview-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(159, 122, 234, 0.3);
-    }
-
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.8);
-        z-index: 10000;
-        justify-content: center;
-        align-items: center;
-        animation: fadeInModal 0.3s ease-out;
-    }
-
-    @keyframes fadeInModal {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    .modal-content {
+    
+    .container {
         background: white;
         border-radius: 20px;
         padding: 30px;
-        max-width: 90%;
-        max-height: 90%;
-        overflow: auto;
-        position: relative;
-        animation: slideUpModal 0.3s ease-out;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        max-width: 900px;
+        width: 100%;
     }
-
-    @keyframes slideUpModal {
-        from { transform: translateY(50px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+    
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
     }
-
-    .close-modal {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        font-size: 30px;
+    
+    .upload-area {
+        border: 3px dashed #3498db;
+        border-radius: 15px;
+        padding: 40px;
+        text-align: center;
         cursor: pointer;
-        color: #666;
-        transition: color 0.3s;
+        transition: all 0.3s;
+        background: #f8f9fa;
     }
-
-    .close-modal:hover {
-        color: #000;
+    
+    .upload-area:hover {
+        background: #e8f4f8;
+        border-color: #2980b9;
     }
-
-    #canvasResult {
+    
+    .upload-area.dragover {
+        background: #e8f4f8;
+        transform: scale(1.02);
+    }
+    
+    #fileInput {
+        display: none;
+    }
+    
+    .upload-icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+    
+    .image-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 30px;
+    }
+    
+    .image-box {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #000;
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #ddd;
+    }
+    
+    .image-box img, .image-box canvas {
         max-width: 100%;
         height: auto;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .download-final-btn {
         display: block;
-        width: 100%;
-        margin-top: 20px;
-        padding: 16px;
-        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    }
+    
+    .image-label {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(52, 152, 219, 0.9);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    
+    button {
+        background: #3498db;
         color: white;
         border: none;
-        border-radius: 12px;
-        font-size: 18px;
-        font-weight: 600;
+        padding: 12px 30px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16;
+        margin: 10px;
+        transition: all 0.3s;
+    }
+    
+    button:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+    }
+    
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .controls {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .settings {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .setting-group {
+        margin-bottom: 20px;
+    }
+    
+    .setting-group label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    input[type="range"] {
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    .slider-value {
+        display: inline-block;
+        background: #3498db;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 15px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    
+    .color-options {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    
+    .color-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 3px solid transparent;
         cursor: pointer;
         transition: all 0.3s;
     }
-
-    .download-final-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(72, 187, 120, 0.3);
+    
+    .color-btn:hover {
+        transform: scale(1.1);
     }
-
-    .notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #48bb78, #38a169);
-        color: white;
-        padding: 15px 25px;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    
+    .color-btn.active {
+        border-color: #3498db;
+        box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+    }
+    
+    .hidden {
         display: none;
-        animation: slideInNotification 0.5s ease-out;
-        z-index: 10001;
     }
-
-    @keyframes slideInNotification {
-        from { transform: translateX(400px); }
-        to { transform: translateX(0); }
+    
+    .info-text {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        margin-top: 10px;
     }
-
-    @media (max-width: 768px) {
-        .main-container {
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .controls-panel, .card-container {
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .card-container {
-            height: 500px;
-        }
+    
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
     }
 </style>
 ```
 
 </head>
 <body>
-    <div class="notification" id="notification">
-        <span id="notificationText">تم الحفظ بنجاح! ✨</span>
-    </div>
+    <div class="container">
+        <h1>🎨 إزالة الخلفية وتحويلها للون الأسود</h1>
 
 ```
-<div class="main-container">
-    <div class="controls-panel">
-        <h2>✨ مصمم بطاقات عقد القران الذكي ✨</h2>
-
-        <div class="input-group">
-            <label>💍 اسمك الكامل:</label>
-            <input type="text" class="text-input" id="userName" placeholder="أدخل اسمك هنا..." value="عبدالمجيد مرهج القاسمي">
+    <div class="upload-area" id="uploadArea">
+        <div class="upload-icon">📷</div>
+        <p><strong>اسحب الصورة هنا أو انقر للاختيار</strong></p>
+        <p style="margin-top: 10px; font-size: 14px; color: #666;">PNG, JPG, JPEG (حد أقصى 10MB)</p>
+    </div>
+    
+    <div class="settings hidden" id="settings">
+        <div class="setting-group">
+            <label>🎯 مستوى الحساسية (لتحديد الخلفية):</label>
+            <input type="range" id="threshold" min="150" max="255" value="240">
+            <span class="slider-value" id="thresholdValue">240</span>
+            <p class="info-text">قيمة أعلى = إزالة الألوان الفاتحة فقط | قيمة أقل = إزالة المزيد من الألوان</p>
         </div>
-
-        <div class="input-group">
-            <label>🎨 نوع الخط:</label>
-            <select class="font-selector" id="fontSelector">
-                <option value="font-amiri">الأميري - Amiri</option>
-                <option value="font-cairo">القاهرة - Cairo</option>
-                <option value="font-tajawal" selected>تجوال - Tajawal</option>
-                <option value="font-noto">نوتو نسخ - Noto Naskh</option>
-                <option value="font-lateef">لطيف - Lateef</option>
-                <option value="font-scheherazade">شهرزاد - Scheherazade</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label>🖼️ خلفية مخصصة:</label>
-            <div class="file-input-wrapper">
-                <input type="file" id="customBg" accept="image/*">
-                <label for="customBg" class="file-input-label">
-                    اختر صورة من جهازك
-                </label>
+        
+        <div class="setting-group">
+            <label>🎨 لون الخلفية الجديدة:</label>
+            <div class="color-options">
+                <div class="color-btn active" style="background: black" data-color="black"></div>
+                <div class="color-btn" style="background: white" data-color="white"></div>
+                <div class="color-btn" style="background: #e74c3c" data-color="#e74c3c"></div>
+                <div class="color-btn" style="background: #3498db" data-color="#3498db"></div>
+                <div class="color-btn" style="background: #2ecc71" data-color="#2ecc71"></div>
+                <div class="color-btn" style="background: #f39c12" data-color="#f39c12"></div>
+                <div class="color-btn" style="background: #9b59b6" data-color="#9b59b6"></div>
             </div>
         </div>
-
-        <div class="buttons-group">
-            <button class="action-btn save-btn" id="modernSaveBtn">
-                <span>🎯</span>
-                <span>حفظ البطاقة بتقنية Canvas</span>
-            </button>
-            <button class="action-btn copy-btn" id="copyBtn">
-                <span>📋</span>
-                <span>نسخ</span>
-            </button>
-            <button class="action-btn preview-btn" id="previewBtn">
-                <span>👁️</span>
-                <span>معاينة</span>
-            </button>
+        
+        <div class="setting-group">
+            <label>✨ تنعيم الحواف:</label>
+            <input type="range" id="smoothing" min="0" max="10" value="3">
+            <span class="slider-value" id="smoothingValue">3</span>
         </div>
     </div>
-
-    <div class="card-container">
-        <div id="cardPreview" class="card-preview">
-            <div class="islamic-pattern"></div>
-            
-            <div class="card-body">
-                <div class="message-box">
-                    <div class="celebration-text font-tajawal">
-                        الحمد لله الذي بنعمته تتم الصالحات<br>
-                        تم بحمد الله وفضله
-                    </div>
-                    <div class="name-label font-tajawal">عقد قراني</div>
-                    <div class="name-display font-tajawal" id="displayName">عبدالمجيد مرهج القاسمي</div>
-                </div>
-            </div>
+    
+    <div class="image-container hidden" id="imageContainer">
+        <div class="image-box">
+            <span class="image-label">الصورة الأصلية</span>
+            <img id="originalImage" alt="الصورة الأصلية">
+        </div>
+        <div class="image-box">
+            <span class="image-label">الصورة المعدلة</span>
+            <canvas id="outputCanvas"></canvas>
         </div>
     </div>
-</div>
-
-<!-- Modal for preview -->
-<div class="modal" id="previewModal">
-    <div class="modal-content">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <canvas id="canvasResult"></canvas>
-        <button class="download-final-btn" onclick="downloadFinal()">
-            💾 تحميل البطاقة النهائية
+    
+    <div class="controls hidden" id="controls">
+        <button id="processBtn">
+            <span id="processText">تطبيق التعديلات</span>
         </button>
+        <button id="downloadBtn" disabled>💾 تحميل الصورة</button>
+        <button id="resetBtn">🔄 صورة جديدة</button>
     </div>
 </div>
 
 <script>
-    // Initialize variables
-    let currentBackground = null;
-    let currentFontClass = 'font-tajawal';
-
-    // Show notification
-    function showNotification(message) {
-        const notification = document.getElementById('notification');
-        const notificationText = document.getElementById('notificationText');
-        notificationText.textContent = message;
-        notification.style.display = 'block';
-        setTimeout(() => {
-            notification.style.display = 'none';
-        }, 3000);
-    }
-
-    // Update name in real-time
-    document.getElementById('userName').addEventListener('input', function(e) {
-        document.getElementById('displayName').textContent = e.target.value || 'اسمك هنا';
-    });
-
-    // Font selection
-    document.getElementById('fontSelector').addEventListener('change', function(e) {
-        const selectedFont = e.target.value;
-        currentFontClass = selectedFont;
-        
-        const elements = document.querySelectorAll('.celebration-text, .name-label, #displayName');
-        const fontClasses = ['font-amiri', 'font-cairo', 'font-tajawal', 'font-noto', 'font-lateef', 'font-scheherazade'];
-        
-        elements.forEach(el => {
-            fontClasses.forEach(cls => el.classList.remove(cls));
-            el.classList.add(selectedFont);
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const imageContainer = document.getElementById('imageContainer');
+    const originalImage = document.getElementById('originalImage');
+    const outputCanvas = document.getElementById('outputCanvas');
+    const controls = document.getElementById('controls');
+    const settings = document.getElementById('settings');
+    const processBtn = document.getElementById('processBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const thresholdSlider = document.getElementById('threshold');
+    const thresholdValue = document.getElementById('thresholdValue');
+    const smoothingSlider = document.getElementById('smoothing');
+    const smoothingValue = document.getElementById('smoothingValue');
+    const processText = document.getElementById('processText');
+    
+    let currentImage = null;
+    let selectedColor = 'black';
+    
+    // Color selection
+    document.querySelectorAll('.color-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedColor = btn.dataset.color;
+            if (currentImage) {
+                removeBackground();
+            }
         });
     });
-
-    // Custom background upload
-    document.getElementById('customBg').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                currentBackground = e.target.result;
-                const cardPreview = document.getElementById('cardPreview');
-                
-                // Create a temporary image to get dimensions
-                const tempImg = new Image();
-                tempImg.onload = function() {
-                    // Apply background with cover to prevent stretching
-                    cardPreview.style.backgroundImage = `url(${e.target.result})`;
-                    cardPreview.style.backgroundSize = 'cover';
-                    cardPreview.style.backgroundPosition = 'center';
-                    cardPreview.style.backgroundRepeat = 'no-repeat';
-                };
-                tempImg.src = e.target.result;
-                
-                showNotification('تم تحميل الخلفية بنجاح! 🎨');
-            };
-            reader.readAsDataURL(file);
+    
+    // Upload functionality
+    uploadArea.addEventListener('click', () => {
+        fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.onchange = (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        };
+        fileInput.click();
+    });
+    
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+    
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+    });
+    
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFile(files[0]);
         }
     });
-
-    // Modern Canvas-based save method
-    function modernSave() {
-        const canvas = document.getElementById('canvasResult');
-        const ctx = canvas.getContext('2d');
+    
+    thresholdSlider.addEventListener('input', (e) => {
+        thresholdValue.textContent = e.target.value;
+        if (currentImage) {
+            removeBackground();
+        }
+    });
+    
+    smoothingSlider.addEventListener('input', (e) => {
+        smoothingValue.textContent = e.target.value;
+        if (currentImage) {
+            removeBackground();
+        }
+    });
+    
+    function handleFile(file) {
+        if (!file.type.startsWith('image/')) {
+            alert('الرجاء اختيار ملف صورة');
+            return;
+        }
         
-        // Set canvas dimensions matching the preview card exactly
-        canvas.width = 800;
-        canvas.height = 1200;
+        if (file.size > 10 * 1024 * 1024) {
+            alert('حجم الملف يجب أن يكون أقل من 10MB');
+            return;
+        }
         
-        // Create gradient background or use custom image
-        if (currentBackground) {
-            const img = new Image();
-            img.onload = function() {
-                // Calculate aspect ratio to prevent stretching
-                const imgAspect = img.width / img.height;
-                const canvasAspect = canvas.width / canvas.height;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            currentImage = new Image();
+            currentImage.onload = () => {
+                originalImage.src = e.target.result;
+                imageContainer.classList.remove('hidden');
+                controls.classList.remove('hidden');
+                settings.classList.remove('hidden');
+                uploadArea.style.display = 'none';
+                removeBackground();
+            };
+            currentImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    function removeBackground() {
+        if (!currentImage) return;
+        
+        const ctx = outputCanvas.getContext('2d');
+        outputCanvas.width = currentImage.width;
+        outputCanvas.height = currentImage.height;
+        
+        // First, fill with selected background color
+        ctx.fillStyle = selectedColor;
+        ctx.fillRect(0, 0, outputCanvas.width, outputCanvas.height);
+        
+        // Create temporary canvas for processing
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = currentImage.width;
+        tempCanvas.height = currentImage.height;
+        const tempCtx = tempCanvas.getContext('2d');
+        
+        // Draw original image
+        tempCtx.drawImage(currentImage, 0, 0);
+        
+        // Get image data
+        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+        const data = imageData.data;
+        
+        const threshold = parseInt(thresholdSlider.value);
+        const smoothLevel = parseInt(smoothingSlider.value);
+        
+        // Create mask for foreground/background detection
+        const mask = new Uint8Array(outputCanvas.width * outputCanvas.height);
+        
+        // First pass: identify background pixels (white/light backgrounds)
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+            
+            // Calculate brightness
+            const brightness = (r * 0.299 + g * 0.587 + b * 0.114);
+            
+            // Mark pixel as foreground (1) or background (0)
+            const pixelIndex = i / 4;
+            mask[pixelIndex] = brightness < threshold ? 1 : 0;
+        }
+        
+        // Apply smoothing to mask edges
+        if (smoothLevel > 0) {
+            for (let iter = 0; iter < smoothLevel; iter++) {
+                const newMask = new Uint8Array(mask);
                 
-                let drawWidth, drawHeight, drawX, drawY;
-                
-                if (imgAspect > canvasAspect) {
-                    // Image is wider - fit height and crop width
-                    drawHeight = canvas.height;
-                    drawWidth = img.width * (canvas.height / img.height);
-                    drawX = (canvas.width - drawWidth) / 2;
-                    drawY = 0;
-                } else {
-                    // Image is taller - fit width and crop height
-                    drawWidth = canvas.width;
-                    drawHeight = img.height * (canvas.width / img.width);
-                    drawX = 0;
-                    drawY = (canvas.height - drawHeight) / 2;
+                for (let y = 1; y < outputCanvas.height - 1; y++) {
+                    for (let x = 1; x < outputCanvas.width - 1; x++) {
+                        const idx = y * outputCanvas.width + x;
+                        let sum = 0;
+                        let count = 0;
+                        
+                        // 3x3 kernel
+                        for (let dy = -1; dy <= 1; dy++) {
+                            for (let dx = -1; dx <= 1; dx++) {
+                                const nIdx = (y + dy) * outputCanvas.width + (x + dx);
+                                sum += mask[nIdx];
+                                count++;
+                            }
+                        }
+                        
+                        // Smooth the mask value
+                        newMask[idx] = sum / count > 0.5 ? 1 : 0;
+                    }
                 }
                 
-                // Draw image with proper aspect ratio
-                ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-                drawCardContent();
-            };
-            img.src = currentBackground;
-        } else {
-            // Default gradient background
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#ffecd2');
-            gradient.addColorStop(1, '#fcb69f');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            drawCardContent();
-        }
-    }
-
-    function drawCardContent() {
-        const canvas = document.getElementById('canvasResult');
-        const ctx = canvas.getContext('2d');
-        
-        // Add white overlay gradient matching the preview
-        const overlayGradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
-        overlayGradient.addColorStop(0, 'rgba(255,255,255,1)');
-        overlayGradient.addColorStop(0.2, 'rgba(255,255,255,0.95)');
-        overlayGradient.addColorStop(0.4, 'rgba(255,255,255,0.85)');
-        overlayGradient.addColorStop(0.6, 'rgba(255,255,255,0.6)');
-        overlayGradient.addColorStop(0.8, 'rgba(255,255,255,0.3)');
-        overlayGradient.addColorStop(1, 'rgba(255,255,255,0)');
-        ctx.fillStyle = overlayGradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // Get font family
-        const fontMap = {
-            'font-amiri': 'Amiri',
-            'font-cairo': 'Cairo',
-            'font-tajawal': 'Tajawal',
-            'font-noto': 'Noto Naskh Arabic',
-            'font-lateef': 'Lateef',
-            'font-scheherazade': 'Scheherazade New'
-        };
-        const selectedFont = fontMap[currentFontClass] || 'Tajawal';
-        
-        // Draw text with proper positioning (centered in lower portion)
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        
-        // Calculate vertical center for text group
-        const textCenterY = canvas.height * 0.75; // Position text in lower quarter
-        
-        // Add shadow for better readability
-        ctx.shadowColor = 'rgba(0,0,0,0.1)';
-        ctx.shadowBlur = 4;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-        
-        // First line
-        ctx.fillStyle = '#2c3e50';
-        ctx.font = `bold 44px ${selectedFont}`;
-        ctx.fillText('الحمد لله الذي بنعمته تتم الصالحات', canvas.width / 2, textCenterY - 120);
-        
-        // Second line
-        ctx.font = `bold 40px ${selectedFont}`;
-        ctx.fillText('تم بحمد الله وفضله', canvas.width / 2, textCenterY - 60);
-        
-        // Draw decorative line
-        ctx.shadowColor = 'transparent';
-        ctx.strokeStyle = '#8B4513';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(canvas.width / 2 - 180, textCenterY - 10);
-        ctx.lineTo(canvas.width / 2 + 180, textCenterY - 10);
-        ctx.stroke();
-        
-        // Label
-        ctx.shadowColor = 'rgba(0,0,0,0.15)';
-        ctx.shadowBlur = 6;
-        ctx.fillStyle = '#8B4513';
-        ctx.font = `bold 48px ${selectedFont}`;
-        ctx.fillText('عقد قراني', canvas.width / 2, textCenterY + 40);
-        
-        // Name
-        const userName = document.getElementById('userName').value || 'اسمك هنا';
-        ctx.font = `bold 56px ${selectedFont}`;
-        ctx.fillText(userName, canvas.width / 2, textCenterY + 110);
-        
-        // Show modal
-        document.getElementById('previewModal').style.display = 'flex';
-        showNotification('تم إنشاء البطاقة بنجاح! 🎉');
-    }
-
-    // Download final image
-    function downloadFinal() {
-        const canvas = document.getElementById('canvasResult');
-        const link = document.createElement('a');
-        link.download = 'wedding-card.png';
-        link.href = canvas.toDataURL('image/png', 1.0);
-        link.click();
-        showNotification('جاري التحميل... 📥');
-    }
-
-    // Copy to clipboard (modern approach)
-    async function copyToClipboard() {
-        const canvas = document.getElementById('canvasResult');
-        
-        // First create the canvas
-        modernSave();
-        
-        setTimeout(async () => {
-            try {
-                canvas.toBlob(async (blob) => {
-                    if (blob && navigator.clipboard && window.ClipboardItem) {
-                        const item = new ClipboardItem({ 'image/png': blob });
-                        await navigator.clipboard.write([item]);
-                        showNotification('تم النسخ إلى الحافظة! 📋');
-                        closeModal();
-                    } else {
-                        showNotification('المتصفح لا يدعم النسخ المباشر');
-                    }
-                }, 'image/png');
-            } catch (err) {
-                console.error('Copy failed:', err);
-                showNotification('فشل النسخ، يرجى استخدام زر التحميل');
+                mask.set(newMask);
             }
+        }
+        
+        // Final pass: draw only foreground pixels
+        ctx.drawImage(currentImage, 0, 0);
+        const finalData = ctx.getImageData(0, 0, outputCanvas.width, outputCanvas.height);
+        const finalPixels = finalData.data;
+        
+        // Apply mask - keep person, replace background with selected color
+        for (let i = 0; i < finalPixels.length; i += 4) {
+            const pixelIndex = i / 4;
+            
+            if (mask[pixelIndex] === 0) {
+                // This is background - replace with selected color
+                const rgb = hexToRgb(selectedColor);
+                finalPixels[i] = rgb.r;
+                finalPixels[i + 1] = rgb.g;
+                finalPixels[i + 2] = rgb.b;
+                finalPixels[i + 3] = 255;
+            }
+            // Foreground pixels remain unchanged
+        }
+        
+        ctx.putImageData(finalData, 0, 0);
+        downloadBtn.disabled = false;
+    }
+    
+    function hexToRgb(color) {
+        if (color === 'black') return { r: 0, g: 0, b: 0 };
+        if (color === 'white') return { r: 255, g: 255, b: 255 };
+        
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : { r: 0, g: 0, b: 0 };
+    }
+    
+    processBtn.addEventListener('click', () => {
+        processText.innerHTML = '<span class="loading"></span>معالجة...';
+        processBtn.disabled = true;
+        
+        setTimeout(() => {
+            removeBackground();
+            processText.textContent = 'تطبيق التعديلات';
+            processBtn.disabled = false;
         }, 500);
-    }
-
-    // Preview function
-    function preview() {
-        modernSave();
-    }
-
-    // Close modal
-    function closeModal() {
-        document.getElementById('previewModal').style.display = 'none';
-    }
-
-    // Event listeners
-    document.getElementById('modernSaveBtn').addEventListener('click', modernSave);
-    document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
-    document.getElementById('previewBtn').addEventListener('click', preview);
-
-    // Close modal when clicking outside
-    document.getElementById('previewModal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeModal();
-        }
     });
-
-    // Keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
-        if (e.ctrlKey && e.key === 's') {
-            e.preventDefault();
-            modernSave();
-        }
+    
+    downloadBtn.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = 'edited-image.png';
+        link.href = outputCanvas.toDataURL('image/png');
+        link.click();
     });
-</script>
-<script>
-    // دالة ترجع التاريخ بصيغة YYYY-MM-DD (علشان نعرف اليوم)
-    function getTodayDate() {
-        const now = new Date();
-        return now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
-    }
-
-    // جلب البيانات المخزنة
-    let visitsData = JSON.parse(localStorage.getItem("visitsData")) || {
-        date: getTodayDate(),
-        count: 0
-    };
-
-    // لو التاريخ تغير (يعني دخل يوم جديد) نصفر العداد
-    if (visitsData.date !== getTodayDate()) {
-        visitsData.date = getTodayDate();
-        visitsData.count = 0;
-    }
-
-    // نزيد العداد
-    visitsData.count += 1;
-
-    // نخزن التحديث الجديد
-    localStorage.setItem("visitsData", JSON.stringify(visitsData));
-
-    // عرض العدد في الصفحة
-    document.addEventListener("DOMContentLoaded", function() {
-        const counterBox = document.createElement("div");
-        counterBox.style.position = "fixed";
-        counterBox.style.bottom = "20px";
-        counterBox.style.left = "20px";
-        counterBox.style.padding = "10px 20px";
-        counterBox.style.background = "rgba(0,0,0,0.6)";
-        counterBox.style.color = "white";
-        counterBox.style.borderRadius = "10px";
-        counterBox.style.fontFamily = "Tajawal, sans-serif";
-        counterBox.style.fontSize = "16px";
-        counterBox.innerText = "👥 عدد الزوار اليوم: " + visitsData.count;
-        document.body.appendChild(counterBox);
+    
+    resetBtn.addEventListener('click', () => {
+        location.reload();
     });
 </script>
 ```
