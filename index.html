@@ -74,6 +74,7 @@
         .input-group:nth-child(2) { animation-delay: 0.2s; }
         .input-group:nth-child(3) { animation-delay: 0.3s; }
         .input-group:nth-child(4) { animation-delay: 0.4s; }
+        .input-group:nth-child(5) { animation-delay: 0.5s; }
 
         @keyframes fadeIn {
             to { opacity: 1; }
@@ -186,6 +187,11 @@
             color: white;
         }
 
+        .overlay-option.none {
+            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+            color: #333;
+        }
+
         .card-container {
             width: 400px;
             height: 600px;
@@ -257,6 +263,23 @@
             z-index: 1;
         }
 
+        .card-preview.none-overlay::before {
+            display: none;
+        }
+
+        .foreground-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%; /* 60% من حجم الخلفية */
+            height: 60%; /* 60% من حجم الخلفية */
+            object-fit: contain;
+            z-index: 2;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
         .islamic-pattern {
             position: absolute;
             top: 0;
@@ -283,7 +306,7 @@
             padding: 30px;
             padding-bottom: 60px;
             position: relative;
-            z-index: 2;
+            z-index: 3;
         }
 
         .message-box {
@@ -573,7 +596,16 @@
                 </div>
             </div>
 
-            <!-- إضافة خيار الشفافية -->
+            <div class="input-group">
+                <label>🖼️ صورة أمامية (60% من الحجم):</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="foregroundImage" accept="image/*">
+                    <label for="foregroundImage" class="file-input-label">
+                        اختر صورة أمامية
+                    </label>
+                </div>
+            </div>
+
             <div class="input-group">
                 <label>⚪⚫ لون الشفافية:</label>
                 <div class="overlay-color-options">
@@ -582,6 +614,9 @@
                     </div>
                     <div class="overlay-option black" data-color="black">
                         أسود
+                    </div>
+                    <div class="overlay-option none" data-color="none">
+                        بدون
                     </div>
                 </div>
             </div>
@@ -605,6 +640,7 @@
         <div class="card-container">
             <div id="cardPreview" class="card-preview white-overlay">
                 <div class="islamic-pattern"></div>
+                <img id="foregroundPreview" class="foreground-image" style="display: none;">
                 
                 <div class="card-body">
                     <div class="message-box">
@@ -634,6 +670,7 @@
     <script>
         // Initialize variables
         let currentBackground = null;
+        let currentForeground = null;
         let currentFontClass = 'font-tajawal';
         let currentOverlayColor = 'white';
 
@@ -693,6 +730,29 @@
             }
         });
 
+        // Foreground image upload
+        document.getElementById('foregroundImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentForeground = e.target.result;
+                    const foregroundPreview = document.getElementById('foregroundPreview');
+                    
+                    // Create a temporary image to get dimensions
+                    const tempImg = new Image();
+                    tempImg.onload = function() {
+                        foregroundPreview.src = e.target.result;
+                        foregroundPreview.style.display = 'block';
+                    };
+                    tempImg.src = e.target.result;
+                    
+                    showNotification('تم تحميل الصورة الأمامية بنجاح! 🖼️');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         // Overlay color selection
         const overlayOptions = document.querySelectorAll('.overlay-option');
         overlayOptions.forEach(option => {
@@ -708,7 +768,7 @@
                 
                 // Update card preview
                 const cardPreview = document.getElementById('cardPreview');
-                cardPreview.classList.remove('white-overlay', 'black-overlay');
+                cardPreview.classList.remove('white-overlay', 'black-overlay', 'none-overlay');
                 cardPreview.classList.add(currentOverlayColor + '-overlay');
                 
                 showNotification('تم تغيير لون الشفافية! 🎨');
@@ -750,7 +810,26 @@
                     
                     // Draw image with proper aspect ratio
                     ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
-                    drawCardContent();
+                    
+                    // Draw foreground image if exists
+                    if (currentForeground) {
+                        const fgImg = new Image();
+                        fgImg.onload = function() {
+                            // Calculate 60% size for foreground image
+                            const fgWidth = canvas.width * 0.6;
+                            const fgHeight = canvas.height * 0.6;
+                            
+                            // Center the foreground image
+                            const fgX = (canvas.width - fgWidth) / 2;
+                            const fgY = (canvas.height - fgHeight) / 2;
+                            
+                            ctx.drawImage(fgImg, fgX, fgY, fgWidth, fgHeight);
+                            drawCardContent();
+                        };
+                        fgImg.src = currentForeground;
+                    } else {
+                        drawCardContent();
+                    }
                 };
                 img.src = currentBackground;
             } else {
@@ -760,7 +839,26 @@
                 gradient.addColorStop(1, '#fcb69f');
                 ctx.fillStyle = gradient;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                drawCardContent();
+                
+                // Draw foreground image if exists
+                if (currentForeground) {
+                    const fgImg = new Image();
+                    fgImg.onload = function() {
+                        // Calculate 60% size for foreground image
+                        const fgWidth = canvas.width * 0.6;
+                        const fgHeight = canvas.height * 0.6;
+                        
+                        // Center the foreground image
+                        const fgX = (canvas.width - fgWidth) / 2;
+                        const fgY = (canvas.height - fgHeight) / 2;
+                        
+                        ctx.drawImage(fgImg, fgX, fgY, fgWidth, fgHeight);
+                        drawCardContent();
+                    };
+                    fgImg.src = currentForeground;
+                } else {
+                    drawCardContent();
+                }
             }
         }
 
@@ -769,27 +867,29 @@
             const ctx = canvas.getContext('2d');
             
             // Add overlay gradient matching the preview based on selected color
-            let overlayGradient;
-            if (currentOverlayColor === 'black') {
-                overlayGradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
-                overlayGradient.addColorStop(0, 'rgba(0,0,0,1)');
-                overlayGradient.addColorStop(0.2, 'rgba(0,0,0,0.95)');
-                overlayGradient.addColorStop(0.4, 'rgba(0,0,0,0.85)');
-                overlayGradient.addColorStop(0.6, 'rgba(0,0,0,0.6)');
-                overlayGradient.addColorStop(0.8, 'rgba(0,0,0,0.3)');
-                overlayGradient.addColorStop(1, 'rgba(0,0,0,0)');
-            } else {
-                overlayGradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
-                overlayGradient.addColorStop(0, 'rgba(255,255,255,1)');
-                overlayGradient.addColorStop(0.2, 'rgba(255,255,255,0.95)');
-                overlayGradient.addColorStop(0.4, 'rgba(255,255,255,0.85)');
-                overlayGradient.addColorStop(0.6, 'rgba(255,255,255,0.6)');
-                overlayGradient.addColorStop(0.8, 'rgba(255,255,255,0.3)');
-                overlayGradient.addColorStop(1, 'rgba(255,255,255,0)');
+            if (currentOverlayColor !== 'none') {
+                let overlayGradient;
+                if (currentOverlayColor === 'black') {
+                    overlayGradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
+                    overlayGradient.addColorStop(0, 'rgba(0,0,0,1)');
+                    overlayGradient.addColorStop(0.2, 'rgba(0,0,0,0.95)');
+                    overlayGradient.addColorStop(0.4, 'rgba(0,0,0,0.85)');
+                    overlayGradient.addColorStop(0.6, 'rgba(0,0,0,0.6)');
+                    overlayGradient.addColorStop(0.8, 'rgba(0,0,0,0.3)');
+                    overlayGradient.addColorStop(1, 'rgba(0,0,0,0)');
+                } else {
+                    overlayGradient = ctx.createLinearGradient(0, canvas.height, 0, 0);
+                    overlayGradient.addColorStop(0, 'rgba(255,255,255,1)');
+                    overlayGradient.addColorStop(0.2, 'rgba(255,255,255,0.95)');
+                    overlayGradient.addColorStop(0.4, 'rgba(255,255,255,0.85)');
+                    overlayGradient.addColorStop(0.6, 'rgba(255,255,255,0.6)');
+                    overlayGradient.addColorStop(0.8, 'rgba(255,255,255,0.3)');
+                    overlayGradient.addColorStop(1, 'rgba(255,255,255,0)');
+                }
+                
+                ctx.fillStyle = overlayGradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
-            
-            ctx.fillStyle = overlayGradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             // Get font family
             const fontMap = {
