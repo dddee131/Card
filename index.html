@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مصمم البطاقات - صمم بطاقاتك بسهولة</title>
+    <title>أداة إزالة الخلفية من الصور</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@2.2.0"></script>
     <style>
         :root {
-            --primary: #4361ee;
-            --secondary: #3a0ca3;
-            --accent: #f72585;
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --success: #00b09b;
+            --danger: #ff416c;
             --light: #f8f9fa;
-            --dark: #212529;
-            --success: #4cc9f0;
+            --dark: #333;
+            --gray: #6c757d;
         }
         
         * {
@@ -22,972 +25,503 @@
         }
         
         body {
-            background-color: #f5f7fb;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: var(--dark);
-            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
         }
         
         .container {
-            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
         
-        /* تنسيق الهيدر */
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
             color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo i {
-            margin-left: 0.5rem;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-right: 1.5rem;
-        }
-        
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        nav ul li a:hover {
-            color: var(--success);
-        }
-        
-        .support-btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .support-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        
-        /* قسم البطل */
-        .hero {
-            padding: 4rem 0;
+            padding: 30px;
             text-align: center;
-            background-color: white;
         }
         
-        .hero h1 {
+        h1 {
             font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--secondary);
+            margin-bottom: 10px;
         }
         
-        .hero p {
+        .subtitle {
             font-size: 1.2rem;
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto 2rem;
+            opacity: 0.9;
         }
         
-        .cta-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+            gap: 30px;
+        }
+        
+        .upload-section {
+            flex: 1;
+            min-width: 300px;
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .preview-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .preview-box {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .preview-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .upload-area {
+            border: 3px dashed var(--primary);
+            border-radius: 15px;
+            padding: 40px 20px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s;
+            background-color: rgba(106, 17, 203, 0.05);
+            margin-bottom: 20px;
         }
         
-        .cta-btn:hover {
-            background-color: var(--secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
-        }
-        
-        /* قسم القوالب */
-        .templates-section {
-            padding: 4rem 0;
-            background-color: #f8f9fa;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-            color: var(--secondary);
-        }
-        
-        .templates-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        
-        .template-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-        
-        .template-card:hover {
+        .upload-area:hover {
+            background-color: rgba(106, 17, 203, 0.1);
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         
-        .template-preview {
-            height: 180px;
-            background-color: #eee;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
+        .upload-icon {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
             color: var(--primary);
         }
         
-        .template-info {
-            padding: 1rem;
-        }
-        
-        .template-info h3 {
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-        
-        .template-info p {
-            color: #666;
+        .upload-hint {
+            color: var(--gray);
             font-size: 0.9rem;
         }
         
-        /* محرر البطاقات */
-        .editor-container {
+        .file-input {
             display: none;
-            padding: 2rem 0;
-            background-color: white;
         }
         
-        .editor-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .editor-tools {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .tool-btn {
-            background: white;
-            border: 1px solid #ddd;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
+        .btn {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .tool-btn:hover {
-            background: #f5f5f5;
-        }
-        
-        .editor-content {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        .canvas-container {
-            flex: 1;
-            background: #f9f9f9;
-            border-radius: 10px;
-            padding: 2rem;
-            display: flex;
-            justify-content: center;
+            transition: all 0.3s;
+            display: inline-flex;
             align-items: center;
-            min-height: 500px;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
         }
         
-        #card-canvas {
-            width: 350px;
-            height: 450px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(106, 17, 203, 0.4);
         }
         
-        .tools-panel {
-            width: 300px;
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        .btn:active {
+            transform: translateY(1px);
         }
         
-        .tool-group {
-            margin-bottom: 1.5rem;
+        .btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         
-        .tool-group h3 {
-            margin-bottom: 0.8rem;
-            font-size: 1.1rem;
-            color: var(--secondary);
+        .btn-full {
+            width: 100%;
+            margin-top: 15px;
         }
         
-        .color-palette {
+        .action-buttons {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 10px;
+            margin-top: 20px;
         }
         
-        .color-option {
-            width: 30px;
-            height: 30px;
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
             border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
         }
         
-        .color-option.active {
-            border-color: var(--dark);
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
-        .font-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        
-        .font-option {
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
+        .result-section {
+            margin-top: 30px;
             text-align: center;
-            transition: all 0.2s;
+            display: none;
         }
         
-        .font-option:hover {
-            background: #f5f5f5;
+        .download-btn {
+            background: linear-gradient(90deg, var(--success), #96c93d);
+            margin-top: 15px;
         }
         
-        .font-option.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+        .reset-btn {
+            background: linear-gradient(90deg, var(--danger), #ff4b2b);
         }
         
-        /* قسم الدعم */
-        .support-section {
-            padding: 4rem 0;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            text-align: center;
-        }
-        
-        .support-section h2 {
-            margin-bottom: 1rem;
-        }
-        
-        .support-section p {
-            max-width: 600px;
-            margin: 0 auto 2rem;
-        }
-        
-        .support-options {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .support-option {
-            background: rgba(255,255,255,0.1);
-            padding: 2rem;
-            border-radius: 10px;
-            width: 200px;
-            backdrop-filter: blur(10px);
-        }
-        
-        .support-option h3 {
-            margin-bottom: 1rem;
-        }
-        
-        .support-option .price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-        
-        .support-features {
-            list-style: none;
-            text-align: right;
-        }
-        
-        .support-features li {
-            margin-bottom: 0.5rem;
+        .info-box {
+            background: #e7f3ff;
+            border-right: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
             font-size: 0.9rem;
         }
         
-        /* الفوتر */
         footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 3rem 0 1.5rem;
-        }
-        
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
-        
-        .footer-column {
-            flex: 1;
-            min-width: 200px;
-            margin-bottom: 1.5rem;
-        }
-        
-        .footer-column h3 {
-            margin-bottom: 1rem;
-            color: var(--success);
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .footer-column ul li a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-column ul li a:hover {
-            color: white;
-        }
-        
-        .copyright {
             text-align: center;
-            padding-top: 1.5rem;
-            border-top: 1px solid #444;
-            color: #aaa;
+            padding: 20px;
+            color: var(--gray);
             font-size: 0.9rem;
+            border-top: 1px solid #eee;
         }
         
-        /* تصميم متجاوب */
         @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .editor-content {
+            .main-content {
                 flex-direction: column;
             }
             
-            .tools-panel {
-                width: 100%;
+            h1 {
+                font-size: 2rem;
             }
             
-            .support-options {
+            .action-buttons {
                 flex-direction: column;
-                align-items: center;
-            }
-            
-            .support-option {
-                width: 100%;
-                max-width: 300px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- الهيدر -->
-    <header>
-        <div class="container">
-            <div class="navbar">
-                <div class="logo">
-                    <i>🎨</i> مصمم البطاقات
+    <div class="container">
+        <header>
+            <h1>أداة إزالة الخلفية من الصور</h1>
+            <p class="subtitle">قم بإزالة خلفية صورك بضغطة واحدة باستخدام الذكاء الاصطناعي</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <p class="upload-text">انقر أو اسحب الصورة هنا</p>
+                    <p class="upload-hint">يدعم الصور من نوع JPG, PNG, WEBP (بحد أقصى 5MB)</p>
                 </div>
-                <nav>
-                    <ul>
-                        <li><a href="#home">الرئيسية</a></li>
-                        <li><a href="#templates">القوالب</a></li>
-                        <li><a href="#editor">المحرر</a></li>
-                        <li><a href="#support">الدعم</a></li>
-                    </ul>
-                </nav>
-                <button class="support-btn">ادعم المشروع</button>
-            </div>
-        </div>
-    </header>
-
-    <!-- قسم البطل -->
-    <section class="hero" id="home">
-        <div class="container">
-            <h1>صمم بطاقاتك الخاصة بسهولة</h1>
-            <p>أنشئ بطاقات معايدة، دعوات، عمل وغيرها باستخدام أدواتنا السهلة. لا حاجة لمهارات تصميم!</p>
-            <button class="cta-btn" id="start-designing">ابدأ التصميم الآن</button>
-        </div>
-    </section>
-
-    <!-- قسم القوالب -->
-    <section class="templates-section" id="templates">
-        <div class="container">
-            <h2 class="section-title">اختر من بين قوالبنا الجاهزة</h2>
-            <div class="templates-grid">
-                <!-- سيتم ملؤها بالجافاسكريبت -->
-            </div>
-        </div>
-    </section>
-
-    <!-- محرر البطاقات -->
-    <section class="editor-container" id="editor">
-        <div class="container">
-            <div class="editor-header">
-                <h2>محرر البطاقات</h2>
-                <div class="editor-tools">
-                    <button class="tool-btn" id="save-design">حفظ التصميم</button>
-                    <button class="tool-btn" id="export-design">تصدير كصورة</button>
-                    <button class="tool-btn" id="reset-design">بدء من جديد</button>
+                <input type="file" id="fileInput" class="file-input" accept="image/*">
+                
+                <div class="action-buttons">
+                    <button class="btn" id="removeBgBtn" disabled>
+                        <span>إزالة الخلفية</span>
+                    </button>
+                    <button class="btn reset-btn" id="resetBtn">
+                        <span>بدء من جديد</span>
+                    </button>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>جاري معالجة الصورة، الرجاء الانتظار...</p>
+                    <p id="loadingDetails">تحميل نموذج الذكاء الاصطناعي...</p>
+                </div>
+                
+                <div class="info-box">
+                    <p><strong>معلومات:</strong> هذا التطبيق يستخدم TensorFlow.js و BodyPix لإزالة الخلفية مباشرة في المتصفح. لا يتم رفع الصور إلى أي خادم خارجي.</p>
                 </div>
             </div>
-            <div class="editor-content">
-                <div class="canvas-container">
-                    <div id="card-canvas">
-                        <!-- محتوى البطاقة سينشأ ديناميكياً -->
-                    </div>
+            
+            <div class="preview-section">
+                <div class="preview-box">
+                    <h3 class="preview-title">الصورة الأصلية</h3>
+                    <img id="originalPreview" class="preview-image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjNmMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7Yp9mE2YTYqSDYp9mE2KfZhjwvdGV4dD48L3N2Zz4=" alt="Preview">
                 </div>
-                <div class="tools-panel">
-                    <div class="tool-group">
-                        <h3>تغيير الخلفية</h3>
-                        <div class="color-palette" id="background-colors">
-                            <!-- سيتم ملؤها بالجافاسكريبت -->
-                        </div>
-                    </div>
-                    <div class="tool-group">
-                        <h3>نص البطاقة</h3>
-                        <input type="text" id="card-text" placeholder="أدخل نص البطاقة هنا" class="tool-btn" style="width: 100%;">
-                    </div>
-                    <div class="tool-group">
-                        <h3>لون النص</h3>
-                        <div class="color-palette" id="text-colors">
-                            <!-- سيتم ملؤها بالجافاسكريبت -->
-                        </div>
-                    </div>
-                    <div class="tool-group">
-                        <h3>خط النص</h3>
-                        <div class="font-options" id="font-options">
-                            <!-- سيتم ملؤها بالجافاسكريبت -->
-                        </div>
-                    </div>
-                    <div class="tool-group">
-                        <h3>إضافة عناصر</h3>
-                        <button class="tool-btn" id="add-image">إضافة صورة</button>
-                        <button class="tool-btn" id="add-shape">إضافة شكل</button>
-                    </div>
+                
+                <div class="preview-box">
+                    <h3 class="preview-title">الصورة بعد الإزالة</h3>
+                    <img id="resultPreview" class="preview-image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cud3cub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjNmMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7Yp9mE2LnYsdio2Ycg2KfZhNmF2KfYr9in2Kog2KfZhNiv2YbYr9mF2YrYqTwvdGV4dD48L3N2Zz4=" alt="Result">
+                </div>
+                
+                <div class="result-section" id="resultSection">
+                    <button class="btn download-btn" id="downloadBtn">
+                        <span>تحميل الصورة</span>
+                    </button>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- قسم الدعم -->
-    <section class="support-section" id="support">
-        <div class="container">
-            <h2>ادعم استمرارنا في التطوير</h2>
-            <p>نحن نقدم خدمتنا مجاناً للجميع. بدعمك يمكننا الاستمرار في تطوير الموقع وإضافة ميزات جديدة.</p>
-            <div class="support-options">
-                <div class="support-option">
-                    <h3>الدعم الأساسي</h3>
-                    <div class="price">5$</div>
-                    <ul class="support-features">
-                        <li>إزالة العلامة المائية</li>
-                        <li>قوالب إضافية</li>
-                        <li>دعم المطورين</li>
-                    </ul>
-                    <button class="cta-btn" style="margin-top: 1rem;">ادعم الآن</button>
-                </div>
-                <div class="support-option">
-                    <h3>الدعم المميز</h3>
-                    <div class="price">10$</div>
-                    <ul class="support-features">
-                        <li>كل ميزات الدعم الأساسي</li>
-                        <li>خلفيات حصرية</li>
-                        <li>أدوات متقدمة</li>
-                        <li>تصدير بدقة عالية</li>
-                    </ul>
-                    <button class="cta-btn" style="margin-top: 1rem;">ادعم الآن</button>
-                </div>
-                <div class="support-option">
-                    <h3>الدعم الذهبي</h3>
-                    <div class="price">25$</div>
-                    <ul class="support-features">
-                        <li>كل الميزات السابقة</li>
-                        <li>تصميم بطاقة مخصصة</li>
-                        <li>اسمك في قائمة الداعمين</li>
-                        <li>وصول مبكر للميزات الجديدة</li>
-                    </ul>
-                    <button class="cta-btn" style="margin-top: 1rem;">ادعم الآن</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- الفوتر -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>مصمم البطاقات</h3>
-                    <p>منصة بسيطة لتصميم البطاقات بأنواعها المختلفة بدون الحاجة لخبرة في التصميم.</p>
-                </div>
-                <div class="footer-column">
-                    <h3>روابط سريعة</h3>
-                    <ul>
-                        <li><a href="#home">الرئيسية</a></li>
-                        <li><a href="#templates">القوالب</a></li>
-                        <li><a href="#editor">المحرر</a></li>
-                        <li><a href="#support">الدعم</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>الاتصال بنا</h3>
-                    <ul>
-                        <li>البريد الإلكتروني: info@example.com</li>
-                        <li>تويتر: @carddesigner</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2023 مصمم البطاقات. جميع الحقوق محفوظة.</p>
-            </div>
-        </div>
-    </footer>
+        
+        <footer>
+            <p>تم التطوير باستخدام TensorFlow.js و BodyPix - يعمل محلياً في متصفحك</p>
+        </footer>
+    </div>
 
     <script>
-        // بيانات القوالب
-        const templates = [
-            { id: 1, name: "بطاقة عيد ميلاد", type: "مناسبات", icon: "🎂", color: "#FF6B6B" },
-            { id: 2, name: "بطاقة شكر", type: "عام", icon: "🙏", color: "#4ECDC4" },
-            { id: 3, name: "بطاقة دعوة", type: "مناسبات", icon: "📅", color: "#45B7D1" },
-            { id: 4, name: "بطاقة عمل", type: "مهنية", icon: "💼", color: "#96CEB4" },
-            { id: 5, name: "بطاقة تهنئة", type: "مناسبات", icon: "🎉", color: "#FFEAA7" },
-            { id: 6, name: "بطاقة تذكار", type: "عام", icon: "⭐", color: "#DDA0DD" }
-        ];
+        // حالات التطبيق
+        const AppState = {
+            model: null,
+            isModelLoaded: false,
+            currentFile: null,
+            originalImage: null
+        };
 
-        // ألوان الخلفية المتاحة
-        const backgroundColors = [
-            "#FFFFFF", "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7", 
-            "#DDA0DD", "#98D8C8", "#F7DC6F", "#BB8FCE", "#85C1E9", "#F8C471"
-        ];
-
-        // ألوان النص المتاحة
-        const textColors = [
-            "#000000", "#333333", "#555555", "#777777", "#FFFFFF", 
-            "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#DDA0DD"
-        ];
-
-        // الخطوط المتاحة
-        const fonts = [
-            { name: "خط عادي", value: "Arial, sans-serif" },
-            { name: "خط أنيق", value: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" },
-            { name: "خط كلاسيكي", value: "Georgia, serif" },
-            { name: "خط عريض", value: "Impact, Charcoal, sans-serif" },
-            { name: "خط مكتوب", value: "'Comic Sans MS', cursive, sans-serif" }
-        ];
-
-        // تهيئة الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            // تحميل القوالب
-            loadTemplates();
+            const fileInput = document.getElementById('fileInput');
+            const uploadArea = document.getElementById('uploadArea');
+            const originalPreview = document.getElementById('originalPreview');
+            const resultPreview = document.getElementById('resultPreview');
+            const removeBgBtn = document.getElementById('removeBgBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const loading = document.getElementById('loading');
+            const loadingDetails = document.getElementById('loadingDetails');
+            const resultSection = document.getElementById('resultSection');
+            const downloadBtn = document.getElementById('downloadBtn');
             
-            // تحميل ألوان الخلفية
-            loadBackgroundColors();
+            // تهيئة التطبيق
+            initApp();
             
-            // تحميل ألوان النص
-            loadTextColors();
-            
-            // تحميل الخطوط
-            loadFonts();
-            
-            // إضافة المستمعين للأحداث
-            setupEventListeners();
-            
-            // تحميل التصميم المحفوظ إن وجد
-            loadSavedDesign();
-        });
-
-        // تحميل القوالب في الشبكة
-        function loadTemplates() {
-            const templatesGrid = document.querySelector('.templates-grid');
-            templatesGrid.innerHTML = '';
-            
-            templates.forEach(template => {
-                const templateCard = document.createElement('div');
-                templateCard.className = 'template-card';
-                templateCard.innerHTML = `
-                    <div class="template-preview" style="background-color: ${template.color}">
-                        ${template.icon}
-                    </div>
-                    <div class="template-info">
-                        <h3>${template.name}</h3>
-                        <p>${template.type}</p>
-                    </div>
-                `;
-                templateCard.addEventListener('click', () => selectTemplate(template));
-                templatesGrid.appendChild(templateCard);
-            });
-        }
-
-        // تحميل ألوان الخلفية
-        function loadBackgroundColors() {
-            const backgroundColorsContainer = document.getElementById('background-colors');
-            backgroundColorsContainer.innerHTML = '';
-            
-            backgroundColors.forEach(color => {
-                const colorOption = document.createElement('div');
-                colorOption.className = 'color-option';
-                colorOption.style.backgroundColor = color;
-                colorOption.dataset.color = color;
-                colorOption.addEventListener('click', function() {
-                    document.querySelectorAll('#background-colors .color-option').forEach(opt => {
-                        opt.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                    changeBackgroundColor(color);
-                });
-                backgroundColorsContainer.appendChild(colorOption);
+            // التعامل مع سحب وإفلات الملفات
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = 'rgba(106, 17, 203, 0.15)';
             });
             
-            // تفعيل اللون الأول افتراضياً
-            if (backgroundColorsContainer.firstChild) {
-                backgroundColorsContainer.firstChild.classList.add('active');
-            }
-        }
-
-        // تحميل ألوان النص
-        function loadTextColors() {
-            const textColorsContainer = document.getElementById('text-colors');
-            textColorsContainer.innerHTML = '';
-            
-            textColors.forEach(color => {
-                const colorOption = document.createElement('div');
-                colorOption.className = 'color-option';
-                colorOption.style.backgroundColor = color;
-                colorOption.dataset.color = color;
-                colorOption.addEventListener('click', function() {
-                    document.querySelectorAll('#text-colors .color-option').forEach(opt => {
-                        opt.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                    changeTextColor(color);
-                });
-                textColorsContainer.appendChild(colorOption);
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.backgroundColor = 'rgba(106, 17, 203, 0.05)';
             });
             
-            // تفعيل اللون الأول افتراضياً
-            if (textColorsContainer.firstChild) {
-                textColorsContainer.firstChild.classList.add('active');
-            }
-        }
-
-        // تحميل الخطوط
-        function loadFonts() {
-            const fontsContainer = document.getElementById('font-options');
-            fontsContainer.innerHTML = '';
-            
-            fonts.forEach(font => {
-                const fontOption = document.createElement('div');
-                fontOption.className = 'font-option';
-                fontOption.textContent = font.name;
-                fontOption.style.fontFamily = font.value;
-                fontOption.dataset.font = font.value;
-                fontOption.addEventListener('click', function() {
-                    document.querySelectorAll('#font-options .font-option').forEach(opt => {
-                        opt.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                    changeFont(font.value);
-                });
-                fontsContainer.appendChild(fontOption);
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = 'rgba(106, 17, 203, 0.05)';
+                
+                if (e.dataTransfer.files.length) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
             });
             
-            // تفعيل الخط الأول افتراضياً
-            if (fontsContainer.firstChild) {
-                fontsContainer.firstChild.classList.add('active');
-            }
-        }
-
-        // إعداد المستمعين للأحداث
-        function setupEventListeners() {
-            // زر بدء التصميم
-            document.getElementById('start-designing').addEventListener('click', function() {
-                document.querySelector('.editor-container').style.display = 'block';
-                document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
+            // النقر على منطقة الرفع
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
             });
             
-            // زر حفظ التصميم
-            document.getElementById('save-design').addEventListener('click', saveDesign);
+            // اختيار ملف من خلال زر الرفع
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    handleFile(e.target.files[0]);
+                }
+            });
             
-            // زر تصدير التصميم
-            document.getElementById('export-design').addEventListener('click', exportDesign);
+            // زر إزالة الخلفية
+            removeBgBtn.addEventListener('click', removeBackground);
             
             // زر إعادة التعيين
-            document.getElementById('reset-design').addEventListener('click', resetDesign);
+            resetBtn.addEventListener('click', resetApp);
             
-            // إدخال نص البطاقة
-            document.getElementById('card-text').addEventListener('input', function() {
-                updateCardText(this.value);
-            });
+            // زر التحميل
+            downloadBtn.addEventListener('click', downloadImage);
             
-            // زر إضافة صورة
-            document.getElementById('add-image').addEventListener('click', addImage);
-            
-            // زر إضافة شكل
-            document.getElementById('add-shape').addEventListener('click', addShape);
-            
-            // أزرار الدعم
-            document.querySelectorAll('.support-btn, .support-option .cta-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    alert('شكراً لدعمك! سيتم توجيهك لصفحة الدفع.');
-                    // في التطبيق الحقيقي، هنا سيتم توجيه المستخدم لصفحة الدفع
-                });
-            });
-        }
-
-        // اختيار قالب
-        function selectTemplate(template) {
-            document.querySelector('.editor-container').style.display = 'block';
-            document.getElementById('editor').scrollIntoView({ behavior: 'smooth' });
-            
-            // تطبيق القالب المختار
-            const cardCanvas = document.getElementById('card-canvas');
-            cardCanvas.style.backgroundColor = template.color;
-            cardCanvas.innerHTML = `
-                <div class="card-content" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; text-align: center;">
-                    <div style="font-size: 4rem; margin-bottom: 1rem;">${template.icon}</div>
-                    <h2 style="font-size: 1.8rem; margin-bottom: 1rem;">${template.name}</h2>
-                    <p>هذه بطاقة ${template.type}. يمكنك تعديل النص كما تريد!</p>
-                </div>
-            `;
-            
-            // تحديث نص الإدخال
-            document.getElementById('card-text').value = template.name;
-            
-            // حفظ التصميم الحالي
-            saveDesignToStorage();
-        }
-
-        // تغيير لون الخلفية
-        function changeBackgroundColor(color) {
-            document.getElementById('card-canvas').style.backgroundColor = color;
-            saveDesignToStorage();
-        }
-
-        // تغيير لون النص
-        function changeTextColor(color) {
-            const cardContent = document.querySelector('#card-canvas .card-content');
-            if (cardContent) {
-                cardContent.style.color = color;
-                saveDesignToStorage();
-            }
-        }
-
-        // تغيير الخط
-        function changeFont(font) {
-            const cardContent = document.querySelector('#card-canvas .card-content');
-            if (cardContent) {
-                cardContent.style.fontFamily = font;
-                saveDesignToStorage();
-            }
-        }
-
-        // تحديث نص البطاقة
-        function updateCardText(text) {
-            const cardTitle = document.querySelector('#card-canvas .card-content h2');
-            if (cardTitle) {
-                cardTitle.textContent = text;
-                saveDesignToStorage();
-            }
-        }
-
-        // إضافة صورة
-        function addImage() {
-            alert('في النسخة الكاملة، ستتمكن من رفع صورة من جهازك.');
-            // في التطبيق الكامل، هنا سيتم إضافة وظيفة رفع الصور
-        }
-
-        // إضافة شكل
-        function addShape() {
-            const shapes = ['⭐', '❤️', '🔶', '▲', '●'];
-            const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
-            
-            const shapeElement = document.createElement('div');
-            shapeElement.textContent = randomShape;
-            shapeElement.style.position = 'absolute';
-            shapeElement.style.fontSize = '2rem';
-            shapeElement.style.top = Math.random() * 70 + 10 + '%';
-            shapeElement.style.left = Math.random() * 70 + 10 + '%';
-            shapeElement.style.cursor = 'move';
-            
-            document.getElementById('card-canvas').appendChild(shapeElement);
-            saveDesignToStorage();
-            
-            // جعل الأشكال قابلة للسحب (وظيفة مبسطة)
-            makeDraggable(shapeElement);
-        }
-
-        // جعل العنصر قابلاً للسحب (وظيفة مبسطة)
-        function makeDraggable(element) {
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            
-            element.onmousedown = dragMouseDown;
-            
-            function dragMouseDown(e) {
-                e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-            }
-            
-            function elementDrag(e) {
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
+            // تهيئة التطبيق وتحميل النموذج
+            async function initApp() {
+                loading.style.display = 'block';
+                loadingDetails.textContent = 'جاري تحميل نموذج الذكاء الاصطناعي...';
                 
-                element.style.top = (element.offsetTop - pos2) + "px";
-                element.style.left = (element.offsetLeft - pos1) + "px";
+                try {
+                    // تحميل نموذج BodyPix
+                    AppState.model = await bodyPix.load({
+                        architecture: 'MobileNetV1',
+                        outputStride: 16,
+                        multiplier: 0.75,
+                        quantBytes: 2
+                    });
+                    
+                    AppState.isModelLoaded = true;
+                    loading.style.display = 'none';
+                    console.log('تم تحميل النموذج بنجاح');
+                } catch (error) {
+                    console.error('فشل في تحميل النموذج:', error);
+                    loadingDetails.textContent = 'حدث خطأ في تحميل النموذج. يرجى تحديث الصفحة والمحاولة مرة أخرى.';
+                }
             }
             
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-                saveDesignToStorage();
+            // معالجة الملف المرفوع
+            function handleFile(file) {
+                // التحقق من نوع الملف
+                if (!file.type.match('image.*')) {
+                    alert('الرجاء اختيار ملف صورة فقط (JPG, PNG, WEBP)');
+                    return;
+                }
+                
+                // التحقق من حجم الملف (5MB كحد أقصى)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('حجم الملف كبير جداً. الحد الأقصى المسموح به هو 5MB');
+                    return;
+                }
+                
+                AppState.currentFile = file;
+                
+                // عرض المعاينة
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    originalPreview.src = e.target.result;
+                    AppState.originalImage = new Image();
+                    AppState.originalImage.src = e.target.result;
+                    removeBgBtn.disabled = false;
+                };
+                reader.readAsDataURL(file);
+                
+                // إعادة تعيين النتيجة السابقة
+                resultPreview.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cud3cub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjNmMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7Yp9mE2LnYsdio2Ycg2KfZhNmF2KfYr9in2Kog2KfZhNiv2YbYr9mF2YrYqTwvdGV4dD48L3N2Zz4=";
+                resultSection.style.display = 'none';
             }
-        }
-
-        // حفظ التصميم
-        function saveDesign() {
-            saveDesignToStorage();
-            alert('تم حفظ تصميمك! يمكنك العودة إليه لاحقاً.');
-        }
-
-        // حفظ التصميم في التخزين المحلي
-        function saveDesignToStorage() {
-            const cardCanvas = document.getElementById('card-canvas');
-            const design = {
-                backgroundColor: cardCanvas.style.backgroundColor,
-                innerHTML: cardCanvas.innerHTML,
-                text: document.getElementById('card-text').value
-            };
             
-            localStorage.setItem('savedCardDesign', JSON.stringify(design));
-        }
-
-        // تحميل التصميم المحفوظ
-        function loadSavedDesign() {
-            const savedDesign = localStorage.getItem('savedCardDesign');
-            if (savedDesign) {
-                const design = JSON.parse(savedDesign);
-                const cardCanvas = document.getElementById('card-canvas');
+            // إزالة الخلفية
+            async function removeBackground() {
+                if (!AppState.currentFile || !AppState.isModelLoaded) return;
                 
-                cardCanvas.style.backgroundColor = design.backgroundColor;
-                cardCanvas.innerHTML = design.innerHTML;
-                document.getElementById('card-text').value = design.text;
+                loading.style.display = 'block';
+                loadingDetails.textContent = 'جاري معالجة الصورة وإزالة الخلفية...';
+                removeBgBtn.disabled = true;
                 
-                // إعادة تفعيل وظيفة السحب على العناصر
-                document.querySelectorAll('#card-canvas div').forEach(el => {
-                    if (el !== cardCanvas.querySelector('.card-content')) {
-                        makeDraggable(el);
-                    }
-                });
+                try {
+                    // انتظار تحميل الصورة
+                    await new Promise((resolve) => {
+                        if (AppState.originalImage.complete) {
+                            resolve();
+                        } else {
+                            AppState.originalImage.onload = resolve;
+                        }
+                    });
+                    
+                    // إنشاء عنصر canvas للرسم
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // تعيين أبعاد canvas لتتناسب مع الصورة
+                    canvas.width = AppState.originalImage.width;
+                    canvas.height = AppState.originalImage.height;
+                    
+                    // رسم الصورة الأصلية على canvas
+                    ctx.drawImage(AppState.originalImage, 0, 0);
+                    
+                    // الحصول على بيانات الصورة
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    
+                    // تقدير segmentation للصورة
+                    loadingDetails.textContent = 'جاري تحليل الصورة...';
+                    const segmentation = await AppState.model.segmentPerson(imageData, {
+                        flipHorizontal: false,
+                        internalResolution: 'medium',
+                        segmentationThreshold: 0.7
+                    });
+                    
+                    // إنشاء قناع للخلفية
+                    loadingDetails.textContent = 'جاري إزالة الخلفية...';
+                    const backgroundDarkeningMask = bodyPix.toMask(segmentation);
+                    
+                    // تطبيق القناع على الصورة
+                    const maskedImage = bodyPix.drawMask(
+                        canvas,
+                        imageData,
+                        backgroundDarkeningMask,
+                        0.7, // الشفافية للخلفية
+                        1,   // الشفافية للأمامية
+                        false // لا تقلب أفقيًا
+                    );
+                    
+                    // تحويل النتيجة إلى صورة لعرضها
+                    resultPreview.src = canvas.toDataURL('image/png');
+                    
+                    loading.style.display = 'none';
+                    resultSection.style.display = 'block';
+                    removeBgBtn.disabled = false;
+                    
+                } catch (error) {
+                    console.error('حدث خطأ أثناء معالجة الصورة:', error);
+                    loadingDetails.textContent = 'حدث خطأ أثناء معالجة الصورة. يرجى المحاولة مرة أخرى.';
+                    removeBgBtn.disabled = false;
+                }
             }
-        }
-
-        // تصدير التصميم كصورة
-        function exportDesign() {
-            alert('في النسخة الكاملة، ستتمكن من تحميل البطاقة كصورة PNG.');
-            // في التطبيق الكامل، هنا سيتم استخدام مكتبة مثل html2canvas لتحويل HTML إلى صورة
-        }
-
-        // إعادة تعيين التصميم
-        function resetDesign() {
-            if (confirm('هل تريد حقاً بدء تصميم جديد؟ سيتم فقدان التصميم الحالي.')) {
-                localStorage.removeItem('savedCardDesign');
-                document.getElementById('card-canvas').style.backgroundColor = '#FFFFFF';
-                document.getElementById('card-canvas').innerHTML = `
-                    <div class="card-content" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; text-align: center;">
-                        <h2 style="font-size: 1.8rem; margin-bottom: 1rem;">بطاقتي</h2>
-                        <p>ابدأ بتصميم بطاقتك الخاصة!</p>
-                    </div>
-                `;
-                document.getElementById('card-text').value = 'بطاقتي';
-                
-                // إعادة تعيين الألوان والخطوط المختارة
-                document.querySelectorAll('#background-colors .color-option').forEach(opt => {
-                    opt.classList.remove('active');
-                });
-                document.querySelector('#background-colors .color-option').classList.add('active');
-                
-                document.querySelectorAll('#text-colors .color-option').forEach(opt => {
-                    opt.classList.remove('active');
-                });
-                document.querySelector('#text-colors .color-option').classList.add('active');
-                
-                document.querySelectorAll('#font-options .font-option').forEach(opt => {
-                    opt.classList.remove('active');
-                });
-                document.querySelector('#font-options .font-option').classList.add('active');
+            
+            // إعادة تعيين التطبيق
+            function resetApp() {
+                fileInput.value = '';
+                originalPreview.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjNmMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7Yp9mE2YTYqSDYp9mE2KfZhjwvdGV4dD48L3N2Zz4=";
+                resultPreview.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cud3cub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjNmMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJmaWRkbGUiIGR5PSIuM2VtIj7Yp9mE2LnYsdio2Ycg2KfZhNmF2KfYr9in2Kog2KfZhNiv2YbYr9mF2YrYqTwvdGV4dD48L3N2Zz4=";
+                resultSection.style.display = 'none';
+                removeBgBtn.disabled = true;
+                AppState.currentFile = null;
+                AppState.originalImage = null;
             }
-        }
+            
+            // تحميل الصورة
+            function downloadImage() {
+                if (!resultPreview.src || resultPreview.src.includes('svg+xml')) return;
+                
+                const link = document.createElement('a');
+                link.download = 'صورة_بدون_خلفية.png';
+                link.href = resultPreview.src;
+                link.click();
+            }
+        });
     </script>
 </body>
 </html>
