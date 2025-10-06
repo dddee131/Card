@@ -3,23 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>إزالة الخلفية محلياً</title>
+  <title>إزالة الخلفية</title>
   <style>
-    body { font-family: Arial, sans-serif; direction: rtl; padding: 20px; }
-    .preview { max-width: 400px; max-height: 400px; margin-top: 10px; }
+    body { font-family: sans-serif; direction: rtl; text-align: center; margin-top: 40px; }
+    input, button { margin: 10px; padding: 10px; }
+    img { max-width: 400px; margin-top: 20px; border-radius: 10px; }
   </style>
 </head>
 <body>
-  <h2>رفع صورة وإزالة الخلفية (محلياً)</h2>
-  <input id="fileInput" type="file" accept="image/*" />
-  <button id="uploadBtn">ارفع وأزل الخلفية</button>
+  <h2>أداة إزالة الخلفية (محليًا)</h2>
+  <input id="fileInput" type="file" accept="image/*">
+  <button id="uploadBtn">إزالة الخلفية</button>
   <p id="status"></p>
 
-  <h3>المعاينة</h3>
-  <img id="preview" class="preview" src="" alt="معاينة" />
+  <h3>الصورة الأصلية:</h3>
+  <img id="preview" src="" alt="">
 
-  <h3>النتيجة</h3>
-  <img id="result" class="preview" src="" alt="النتيجة" />
+  <h3>النتيجة:</h3>
+  <img id="result" src="" alt="">
 
   <script src="/static/script.js"></script>
 </body>
