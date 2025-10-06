@@ -1,70 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أداة إزالة الخلفية من الصور</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>أداة إزالة الخلفية من الصور</h1>
-            <p class="subtitle">قم بإزالة خلفية صورك بضغطة واحدة باستخدام الذكاء الاصطناعي</p>
-        </header>
-        
-        <div class="main-content">
-            <div class="upload-section">
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">📁</div>
-                    <p class="upload-text">انقر أو اسحب الصورة هنا</p>
-                    <p class="upload-hint">يدعم الصور من نوع JPG, PNG, WEBP (بحد أقصى 5MB)</p>
-                </div>
-                <input type="file" id="fileInput" class="file-input" accept="image/*">
-                
-                <div class="action-buttons">
-                    <button class="btn" id="removeBgBtn" disabled>
-                        <span>إزالة الخلفية</span>
-                    </button>
-                    <button class="btn reset-btn" id="resetBtn">
-                        <span>بدء من جديد</span>
-                    </button>
-                </div>
-                
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p>جاري معالجة الصورة، الرجاء الانتظار...</p>
-                </div>
-                
-                <div class="info-box">
-                    <p><strong>معلومات:</strong> هذا التطبيق يستخدم مكتبة rembg القوية لإزالة الخلفية. الصور تُعالج على خادمك المحلي ولا تخرج من جهازك.</p>
-                </div>
-            </div>
-            
-            <div class="preview-section">
-                <div class="preview-box">
-                    <h3 class="preview-title">الصورة الأصلية</h3>
-                    <img id="originalPreview" class="preview-image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjNmMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7Yp9mE2YTYqSDYp9mE2KfZhjwvdGV4dD48L3N2Zz4=" alt="Preview">
-                </div>
-                
-                <div class="preview-box">
-                    <h3 class="preview-title">الصورة بعد الإزالة</h3>
-                    <img id="resultPreview" class="preview-image" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cud3cub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2YzZjNmMyIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7Yp9mE2LnYsdio2Ycg2KfZhNmF2KfYr9in2Kog2KfZhNiv2YbYr9mF2YrYqTwvdGV4dD48L3N2Zz4=" alt="Result">
-                </div>
-                
-                <div class="result-section" id="resultSection">
-                    <button class="btn download-btn" id="downloadBtn">
-                        <span>تحميل الصورة</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <footer>
-            <p>تم التطوير باستخدام Python Flask ومكتبة rembg - يعمل محلياً على جهازك</p>
-        </footer>
-    </div>
-
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
-</html>
