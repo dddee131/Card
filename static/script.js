@@ -1,35 +1,29 @@
 const fileInput = document.getElementById('fileInput');
 const uploadBtn = document.getElementById('uploadBtn');
-const status = document.getElementById('status');
 const preview = document.getElementById('preview');
-const resultImg = document.getElementById('result');
+const result = document.getElementById('result');
+const status = document.getElementById('status');
 
 fileInput.addEventListener('change', () => {
-  const f = fileInput.files[0];
-  if (!f) return;
-  preview.src = URL.createObjectURL(f);
-  resultImg.src = '';
+  const file = fileInput.files[0];
+  if (file) preview.src = URL.createObjectURL(file);
 });
 
 uploadBtn.addEventListener('click', async () => {
   const file = fileInput.files[0];
   if (!file) { status.textContent = 'اختر صورة أولاً'; return; }
-  status.textContent = 'جارٍ المعالجة...';
+  status.textContent = 'جارٍ إزالة الخلفية...';
+
   const fd = new FormData();
   fd.append('file', file);
+
   try {
-    const resp = await fetch('/remove', { method: 'POST', body: fd });
-    if (!resp.ok) {
-      const err = await resp.json().catch(()=>({error:'unknown'}));
-      status.textContent = 'خطأ: ' + (err.error || resp.statusText);
-      return;
-    }
-    // نحصل على blob ونضعه في العنصر img للعرض
-    const blob = await resp.blob();
-    const url = URL.createObjectURL(blob);
-    resultImg.src = url;
-    status.textContent = 'تمت المعالجة — اضغط على الصورة بالزر الأيمن لحفظها';
-  } catch (e) {
-    status.textContent = 'فشل الاتصال بالخادم: ' + e.message;
+    const res = await fetch('/remove', { method: 'POST', body: fd });
+    if (!res.ok) throw new Error('فشل في معالجة الصورة');
+    const blob = await res.blob();
+    result.src = URL.createObjectURL(blob);
+    status.textContent = 'تمت الإزالة ✅';
+  } catch (err) {
+    status.textContent = 'حدث خطأ: ' + err.message;
   }
 });
