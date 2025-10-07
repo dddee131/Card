@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة التصويب - منظور FPS محسّنة</title>
+    <title>لعبة التصويب</title>
     <style>
         * {
             margin: 0;
@@ -12,1036 +12,494 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
-            height: 100vh;
-            color: white;
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
         }
 
-        .game-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(to bottom, #0a0a2a 0%, #1a1a4a 30%, #2a2a6a 70%, #3a3a8a 100%);
-            overflow: hidden;
+        #gameCanvas {
+            display: block;
+            cursor: none;
+            background: linear-gradient(to bottom, #87CEEB 0%, #90EE90 100%);
         }
 
-        .scene {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.05s ease-out;
-        }
-
-        /* الـ HUD */
-        .hud {
+        #ui {
             position: absolute;
             top: 20px;
             left: 20px;
-            right: 20px;
-            display: flex;
-            justify-content: space-between;
-            z-index: 100;
-            pointer-events: none;
-        }
-
-        .hud-item {
-            background: rgba(10, 10, 40, 0.8);
-            color: #00ffff;
-            padding: 15px 25px;
-            border-radius: 8px;
+            color: white;
             font-size: 24px;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            border: 2px solid #00ffff;
-            text-shadow: 0 0 10px #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-        }
-
-        /* الهدف */
-        .target-container {
-            position: absolute;
-            top: 35%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.4s ease-out;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
             z-index: 10;
+            direction: rtl;
         }
 
-        .target {
-            width: 180px;
-            height: 180px;
-            cursor: crosshair;
+        #score {
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
 
-        .target-board {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: 
-                radial-gradient(circle at center,
-                    #FFD700 0%,
-                    #FFD700 7%,
-                    #FF0000 7%,
-                    #FF0000 15%,
-                    #FFFFFF 15%,
-                    #FFFFFF 23%,
-                    #FF0000 23%,
-                    #FF0000 31%,
-                    #0066CC 31%,
-                    #0066CC 47%,
-                    #FFFFFF 47%,
-                    #FFFFFF 63%,
-                    #000000 63%,
-                    #000000 79%,
-                    #FFFFFF 79%,
-                    #FFFFFF 95%,
-                    #000000 95%);
-            box-shadow: 
-                0 15px 40px rgba(0,0,0,0.4),
-                inset 0 2px 5px rgba(255,255,255,0.3);
+        #health {
+            background: rgba(255,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
         }
 
-        /* منظور المسدس من الأسفل */
-        .gun-view {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 50;
-            transition: transform 0.05s ease-out;
-        }
-
-        .gun-container {
+        #crosshair {
             position: absolute;
-            bottom: -20%;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 900px;
-            height: 80%;
-        }
-
-        /* جسم المسدس */
-        .gun-body {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* الجزء الخلفي من المسدس (Slide Back) */
-        .slide-back {
-            position: absolute;
-            bottom: 15%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 350px;
-            height: 180px;
-            background: linear-gradient(to bottom,
-                #4a4a4a 0%,
-                #3a3a3a 30%,
-                #2a2a2a 60%,
-                #1a1a1a 100%);
-            border-radius: 15px 15px 8px 8px;
-            box-shadow: 
-                inset 0 5px 15px rgba(0,0,0,0.5),
-                0 10px 30px rgba(0,0,0,0.7);
-        }
-
-        /* خطوط الـ Slide */
-        .slide-serrations {
-            position: absolute;
-            top: 20px;
-            left: 30px;
-            right: 30px;
+            transform: translate(-50%, -50%);
+            width: 40px;
             height: 40px;
-        }
-
-        .serration {
-            width: 4px;
-            height: 100%;
-            background: #1a1a1a;
-            float: left;
-            margin-left: 6px;
-            box-shadow: inset -1px 0 2px rgba(0,0,0,0.8);
-        }
-
-        /* الشعيرة الخلفية */
-        .rear-sight {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 35px;
-            background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
-            border-radius: 4px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
-        }
-
-        .rear-sight-left,
-        .rear-sight-right {
-            position: absolute;
-            top: 0;
-            width: 28px;
-            height: 100%;
-            background: #1a1a1a;
-            border: 2px solid #0a0a0a;
-        }
-
-        .rear-sight-left {
-            left: 0;
-            border-radius: 4px 0 0 4px;
-        }
-
-        .rear-sight-right {
-            right: 0;
-            border-radius: 0 4px 4px 0;
-        }
-
-        .rear-sight-notch {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 18px;
-            height: 100%;
-            background: linear-gradient(to bottom,
-                rgba(0, 255, 255, 0.2),
-                rgba(0, 255, 255, 0.5));
-            box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.3);
-        }
-
-        /* نقطة الإضاءة في الشعيرة الخلفية */
-        .rear-sight-dots {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            transform: translateY(-50%);
-            display: flex;
-            justify-content: space-between;
-            padding: 0 5px;
-        }
-
-        .sight-dot {
-            width: 8px;
-            height: 8px;
-            background: #00ffff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-        }
-
-        /* الجزء الأمامي من المسدس */
-        .slide-front {
-            position: absolute;
-            bottom: 18%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 280px;
-            height: 140px;
-            background: linear-gradient(to bottom,
-                #3a3a3a,
-                #2a2a2a 50%,
-                #1a1a1a);
-            clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-        }
-
-        /* الماسورة */
-        .barrel {
-            position: absolute;
-            bottom: 21%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 50px;
-            background: linear-gradient(to bottom,
-                #1a1a1a,
-                #0a0a0a 50%,
-                #000);
-            border-radius: 25px;
-            box-shadow: 
-                inset 0 3px 10px rgba(0,0,0,0.9),
-                0 5px 20px rgba(0,0,0,0.8);
-        }
-
-        .barrel::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 10px;
-            right: 10px;
-            height: 3px;
-            background: #0a0a0a;
-            transform: translateY(-50%);
-        }
-
-        /* الشعيرة الأمامية */
-        .front-sight {
-            position: absolute;
-            bottom: 24%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 45px;
-            background: linear-gradient(to right, #2a2a2a, #1a1a1a);
-            border-radius: 3px 3px 0 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
-            z-index: 60;
-        }
-
-        .front-sight-dot {
-            position: absolute;
-            top: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px;
-            height: 8px;
-            background: #00ffff;
-            border-radius: 50%;
-            box-shadow: 
-                0 0 10px #00ffff,
-                0 0 20px #00ffff,
-                0 0 30px #00ffff;
-            animation: sightGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes sightGlow {
-            0%, 100% { box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff; }
-            50% { box-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff, 0 0 40px #00ffff; }
-        }
-
-        /* خط مساعد للتصويب */
-        .aim-line {
-            position: absolute;
-            bottom: 26%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 40vh;
-            background: linear-gradient(to top, 
-                rgba(0, 255, 255, 0.3) 0%,
-                rgba(0, 255, 255, 0.1) 50%,
-                transparent 100%);
-            pointer-events: none;
-            z-index: 55;
-            opacity: 0.5;
-        }
-
-        /* المقبض */
-        .grip {
-            position: absolute;
-            bottom: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            height: 200px;
-            background: linear-gradient(to right,
-                #3a3a3a,
-                #2a2a2a 50%,
-                #1a1a1a);
-            clip-path: polygon(30% 0, 70% 0, 85% 100%, 15% 100%);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-
-        /* نسيج المقبض */
-        .grip-texture {
-            position: absolute;
-            top: 30px;
-            left: 20%;
-            right: 20%;
-            bottom: 20px;
-            background-image: 
-                repeating-linear-gradient(45deg,
-                    transparent,
-                    transparent 4px,
-                    rgba(255,255,255,0.05) 4px,
-                    rgba(255,255,255,0.05) 8px),
-                repeating-linear-gradient(-45deg,
-                    transparent,
-                    transparent 4px,
-                    rgba(255,255,255,0.05) 4px,
-                    rgba(255,255,255,0.05) 8px);
-        }
-
-        /* فلاش الطلقة */
-        .muzzle-flash {
-            position: absolute;
-            bottom: 21%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle,
-                #ffffff 0%,
-                #ffff00 20%,
-                #ff8800 40%,
-                #ff4400 60%,
-                transparent 100%);
-            border-radius: 50%;
-            opacity: 0;
-            z-index: 100;
-            filter: blur(3px);
-        }
-
-        /* علامات الإصابة */
-        .hit-marker {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 60px;
-            font-weight: bold;
-            color: #00ffff;
-            text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
-            opacity: 0;
-            z-index: 200;
-            pointer-events: none;
-            font-family: 'Courier New', monospace;
-        }
-
-        .score-popup {
-            position: absolute;
-            font-size: 50px;
-            font-weight: bold;
-            color: #FFD700;
-            text-shadow: 
-                0 0 10px #FFD700,
-                0 0 20px #FFD700,
-                2px 2px 5px rgba(0,0,0,0.8);
-            pointer-events: none;
-            animation: scoreFloat 1s forwards;
-            z-index: 150;
-        }
-
-        @keyframes scoreFloat {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0; transform: translate(-50%, -150%) scale(1.5); }
-        }
-
-        /* معلومات التحكم */
-        .controls {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(10, 10, 40, 0.8);
-            color: #00ffff;
-            padding: 15px 30px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 16px;
-            border: 2px solid #00ffff;
-            z-index: 100;
-            pointer-events: none;
-            max-width: 90%;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-        }
-
-        .controls div {
-            margin: 5px 0;
-        }
-
-        .game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(10, 10, 40, 0.95);
-            padding: 50px 70px;
-            border-radius: 20px;
-            text-align: center;
-            color: white;
-            display: none;
-            z-index: 300;
-            border: 3px solid #00ffff;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
-        }
-
-        .game-over h2 {
-            font-size: 56px;
-            margin-bottom: 25px;
-            color: #00ffff;
-            text-shadow: 0 0 20px #00ffff;
-        }
-
-        .game-over p {
-            font-size: 28px;
-            margin-bottom: 30px;
-            color: #FFD700;
-        }
-
-        .restart-btn {
-            background: linear-gradient(135deg, #00ffff 0%, #0088ff 100%);
-            color: #000;
-            border: 3px solid #00ffff;
-            padding: 15px 50px;
-            font-size: 24px;
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-        }
-
-        .restart-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px #00ffff;
-        }
-
-        .gyro-btn {
-            position: absolute;
-            top: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #ff6b00, #ff8c00);
-            color: white;
-            padding: 20px 40px;
-            border-radius: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            border: 3px solid #fff;
-            cursor: pointer;
-            display: none;
-            z-index: 100;
-            box-shadow: 0 5px 20px rgba(255, 107, 0, 0.5);
-            transition: all 0.3s;
-        }
-
-        .gyro-btn:active {
-            transform: translateX(-50%) scale(0.95);
-        }
-
-        .gyro-info {
-            position: absolute;
-            top: 180px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(10, 10, 40, 0.8);
-            color: #fff;
-            padding: 15px 25px;
-            border-radius: 10px;
-            font-size: 14px;
-            text-align: center;
-            display: none;
-            z-index: 100;
-            max-width: 80%;
-            border: 2px solid #00ffff;
-        }
-
-        /* مؤقت اللعبة */
-        .timer {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(10, 10, 40, 0.8);
-            color: #ff4444;
-            padding: 15px 25px;
-            border-radius: 8px;
-            font-size: 24px;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            border: 2px solid #ff4444;
-            text-shadow: 0 0 10px #ff4444;
-            box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
-            z-index: 100;
-        }
-
-        /* تأثيرات إضافية */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             pointer-events: none;
             z-index: 5;
         }
 
-        .particle {
+        .crosshair-line {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            animation: float 5s infinite linear;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
         }
 
-        @keyframes float {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        .horizontal {
+            width: 20px;
+            height: 2px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        /* تأثيرات الخلفية */
-        .background-effects {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
+        .vertical {
+            width: 2px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        .glow {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.2) 0%, transparent 70%);
-            animation: pulse 8s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.8); opacity: 0.3; }
-            100% { transform: scale(1.5); opacity: 0.1; }
-        }
-
-        /* تأثيرات الهدف */
-        .target-glow {
+        #startScreen {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            animation: targetPulse 2s infinite;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            direction: rtl;
         }
 
-        @keyframes targetPulse {
-            0%, 100% { opacity: 0; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.1); }
+        #startScreen h1 {
+            color: white;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        #startScreen p {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        #startBtn {
+            padding: 15px 40px;
+            font-size: 24px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #startBtn:hover {
+            background: #45a049;
+            transform: scale(1.1);
+        }
+
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+            z-index: 100;
+            direction: rtl;
+        }
+
+        #gameOver h2 {
+            color: #ff4444;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        #gameOver p {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        #restartBtn {
+            padding: 15px 40px;
+            font-size: 24px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #ammo {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            color: white;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.5);
+            padding: 15px 25px;
+            border-radius: 10px;
+            direction: rtl;
         }
     </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="background-effects">
-            <div class="glow" style="top: 10%; left: 10%;"></div>
-            <div class="glow" style="top: 60%; left: 80%;"></div>
-            <div class="glow" style="top: 30%; left: 70%;"></div>
-            <div class="glow" style="top: 80%; left: 20%;"></div>
-        </div>
-        
-        <div class="particles" id="particles"></div>
-        
-        <div class="scene" id="scene">
-            <div class="hud">
-                <div class="hud-item">SCORE: <span id="score">0</span></div>
-                <div class="hud-item">ACCURACY: <span id="accuracy">100</span>%</div>
-                <div class="hud-item">HITS: <span id="hits">0</span></div>
-            </div>
+    <canvas id="gameCanvas"></canvas>
+    
+    <div id="crosshair">
+        <div class="crosshair-line horizontal"></div>
+        <div class="crosshair-line vertical"></div>
+        <div class="crosshair-line horizontal" style="left: 10px;"></div>
+        <div class="crosshair-line horizontal" style="left: calc(100% - 10px);"></div>
+        <div class="crosshair-line vertical" style="top: 10px;"></div>
+        <div class="crosshair-line vertical" style="top: calc(100% - 10px);"></div>
+    </div>
 
-            <div class="timer">TIME: <span id="timer">60</span>s</div>
+    <div id="ui">
+        <div id="score">النقاط: <span id="scoreValue">0</span></div>
+        <div id="health">الصحة: <span id="healthValue">100</span></div>
+    </div>
 
-            <button class="gyro-btn" id="gyroBtn" onclick="requestGyroPermission()">
-                📱 اضغط لتفعيل الجيروسكوب
-            </button>
+    <div id="ammo">
+        <span id="currentAmmo">10</span> / <span id="totalAmmo">50</span>
+    </div>
 
-            <div class="gyro-info" id="gyroInfo">
-                بعد التفعيل، حرك هاتفك يميناً ويساراً للتصويب
-            </div>
+    <div id="startScreen">
+        <h1>🎯 لعبة التصويب</h1>
+        <p>
+            استخدم الماوس أو الجيروسكوب للتصويب<br>
+            انقر بالزر الأيسر للإطلاق<br>
+            اضغط R لإعادة التعبئة<br>
+            صوّب على الأهداف واحصل على أعلى نقاط!
+        </p>
+        <button id="startBtn">ابدأ اللعب</button>
+    </div>
 
-            <div class="target-container" id="targetContainer">
-                <div class="target" id="target">
-                    <div class="target-board"></div>
-                    <div class="target-glow"></div>
-                </div>
-            </div>
-
-            <div class="hit-marker" id="hitMarker">✓ HIT!</div>
-        </div>
-
-        <div class="gun-view">
-            <div class="gun-container" id="gunContainer">
-                <div class="gun-body">
-                    <div class="muzzle-flash" id="muzzleFlash"></div>
-                    
-                    <div class="slide-back">
-                        <div class="slide-serrations">
-                            <div class="serration"></div>
-                            <div class="serration"></div>
-                            <div class="serration"></div>
-                            <div class="serration"></div>
-                            <div class="serration"></div>
-                            <div class="serration"></div>
-                            <div class="serration"></div>
-                            <div class="serration"></div>
-                            <div class="serration"></div>
-                            <div class="serration"></div>
-                        </div>
-                        
-                        <div class="rear-sight">
-                            <div class="rear-sight-left"></div>
-                            <div class="rear-sight-right"></div>
-                            <div class="rear-sight-notch"></div>
-                            <div class="rear-sight-dots">
-                                <div class="sight-dot"></div>
-                                <div class="sight-dot"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="slide-front"></div>
-                    
-                    <div class="barrel"></div>
-                    
-                    <div class="front-sight">
-                        <div class="front-sight-dot"></div>
-                    </div>
-                    <div class="aim-line"></div>
-                    
-                    <div class="grip">
-                        <div class="grip-texture"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <div>🎯 حرك المسدس في جميع الاتجاهات لتصويب الشعيرة الزرقاء على الهدف</div>
-            <div>🖱️ الماوس: حرك للتصويب | 📱 الجيروسكوب: حرك الجهاز | 🔫 اضغط لإطلاق النار</div>
-        </div>
-
-        <div class="game-over" id="gameOver">
-            <h2>MISSION COMPLETE</h2>
-            <p>النقاط النهائية: <span id="finalScore">0</span></p>
-            <p>نسبة الدقة: <span id="finalAccuracy">0</span>%</p>
-            <p>عدد الإصابات: <span id="finalHits">0</span></p>
-            <button class="restart-btn" onclick="restartGame()">▶ العب مرة أخرى</button>
-        </div>
+    <div id="gameOver">
+        <h2>انتهت اللعبة!</h2>
+        <p>نقاطك النهائية: <span id="finalScore">0</span></p>
+        <button id="restartBtn">العب مرة أخرى</button>
     </div>
 
     <script>
-        const scene = document.getElementById('scene');
-        const targetContainer = document.getElementById('targetContainer');
-        const target = document.getElementById('target');
-        const gunView = document.querySelector('.gun-view');
-        const frontSight = document.querySelector('.front-sight-dot');
-        const scoreElement = document.getElementById('score');
-        const accuracyElement = document.getElementById('accuracy');
-        const hitsElement = document.getElementById('hits');
-        const hitMarker = document.getElementById('hitMarker');
-        const muzzleFlash = document.getElementById('muzzleFlash');
-        const gunContainer = document.getElementById('gunContainer');
-        const gyroBtn = document.getElementById('gyroBtn');
-        const gyroInfo = document.getElementById('gyroInfo');
-        const gameOver = document.getElementById('gameOver');
-        const timerElement = document.getElementById('timer');
-        const particlesContainer = document.getElementById('particles');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
+        // Game state
+        let gameActive = false;
         let score = 0;
-        let shots = 0;
-        let hits = 0;
-        let gunOffsetX = 0;
-        let gunOffsetY = 0;
-        let gyroEnabled = false;
-        let gameTime = 60;
-        let timerInterval;
-        let gameActive = true;
+        let health = 100;
+        let currentAmmo = 10;
+        let totalAmmo = 50;
+        let isReloading = false;
+        
+        // Gyroscope and mouse
+        let gyroX = 0;
+        let gyroY = 0;
+        let mouseX = canvas.width / 2;
+        let mouseY = canvas.height / 2;
+        let useGyro = false;
 
-        // إنشاء جزيئات الخلفية
-        function createParticles() {
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                particlesContainer.appendChild(particle);
+        // Gun position
+        let gunX = canvas.width / 2;
+        let gunY = canvas.height - 150;
+        let gunRecoil = 0;
+
+        // Targets
+        let targets = [];
+        const targetSpawnRate = 2000;
+        let lastTargetSpawn = 0;
+
+        class Target {
+            constructor() {
+                this.radius = 30 + Math.random() * 30;
+                this.x = Math.random() * (canvas.width - this.radius * 2) + this.radius;
+                this.y = Math.random() * (canvas.height * 0.6 - this.radius * 2) + this.radius;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.color = `hsl(${Math.random() * 360}, 70%, 50%)`;
+                this.rings = 3;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) {
+                    this.speedX *= -1;
+                }
+                if (this.y - this.radius < 0 || this.y + this.radius > canvas.height * 0.6) {
+                    this.speedY *= -1;
+                }
+            }
+
+            draw() {
+                for (let i = this.rings; i >= 0; i--) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius * (i + 1) / (this.rings + 1), 0, Math.PI * 2);
+                    ctx.fillStyle = i % 2 === 0 ? this.color : 'white';
+                    ctx.fill();
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+
+                // Center dot
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = 'red';
+                ctx.fill();
+            }
+
+            checkHit(x, y) {
+                const dist = Math.sqrt((x - this.x) ** 2 + (y - this.y) ** 2);
+                return dist < this.radius;
             }
         }
 
-        // بدء المؤقت
-        function startTimer() {
-            gameTime = 60;
-            timerElement.textContent = gameTime;
+        function drawGun() {
+            const offsetY = gunRecoil;
             
-            timerInterval = setInterval(() => {
-                if (gameActive) {
-                    gameTime--;
-                    timerElement.textContent = gameTime;
-                    
-                    if (gameTime <= 0) {
-                        endGame();
-                    }
-                }
-            }, 1000);
+            // Gun body
+            ctx.fillStyle = '#333';
+            ctx.fillRect(gunX - 30, gunY - 20 + offsetY, 60, 100);
+            
+            // Gun barrel
+            ctx.fillStyle = '#222';
+            ctx.fillRect(gunX - 10, gunY - 80 + offsetY, 20, 60);
+            
+            // Gun details
+            ctx.fillStyle = '#555';
+            ctx.fillRect(gunX - 35, gunY + 30 + offsetY, 70, 15);
+            
+            // Trigger guard
+            ctx.strokeStyle = '#444';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(gunX, gunY + 50 + offsetY, 15, 0, Math.PI);
+            ctx.stroke();
+
+            // Sight
+            ctx.fillStyle = '#ff6600';
+            ctx.fillRect(gunX - 5, gunY - 85 + offsetY, 10, 10);
+
+            gunRecoil *= 0.8;
         }
 
-        // إنهاء اللعبة
+        function shoot() {
+            if (!gameActive || currentAmmo <= 0 || isReloading) return;
+
+            currentAmmo--;
+            document.getElementById('currentAmmo').textContent = currentAmmo;
+            gunRecoil = 10;
+
+            // Check hits
+            const aimX = useGyro ? canvas.width / 2 : mouseX;
+            const aimY = useGyro ? canvas.height / 2 : mouseY;
+
+            for (let i = targets.length - 1; i >= 0; i--) {
+                if (targets[i].checkHit(aimX, aimY)) {
+                    score += 10;
+                    document.getElementById('scoreValue').textContent = score;
+                    targets.splice(i, 1);
+                    
+                    // Flash effect
+                    ctx.fillStyle = 'rgba(255, 255, 0, 0.3)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    break;
+                }
+            }
+
+            // Muzzle flash
+            ctx.fillStyle = 'rgba(255, 200, 0, 0.8)';
+            ctx.beginPath();
+            ctx.arc(gunX, gunY - 80, 20, 0, Math.PI * 2);
+            ctx.fill();
+
+            if (currentAmmo === 0 && totalAmmo > 0) {
+                reload();
+            }
+        }
+
+        function reload() {
+            if (isReloading || totalAmmo === 0) return;
+            
+            isReloading = true;
+            setTimeout(() => {
+                const ammoNeeded = 10 - currentAmmo;
+                const ammoToReload = Math.min(ammoNeeded, totalAmmo);
+                currentAmmo += ammoToReload;
+                totalAmmo -= ammoToReload;
+                
+                document.getElementById('currentAmmo').textContent = currentAmmo;
+                document.getElementById('totalAmmo').textContent = totalAmmo;
+                isReloading = false;
+            }, 1500);
+        }
+
+        function spawnTarget() {
+            if (targets.length < 5) {
+                targets.push(new Target());
+            }
+        }
+
+        function updateGame(timestamp) {
+            if (!gameActive) return;
+
+            // Clear canvas
+            ctx.fillStyle = 'rgba(135, 206, 235, 1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Ground
+            ctx.fillStyle = '#90EE90';
+            ctx.fillRect(0, canvas.height * 0.6, canvas.width, canvas.height * 0.4);
+
+            // Update gun position
+            if (useGyro) {
+                gunX = canvas.width / 2 - gyroX * 200;
+                gunY = canvas.height - 150 - gyroY * 100;
+            } else {
+                gunX = mouseX;
+                gunY = canvas.height - 150;
+            }
+
+            // Spawn targets
+            if (timestamp - lastTargetSpawn > targetSpawnRate) {
+                spawnTarget();
+                lastTargetSpawn = timestamp;
+            }
+
+            // Update and draw targets
+            targets.forEach(target => {
+                target.update();
+                target.draw();
+            });
+
+            // Draw gun
+            drawGun();
+
+            // Damage player if too many targets
+            if (targets.length >= 5) {
+                health -= 0.1;
+                document.getElementById('healthValue').textContent = Math.floor(health);
+                
+                if (health <= 0) {
+                    endGame();
+                    return;
+                }
+            }
+
+            requestAnimationFrame(updateGame);
+        }
+
+        function startGame() {
+            document.getElementById('startScreen').style.display = 'none';
+            gameActive = true;
+            score = 0;
+            health = 100;
+            currentAmmo = 10;
+            totalAmmo = 50;
+            targets = [];
+            
+            document.getElementById('scoreValue').textContent = score;
+            document.getElementById('healthValue').textContent = health;
+            document.getElementById('currentAmmo').textContent = currentAmmo;
+            document.getElementById('totalAmmo').textContent = totalAmmo;
+            
+            requestAnimationFrame(updateGame);
+        }
+
         function endGame() {
             gameActive = false;
-            clearInterval(timerInterval);
-            
             document.getElementById('finalScore').textContent = score;
-            document.getElementById('finalAccuracy').textContent = Math.round((hits / shots) * 100) || 0;
-            document.getElementById('finalHits').textContent = hits;
-            
-            gameOver.style.display = 'block';
+            document.getElementById('gameOver').style.display = 'block';
         }
 
-        // حركة الماوس - تحريك المسدس في جميع الاتجاهات
-        document.addEventListener('mousemove', (e) => {
-            if (!gyroEnabled && gameActive) {
-                const centerX = window.innerWidth / 2;
-                const centerY = window.innerHeight / 2;
-                
-                // حركة المسدس (بكسلات) بدلاً من الدوران
-                gunOffsetX = ((e.clientX - centerX) / centerX) * 400; // نطاق أوسع
-                gunOffsetY = ((e.clientY - centerY) / centerY) * -300;
-                
-                updateGun();
+        // Event listeners
+        document.getElementById('startBtn').addEventListener('click', () => {
+            // Request gyroscope permission
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') {
+                            useGyro = true;
+                        }
+                        startGame();
+                    })
+                    .catch(console.error);
+            } else {
+                startGame();
             }
         });
 
-        // الجيروسكوب
-        let baseGamma = 0;
-        let baseBeta = 90;
-        let gyroInitialized = false;
+        document.getElementById('restartBtn').addEventListener('click', () => {
+            document.getElementById('gameOver').style.display = 'none';
+            startGame();
+        });
 
-        async function requestGyroPermission() {
-            gyroBtn.textContent = '⏳ جاري التفعيل...';
-            
-            try {
-                // للأجهزة iOS
-                if (typeof DeviceOrientationEvent !== 'undefined' && 
-                    typeof DeviceOrientationEvent.requestPermission === 'function') {
-                    const permission = await DeviceOrientationEvent.requestPermission();
-                    if (permission === 'granted') {
-                        enableGyro();
-                        gyroBtn.style.display = 'none';
-                    } else {
-                        gyroBtn.textContent = '❌ تم رفض الإذن';
-                        setTimeout(() => {
-                            gyroBtn.textContent = '📱 تفعيل الجيروسكوب';
-                        }, 2000);
-                    }
-                } else {
-                    // للأجهزة Android وغيرها
-                    enableGyro();
-                    gyroBtn.style.display = 'none';
-                }
-            } catch (error) {
-                console.log('Gyro error:', error);
-                gyroBtn.textContent = '⚠️ الجيروسكوب غير متاح';
-                setTimeout(() => {
-                    gyroBtn.style.display = 'none';
-                }, 2000);
-            }
-        }
+        canvas.addEventListener('click', shoot);
 
-        function enableGyro() {
-            gyroEnabled = true;
-            gyroInitialized = false;
-            
-            window.addEventListener('deviceorientation', handleOrientation, true);
-            
-            // تفعيل حساسات الحركة أيضاً
-            window.addEventListener('devicemotion', function(e) {
-                // هذا يساعد في تفعيل الحساسات
-            }, true);
-        }
-
-        function handleOrientation(event) {
-            if (!gyroEnabled || !gameActive) return;
-            
-            if (event.alpha === null || event.beta === null || event.gamma === null) {
-                return; // البيانات غير متوفرة
-            }
-            
-            // تهيئة القيم الأساسية عند أول قراءة
-            if (!gyroInitialized) {
-                baseGamma = event.gamma || 0;
-                baseBeta = event.beta || 90;
-                gyroInitialized = true;
-                return;
-            }
-            
-            const gamma = event.gamma || 0; // يسار/يمين (-90 إلى 90)
-            const beta = event.beta || 90;   // أمام/خلف (0 إلى 180)
-            
-            // حساب الفرق من الوضع الأساسي
-            const deltaGamma = gamma - baseGamma;
-            const deltaBeta = beta - baseBeta;
-            
-            // تحويل إلى حركة المسدس في جميع الاتجاهات
-            gunOffsetX = (deltaGamma / 20) * 400; // حركة أفقية واسعة
-            gunOffsetY = (deltaBeta / 20) * -300; // حركة عمودية واسعة
-            
-            // تحديد النطاق
-            gunOffsetX = Math.max(-500, Math.min(500, gunOffsetX));
-            gunOffsetY = Math.max(-400, Math.min(400, gunOffsetY));
-            
-            updateGun();
-        }
-
-        // تحديث موضع المسدس - حركة كاملة في جميع الاتجاهات
-        function updateGun() {
-            gunView.style.transform = `
-                translateX(${gunOffsetX}px)
-                translateY(${gunOffsetY}px)
-            `;
-        }
-
-        // إطلاق النار
-        document.addEventListener('click', shoot);
-        document.addEventListener('touchstart', (e) => {
-            if (e.target.id !== 'gyroBtn' && gameActive) {
-                e.preventDefault();
-                shoot(e);
+        canvas.addEventListener('mousemove', (e) => {
+            if (!useGyro) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
             }
         });
 
-        function shoot(e) {
-            if (!gameActive) return;
-            
-            shots++;
-            
-            // فلاش الطلقة
-            muzzleFlash.style.opacity = '0.9';
-            setTimeout(() => {
-                muzzleFlash.style.opacity = '0';
-            }, 80);
-            
-            // حركة ارتداد
-            gunView.style.transition = 'transform 0.05s';
-            gunView.style.transform = `
-                translateX(${gunOffsetX}px)
-                translateY(${gunOffsetY - 30}px)
-            `;
-            setTimeout(() => {
-                gunView.style.transition = 'transform 0.15s';
-                updateGun();
-            }, 60);
-            
-            // حساب موقع الشعيرة الأمامية على الشاشة
-            const sightRect = frontSight.getBoundingClientRect();
-            const sightCenterX = sightRect.left + sightRect.width / 2;
-            const sightCenterY = sightRect.top + sightRect.height / 2;
-            
-            const targetRect = target.getBoundingClientRect();
-            const targetCenterX = targetRect.left + targetRect.width / 2;
-            const targetCenterY = targetRect.top + targetRect.height / 2;
-            
-            // حساب المسافة بين الشعيرة والهدف
-            const distance = Math.sqrt(
-                Math.pow(sightCenterX - targetCenterX, 2) + 
-                Math.pow(sightCenterY - targetCenterY, 2)
-            );
-            
-            const targetRadius = targetRect.width / 2;
-            
-            if (distance < targetRadius) {
-                hits++;
-                hitsElement.textContent = hits;
-                
-                let points = 10;
-                if (distance < targetRadius * 0.08) {
-                    points = 100; // مركز ذهبي
-                } else if (distance < targetRadius * 0.16) {
-                    points = 50; // أحمر داخلي
-                } else if (distance < targetRadius * 0.32) {
-                    points = 30; // أزرق
-                } else {
-                    points = 10; // خارجي
-                }
-                
-                score += points;
-                scoreElement.textContent = score;
-                
-                // عرض النقاط
-                const scorePopup = document.createElement('div');
-                scorePopup.className = 'score-popup';
-                scorePopup.textContent = '+' + points;
-                scorePopup.style.left = targetCenterX + 'px';
-                scorePopup.style.top = targetCenterY + 'px';
-                document.querySelector('.game-container').appendChild(scorePopup);
-                setTimeout(() => scorePopup.remove(), 1000);
-                
-                // علامة الإصابة
-                hitMarker.style.opacity = '1';
-                setTimeout(() => {
-                    hitMarker.style.opacity = '0';
-                }, 400);
-                
-                // تحريك الهدف
-                moveTarget();
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'r' || e.key === 'R') {
+                reload();
             }
-            
-            // تحديث الدقة
-            const accuracy = Math.round((hits / shots) * 100);
-            accuracyElement.textContent = accuracy;
-        }
+        });
 
-        // تحريك الهدف
-        function moveTarget() {
-            const maxX = window.innerWidth * 0.3;
-            const maxY = window.innerHeight * 0.15;
-            
-            const randomX = (Math.random() - 0.5) * maxX;
-            const randomY = (Math.random() - 0.5) * maxY;
-            
-            targetContainer.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
-        }
-
-        function restartGame() {
-            score = 0;
-            shots = 0;
-            hits = 0;
-            scoreElement.textContent = score;
-            accuracyElement.textContent = '100';
-            hitsElement.textContent = hits;
-            gameOver.style.display = 'none';
-            gameActive = true;
-            moveTarget();
-            startTimer();
-        }
-
-        // عرض زر الجيروسكوب على الأجهزة المحمولة
-        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            gyroBtn.style.display = 'block';
-            gyroInfo.style.display = 'block';
-            
-            // محاولة تفعيل تلقائي للأجهزة التي لا تحتاج إذن
-            setTimeout(() => {
-                if (typeof DeviceOrientationEvent !== 'undefined' && 
-                    typeof DeviceOrientationEvent.requestPermission !== 'function') {
-                    // Android - لا يحتاج إذن
-                    enableGyro();
-                    gyroBtn.textContent = '✅ الجيروسكوب مفعّل';
-                    setTimeout(() => {
-                        gyroBtn.style.display = 'none';
-                        gyroInfo.style.display = 'none';
-                    }, 2000);
-                }
-            }, 500);
-        }
-
-        // تحريك الهدف في البداية
-        moveTarget();
-        
-        // تحريك الهدف تلقائياً كل فترة
-        setInterval(() => {
-            if (gameActive) {
-                moveTarget();
+        // Gyroscope support
+        window.addEventListener('deviceorientation', (e) => {
+            if (useGyro && gameActive) {
+                gyroX = e.gamma / 90; // -1 to 1
+                gyroY = e.beta / 90;  // -1 to 1
             }
-        }, 5000);
-        
-        // تهيئة اللعبة
-        createParticles();
-        startTimer();
+        });
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
