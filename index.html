@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أكاديمية تعليم الرماية</title>
+    <title>لعبة التصويب - منظور الشخص الأول</title>
     <style>
         * {
             margin: 0;
@@ -12,236 +12,643 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #161b22;
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            overflow: hidden;
+            height: 100vh;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 40%, #90EE90 100%);
+            overflow: hidden;
         }
 
-        header {
-            text-align: center;
+        .scene {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.1s ease-out;
+        }
+
+        .hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
             color: white;
-            padding: 40px 0;
-            margin-bottom: 50px;
-        }
-
-        header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .sections-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-
-        .section-card {
-            background: white;
-            border-radius: 15px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .section-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-        }
-
-        .section-card:active {
-            transform: translateY(-5px);
-        }
-
-        .section-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
-        }
-
-        .section-card h2 {
-            color: #1e3c72;
-            font-size: 1.8em;
-            margin-bottom: 15px;
-        }
-
-        .section-card p {
-            color: #666;
-            line-height: 1.6;
-            font-size: 1.05em;
-        }
-
-        .safety {
-            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
-        }
-
-        .safety .section-icon {
-            color: #e74c3c;
-        }
-
-        .safety h2 {
-            color: #c0392b;
-        }
-
-        .skills {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-        }
-
-        .skills .section-icon {
-            color: #3498db;
-        }
-
-        .skills h2 {
-            color: #2980b9;
-        }
-
-        .weapons {
-            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-        }
-
-        .weapons .section-icon {
-            color: #27ae60;
-        }
-
-        .weapons h2 {
-            color: #229954;
-        }
-
-        .info-box {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(0,0,0,0.1);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-        }
-
-        .info-box h3 {
-            margin-bottom: 10px;
-            font-size: 1.3em;
-            color: #c0392b;
-        }
-
-        .info-box p {
-            color: #555;
-        }
-
-        footer {
-            text-align: center;
-            color: white;
-            padding: 30px 0;
-            margin-top: 50px;
-            border-top: 2px solid rgba(255,255,255,0.3);
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2em;
-            }
-
-            .sections-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-card {
-                padding: 30px 20px;
-            }
-        }
-
-        .click-hint {
-            display: inline-block;
-            background: #f39c12;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            margin-top: 15px;
+            font-size: 20px;
             font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+            pointer-events: none;
+        }
+
+        .hud-item {
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+
+        .target {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: crosshair;
+            z-index: 10;
+        }
+
+        .target-rings {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: 
+                radial-gradient(circle at center,
+                    #FFD700 0%,
+                    #FFD700 8%,
+                    #FF0000 8%,
+                    #FF0000 20%,
+                    #0066CC 20%,
+                    #0066CC 40%,
+                    #000000 40%,
+                    #000000 60%,
+                    #FFFFFF 60%,
+                    #FFFFFF 80%,
+                    #000000 80%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .target-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12%;
+            height: 12%;
+            background: #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #FFD700;
+        }
+
+        /* منظور المسدس من الأسفل */
+        .gun-container {
+            position: absolute;
+            bottom: -80px;
+            right: 5%;
+            width: 700px;
+            height: 500px;
+            z-index: 50;
+            pointer-events: none;
+            transform-origin: bottom right;
+        }
+
+        .gun {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .gun-image {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 600px;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.7));
+        }
+
+        /* الشعيرة الأمامية */
+        .front-sight {
+            position: absolute;
+            bottom: 380px;
+            right: 420px;
+            width: 10px;
+            height: 30px;
+            background: linear-gradient(to right, #333, #111);
+            border-radius: 2px 2px 0 0;
+            z-index: 60;
+        }
+
+        .front-sight::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ff00, 0 0 15px #00ff00;
+        }
+
+        /* الشعيرة الخلفية */
+        .rear-sight {
+            position: absolute;
+            bottom: 375px;
+            right: 220px;
+            width: 70px;
+            height: 25px;
+            background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
+            border-radius: 3px;
+            z-index: 60;
+        }
+
+        .rear-sight::before,
+        .rear-sight::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 25px;
+            height: 100%;
+            background: #1a1a1a;
+        }
+
+        .rear-sight::before {
+            left: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .rear-sight::after {
+            right: 0;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .sight-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 100%;
+            background: rgba(135, 206, 235, 0.4);
+        }
+
+        /* فلاش الطلقة */
+        .muzzle-flash {
+            position: absolute;
+            bottom: 365px;
+            right: 560px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #fff, #ffff00, #ff8800, transparent);
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 100;
+        }
+
+        /* تأثير الإصابة */
+        .hit-marker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 20px #00ff00;
+            opacity: 0;
+            z-index: 200;
+            pointer-events: none;
+        }
+
+        .miss-marker {
+            position: absolute;
+            font-size: 40px;
+            color: rgba(255,255,255,0.7);
+            pointer-events: none;
+            animation: missAnim 0.5s forwards;
+        }
+
+        @keyframes missAnim {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+
+        .score-popup {
+            position: absolute;
+            font-size: 40px;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 10px #FFD700;
+            pointer-events: none;
+            animation: scoreAnim 1s forwards;
+            z-index: 150;
+        }
+
+        @keyframes scoreAnim {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-100px); }
+        }
+
+        .controls-info {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 16px;
+            z-index: 100;
+        }
+
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.95);
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            display: none;
+            z-index: 300;
+        }
+
+        .game-over h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+        .game-over p {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .gyro-status {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,165,0,0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            display: none;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🎯 أكاديمية تعليم الرماية</h1>
-            <p>تعلم فنون الرماية بأمان واحترافية</p>
-        </header>
-
-        <div class="sections-grid">
-            <!-- قسم إجراءات السلامة -->
-            <div class="section-card safety" onclick="openPDF('safety')">
-                <div class="section-icon">🛡️</div>
-                <h2>إجراءات السلامة</h2>
-                <p>تعرف على قواعد السلامة الأساسية والإجراءات الوقائية الضرورية قبل البدء في ممارسة الرماية</p>
-                <span class="click-hint">اضغط للمزيد</span>
+    <div class="game-container">
+        <div class="scene" id="scene">
+            <div class="hud">
+                <div class="hud-item">النقاط: <span id="score">0</span></div>
+                <div class="hud-item">الدقة: <span id="accuracy">100</span>%</div>
+                <div class="hud-item">الذخيرة: <span id="ammo">∞</span></div>
             </div>
 
-            <!-- قسم مهارات الرماية الخمسة -->
-            <div class="section-card skills" onclick="openPDF('skills')">
-                <div class="section-icon">🎯</div>
-                <h2>مهارات الرماية الخمسة</h2>
-                <p>أتقن المهارات الخمس الأساسية للرماية: الوضعية، القبضة، التنفس، التصويب، والضغط على الزناد</p>
-                <span class="click-hint">اضغط للمزيد</span>
+            <div class="gyro-status" id="gyroStatus">اضغط على الشاشة لتفعيل الجيروسكوب</div>
+
+            <div class="target" id="target">
+                <div class="target-rings">
+                    <div class="target-center"></div>
+                </div>
             </div>
 
-            <!-- قسم مسميات الأسلحة -->
-            <div class="section-card weapons" onclick="openPDF('weapons')">
-                <div class="section-icon">🔫</div>
-                <h2>مسميات الأسلحة</h2>
-                <p>تعرف على أجزاء السلاح ومسمياته المختلفة والمصطلحات التقنية المستخدمة في عالم الأسلحة</p>
-                <span class="click-hint">اضغط للمزيد</span>
+            <div class="hit-marker" id="hitMarker">✓ إصابة!</div>
+        </div>
+
+        <div class="gun-container" id="gunContainer">
+            <div class="gun">
+                <div class="muzzle-flash" id="muzzleFlash"></div>
+                <!-- صورة مسدس جلوك حقيقي -->
+                <svg class="gun-image" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+                    <!-- ظل المسدس -->
+                    <defs>
+                        <filter id="gunShadow">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+                            <feOffset dx="2" dy="4" result="offsetblur"/>
+                            <feComponentTransfer>
+                                <feFuncA type="linear" slope="0.5"/>
+                            </feComponentTransfer>
+                            <feMerge>
+                                <feMergeNode/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                        <linearGradient id="metalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#4a4a4a;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#2a2a2a;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="gripGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#3a3a3a;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    
+                    <!-- الماسورة -->
+                    <rect x="420" y="155" width="160" height="35" rx="17" fill="url(#metalGrad)" filter="url(#gunShadow)"/>
+                    <rect x="425" y="162" width="150" height="3" fill="#0a0a0a"/>
+                    <circle cx="430" cy="172" r="3" fill="#1a1a1a"/>
+                    
+                    <!-- جسم المسدس (Slide) -->
+                    <rect x="140" y="140" width="300" height="70" rx="8" fill="url(#metalGrad)" filter="url(#gunShadow)"/>
+                    <rect x="150" y="150" width="280" height="4" fill="#666"/>
+                    <rect x="420" y="150" width="20" height="50" fill="#2a2a2a"/>
+                    
+                    <!-- التفاصيل العلوية -->
+                    <rect x="180" y="155" width="8" height="8" rx="2" fill="#1a1a1a"/>
+                    <rect x="200" y="155" width="8" height="8" rx="2" fill="#1a1a1a"/>
+                    <rect x="220" y="155" width="8" height="8" rx="2" fill="#1a1a1a"/>
+                    
+                    <!-- الإطار (Frame) -->
+                    <rect x="140" y="210" width="240" height="45" rx="5" fill="#2a2a2a" filter="url(#gunShadow)"/>
+                    
+                    <!-- المقبض (Grip) -->
+                    <path d="M 140 210 L 120 250 L 110 310 L 130 340 L 170 340 L 180 255 L 180 210 Z" 
+                          fill="url(#gripGrad)" filter="url(#gunShadow)"/>
+                    
+                    <!-- نسيج المقبض -->
+                    <g opacity="0.3">
+                        <line x1="125" y1="260" x2="175" y2="260" stroke="#666" stroke-width="1"/>
+                        <line x1="122" y1="270" x2="175" y2="270" stroke="#666" stroke-width="1"/>
+                        <line x1="120" y1="280" x2="172" y2="280" stroke="#666" stroke-width="1"/>
+                        <line x1="118" y1="290" x2="170" y2="290" stroke="#666" stroke-width="1"/>
+                        <line x1="116" y1="300" x2="168" y2="300" stroke="#666" stroke-width="1"/>
+                        <line x1="115" y1="310" x2="165" y2="310" stroke="#666" stroke-width="1"/>
+                        <line x1="117" y1="320" x2="162" y2="320" stroke="#666" stroke-width="1"/>
+                    </g>
+                    
+                    <!-- الزناد -->
+                    <ellipse cx="200" cy="250" rx="12" ry="20" fill="#1a1a1a" filter="url(#gunShadow)"/>
+                    
+                    <!-- حارس الزناد -->
+                    <path d="M 185 240 Q 170 250 185 270 L 190 268 Q 180 250 190 242 Z" 
+                          fill="#2a2a2a" filter="url(#gunShadow)"/>
+                    
+                    <!-- المخزن -->
+                    <rect x="145" y="260" width="30" height="78" rx="3" fill="#1a1a1a" filter="url(#gunShadow)"/>
+                    <rect x="150" y="265" width="20" height="3" fill="#666"/>
+                    
+                    <!-- تفاصيل إضافية -->
+                    <circle cx="350" cy="175" r="3" fill="#888"/>
+                    <rect x="250" y="145" width="80" height="8" rx="2" fill="#1a1a1a"/>
+                    
+                    <!-- العلامة التجارية Glock -->
+                    <text x="270" y="178" font-family="Arial" font-size="14" font-weight="bold" fill="#888">GLOCK</text>
+                </svg>
+                <div class="front-sight"></div>
+                <div class="rear-sight">
+                    <div class="sight-notch"></div>
+                </div>
             </div>
         </div>
 
-        <div class="info-box">
-            <h3>ملاحظة هامة</h3>
-            <p>يرجى الاطلاع على جميع إجراءات السلامة قبل البدء في التدريب العملي</p>
+        <div class="controls-info">
+            <div>🖱️ استخدم الماوس للتصويب | 📱 أو قم بتحريك الجهاز</div>
+            <div>🔫 اضغط على الشاشة أو الماوس لإطلاق النار</div>
         </div>
 
-        <footer>
-            <p>© 2025 أكاديمية تعليم الرماية - جميع الحقوق محفوظة</p>
-        </footer>
+        <div class="game-over" id="gameOver">
+            <h2>أحسنت! 🎯</h2>
+            <p>النقاط النهائية: <span id="finalScore">0</span></p>
+            <p>نسبة الدقة: <span id="finalAccuracy">0</span>%</p>
+            <button class="restart-btn" onclick="restartGame()">العب مرة أخرى</button>
+        </div>
     </div>
 
     <script>
-        function openPDF(section) {
-            // هنا يمكنك وضع روابط ملفات PDF الحقيقية
-            const pdfLinks = {
-                'safety': 'safety_procedures.pdf',
-                'skills': 'shooting_skills.pdf',
-                'weapons': 'weapon_names.pdf'
-            };
+        const scene = document.getElementById('scene');
+        const target = document.getElementById('target');
+        const scoreElement = document.getElementById('score');
+        const accuracyElement = document.getElementById('accuracy');
+        const hitMarker = document.getElementById('hitMarker');
+        const muzzleFlash = document.getElementById('muzzleFlash');
+        const gunContainer = document.getElementById('gunContainer');
+        const gyroStatus = document.getElementById('gyroStatus');
+        const gameOver = document.getElementById('gameOver');
+        const finalScoreElement = document.getElementById('finalScore');
+        const finalAccuracyElement = document.getElementById('finalAccuracy');
 
-            const pdfNames = {
-                'safety': 'إجراءات السلامة',
-                'skills': 'مهارات الرماية الخمسة',
-                'weapons': 'مسميات الأسلحة'
-            };
+        let score = 0;
+        let shots = 0;
+        let hits = 0;
+        let sceneRotationX = 0;
+        let sceneRotationY = 0;
+        let targetOffsetX = 0;
+        let targetOffsetY = 0;
+        let gyroEnabled = false;
+        let gyroPermissionRequested = false;
 
-            // محاولة فتح ملف PDF
-            const link = pdfLinks[section];
-            
-            // في حالة عدم وجود الملف، يظهر رسالة
-            alert(`سيتم فتح ملف: ${pdfNames[section]}\n\nالملف: ${link}\n\nملاحظة: قم بإضافة ملفات PDF في نفس مجلد الموقع بالأسماء التالية:\n- safety_procedures.pdf\n- shooting_skills.pdf\n- weapon_names.pdf`);
-            
-            // فتح الملف في نافذة جديدة
-            window.open(link, '_blank');
+        // حركة الماوس
+        document.addEventListener('mousemove', (e) => {
+            if (!gyroEnabled) {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                
+                sceneRotationY = ((e.clientX - centerX) / centerX) * 15;
+                sceneRotationX = ((e.clientY - centerY) / centerY) * -10;
+                
+                updateScene();
+            }
+        });
+
+        // الجيروسكوب
+        async function requestGyroPermission() {
+            if (typeof DeviceOrientationEvent !== 'undefined' && 
+                typeof DeviceOrientationEvent.requestPermission === 'function') {
+                try {
+                    const permission = await DeviceOrientationEvent.requestPermission();
+                    if (permission === 'granted') {
+                        enableGyro();
+                    }
+                } catch (error) {
+                    console.log('Gyro permission denied');
+                }
+            } else {
+                enableGyro();
+            }
+            gyroStatus.style.display = 'none';
         }
+
+        function enableGyro() {
+            window.addEventListener('deviceorientation', handleOrientation);
+            gyroEnabled = true;
+        }
+
+        function handleOrientation(event) {
+            if (!gyroEnabled) return;
+            
+            const gamma = event.gamma; // يسار/يمين (-90 إلى 90)
+            const beta = event.beta;   // أمام/خلف (-180 إلى 180)
+            
+            sceneRotationY = (gamma / 90) * 30;
+            sceneRotationX = ((beta - 45) / 90) * 20;
+            
+            updateScene();
+        }
+
+        // تحديث المشهد
+        function updateScene() {
+            scene.style.transform = `
+                rotateX(${sceneRotationX}deg) 
+                rotateY(${sceneRotationY}deg)
+            `;
+            
+            gunContainer.style.transform = `
+                rotateX(${sceneRotationX * 0.3}deg) 
+                rotateY(${sceneRotationY * 0.3}deg)
+            `;
+        }
+
+        // إطلاق النار
+        document.addEventListener('click', shoot);
+        document.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            
+            if (!gyroPermissionRequested && 'ontouchstart' in window) {
+                gyroPermissionRequested = true;
+                requestGyroPermission();
+            }
+            
+            shoot(e);
+        });
+
+        function shoot(e) {
+            shots++;
+            
+            // فلاش الطلقة
+            muzzleFlash.style.opacity = '1';
+            setTimeout(() => {
+                muzzleFlash.style.opacity = '0';
+            }, 50);
+            
+            // حركة ارتداد المسدس
+            gunContainer.style.transition = 'transform 0.05s';
+            gunContainer.style.transform += ' translateY(-20px)';
+            setTimeout(() => {
+                gunContainer.style.transition = 'transform 0.2s';
+                updateScene();
+            }, 50);
+            
+            // فحص الإصابة
+            const clickX = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
+            const clickY = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
+            
+            const targetRect = target.getBoundingClientRect();
+            const targetCenterX = targetRect.left + targetRect.width / 2;
+            const targetCenterY = targetRect.top + targetRect.height / 2;
+            
+            const distance = Math.sqrt(
+                Math.pow(clickX - targetCenterX, 2) + 
+                Math.pow(clickY - targetCenterY, 2)
+            );
+            
+            const targetRadius = targetRect.width / 2;
+            
+            if (distance < targetRadius) {
+                // إصابة!
+                hits++;
+                
+                // حساب النقاط حسب المسافة من المركز
+                let points = 10;
+                if (distance < targetRadius * 0.1) {
+                    points = 100; // مركز
+                } else if (distance < targetRadius * 0.3) {
+                    points = 50; // أحمر
+                } else if (distance < targetRadius * 0.5) {
+                    points = 30; // أزرق
+                } else {
+                    points = 10; // خارجي
+                }
+                
+                score += points;
+                scoreElement.textContent = score;
+                
+                // عرض النقاط
+                const scorePopup = document.createElement('div');
+                scorePopup.className = 'score-popup';
+                scorePopup.textContent = '+' + points;
+                scorePopup.style.left = clickX + 'px';
+                scorePopup.style.top = clickY + 'px';
+                document.querySelector('.game-container').appendChild(scorePopup);
+                setTimeout(() => scorePopup.remove(), 1000);
+                
+                // علامة الإصابة
+                hitMarker.style.opacity = '1';
+                setTimeout(() => {
+                    hitMarker.style.opacity = '0';
+                }, 300);
+                
+                // تحريك الهدف
+                moveTarget();
+            } else {
+                // خطأ
+                const missMarker = document.createElement('div');
+                missMarker.className = 'miss-marker';
+                missMarker.textContent = '×';
+                missMarker.style.left = clickX + 'px';
+                missMarker.style.top = clickY + 'px';
+                document.querySelector('.game-container').appendChild(missMarker);
+                setTimeout(() => missMarker.remove(), 500);
+            }
+            
+            // تحديث الدقة
+            const accuracy = Math.round((hits / shots) * 100);
+            accuracyElement.textContent = accuracy;
+        }
+
+        // تحريك الهدف
+        function moveTarget() {
+            const maxX = window.innerWidth - 200;
+            const maxY = window.innerHeight - 300;
+            const minY = 100;
+            
+            targetOffsetX = Math.random() * maxX - maxX / 2;
+            targetOffsetY = Math.random() * (maxY - minY) + minY - window.innerHeight / 2;
+            
+            target.style.transition = 'transform 0.3s ease-out';
+            target.style.transform = `translate(calc(-50% + ${targetOffsetX}px), calc(-50% + ${targetOffsetY}px))`;
+        }
+
+        function restartGame() {
+            score = 0;
+            shots = 0;
+            hits = 0;
+            scoreElement.textContent = score;
+            accuracyElement.textContent = '100';
+            gameOver.style.display = 'none';
+            moveTarget();
+        }
+
+        // عرض رسالة الجيروسكوب على الأجهزة المحمولة
+        if ('ontouchstart' in window) {
+            gyroStatus.style.display = 'block';
+        }
+
+        // تحريك الهدف في البداية
+        moveTarget();
     </script>
 </body>
 </html>
