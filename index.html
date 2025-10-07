@@ -1,68 +1,198 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>لعبة التصويب - الجيروسكوب (واقعي)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة التصويب - الجيروسكوب</title>
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #000;
             overflow: hidden;
+            background: #000;
             touch-action: none;
         }
-        #gameCanvas { display:block; background: linear-gradient(to bottom, #87CEEB 0%, #90EE90 100%); }
+
+        #gameCanvas {
+            display: block;
+            background: linear-gradient(to bottom, #87CEEB 0%, #90EE90 100%);
+        }
+
         #ui {
-            position:absolute; top:20px; left:20px; color:white; font-size:24px;
-            text-shadow:2px 2px 4px rgba(0,0,0,0.8); z-index:10; direction:rtl;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            z-index: 10;
+            direction: rtl;
         }
-        #score, #distance {
-            background:rgba(0,0,0,0.5); padding:10px 20px; border-radius:10px; margin-bottom:10px;
+
+        #score {
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
-        #distance { font-size:28px; font-weight:bold; }
-        #controls {
-            position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
-            background:rgba(0,0,0,0.7); padding:20px; border-radius:15px; display:flex; gap:20px;
-            align-items:center; z-index:20; direction:rtl;
+
+        #distance {
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: bold;
         }
-        .control-btn {
-            width:60px; height:60px; background:rgba(255,255,255,0.15);
-            border:2px solid white; border-radius:50%; color:white; font-size:32px; cursor:pointer;
-            display:flex; align-items:center; justify-content:center;
+
+        #crosshair {
+            display: none;
         }
-        .control-btn:active { transform:scale(0.95); background:rgba(255,255,255,0.25); }
-        #shootBtn { width:80px; height:80px; background:rgba(255,0,0,0.25); border:3px solid #ff4444; font-size:24px; }
-        #ammo {
-            position:absolute; bottom:120px; right:30px; color:white; font-size:28px; text-shadow:2px 2px 4px rgba(0,0,0,0.8);
-            background:rgba(0,0,0,0.5); padding:15px 25px; border-radius:10px; direction:rtl; z-index:10;
-        }
-        #hitMarker {
-            position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#00ff00; font-size:72px;
-            font-weight:bold; text-shadow:0 0 10px #00ff00; pointer-events:none; opacity:0; z-index:30;
-        }
+
         #startScreen {
-            position:absolute; inset:0; background:rgba(0,0,0,0.92); display:flex; flex-direction:column;
-            justify-content:center; align-items:center; z-index:100; direction:rtl; text-align:center; padding:20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            direction: rtl;
         }
-        #startScreen h1 { color:white; font-size:48px; margin-bottom:20px; }
-        #startScreen p { color:white; font-size:20px; margin-bottom:30px; line-height:1.5; max-width:700px; }
+
+        #startScreen h1 {
+            color: white;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        #startScreen p {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
         #startBtn {
-            padding:15px 40px; font-size:24px; background:#4CAF50; color:white; border:none; border-radius:10px; cursor:pointer;
+            padding: 15px 40px;
+            font-size: 24px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
+
+        #startBtn:hover {
+            background: #45a049;
+            transform: scale(1.1);
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            direction: rtl;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            border-radius: 50%;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:active {
+            background: rgba(255,255,255,0.4);
+            transform: scale(0.95);
+        }
+
+        #shootBtn {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,0,0,0.3);
+            border: 3px solid #ff4444;
+            font-size: 24px;
+        }
+
+        #ammo {
+            position: absolute;
+            bottom: 120px;
+            right: 30px;
+            color: white;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.5);
+            padding: 15px 25px;
+            border-radius: 10px;
+            direction: rtl;
+        }
+
+        #hitMarker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff00;
+            font-size: 72px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff00;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 20;
+        }
+
         #gyroStatus {
-            position:absolute; top:20px; right:20px; background:rgba(0,0,0,0.5); padding:10px 20px; border-radius:10px;
-            color:white; font-size:18px; direction:rtl; z-index:10;
-        }
-        @media (max-width:700px) {
-            #startScreen h1 { font-size:34px; }
-            #startScreen p { font-size:18px; }
-            #ui { font-size:18px; }
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            direction: rtl;
         }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
+    
+    <div id="crosshair" style="display: none;">
+        <div class="crosshair-line horizontal"></div>
+        <div class="crosshair-line vertical"></div>
+        <div class="crosshair-line horizontal" style="left: 10px; width: 15px;"></div>
+        <div class="crosshair-line horizontal" style="left: calc(100% - 10px); width: 15px;"></div>
+        <div class="crosshair-line vertical" style="top: 10px; height: 15px;"></div>
+        <div class="crosshair-line vertical" style="top: calc(100% - 10px); height: 15px;"></div>
+    </div>
 
     <div id="ui">
         <div id="score">النقاط: <span id="scoreValue">0</span></div>
@@ -71,84 +201,63 @@
 
     <div id="gyroStatus">الجيروسكوب: <span id="gyroStatusText">جاري التحميل...</span></div>
 
-    <div id="ammo"><span id="currentAmmo">10</span> / <span id="totalAmmo">50</span></div>
+    <div id="ammo">
+        <span id="currentAmmo">10</span> / <span id="totalAmmo">50</span>
+    </div>
 
     <div id="hitMarker">✓ إصابة!</div>
 
     <div id="controls">
         <button class="control-btn" id="distanceDown">-</button>
-        <div style="color:white; font-size:20px;">المسافة</div>
+        <div style="color: white; font-size: 20px;">المسافة</div>
         <button class="control-btn" id="distanceUp">+</button>
         <button class="control-btn" id="shootBtn">🔫</button>
     </div>
 
     <div id="startScreen">
-        <h1>🎯 لعبة التصويب بالجيروسكوب (نسخة محسّنة)</h1>
+        <h1>🎯 لعبة التصويب بالجيروسكوب</h1>
         <p>
-            حرّك جهازك للتصويب على الهدف.<br>
-            استخدم أزرار + و - لتغيير المسافة.<br>
-            اضغط 🔫 أو المسح على الشاشة لإطلاق النار.<br>
-            تمت إضافة ارتداد انعم، حركة السلايد، وتدرجات لونية لواقعية أكثر.
+            حرك جهازك للتصويب على الهدف<br>
+            استخدم أزرار + و - لتغيير المسافة<br>
+            اضغط زر الإطلاق 🔫 للتصويب<br>
+            صوّب على مركز الهدف واحصل على أعلى نقاط!
         </p>
         <button id="startBtn">ابدأ اللعب</button>
     </div>
 
     <script>
-        // إعداد الكانفاس
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        // حالة اللعبة
+        // Game state
         let gameActive = false;
         let score = 0;
-        let distance = 10; // متر
+        let distance = 10; // meters
         let currentAmmo = 10;
         let totalAmmo = 50;
         let isReloading = false;
         let gyroSupported = false;
+        
+        // Gyroscope
+        let gyroX = 0;
+        let gyroY = 0;
+        let gunOffsetX = 0;
+        let gunOffsetY = 0;
 
-        // جيروسكوب/ميل
-        let gyroX = 0, gyroY = 0;
-        let gunOffsetX = 0, gunOffsetY = 0;
-
-        // تأثيرات السلاح
+        // Gun position
         let gunRecoil = 0;
-        let slideOffset = 0; // مقدار سحب السلايد للخلف
-        let slideVelocity = 0;
-        const slideMaxBack = 18;
-        const slideReturnSpeed = 1.6;
 
-        // Target fixed base
-        let targetBaseX = canvas.width / 2;
-        let targetBaseY = canvas.height / 2;
+        // Target position (fixed)
+        const targetBaseX = canvas.width / 2;
+        const targetBaseY = canvas.height / 2;
 
         function getTargetSize() {
+            // Target gets smaller with distance (perspective)
             const baseSize = 100;
             return baseSize / (distance / 10);
-        }
-
-        // --- polyfill لدالة roundRect إن لم تكن موجودة ---
-        if (!CanvasRenderingContext2D.prototype.roundRect) {
-            CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
-                if (typeof r === 'number') r = {tl: r, tr: r, br: r, bl: r};
-                this.beginPath();
-                this.moveTo(x + r.tl, y);
-                this.lineTo(x + w - r.tr, y);
-                this.quadraticCurveTo(x + w, y, x + w, y + r.tr);
-                this.lineTo(x + w, y + h - r.br);
-                this.quadraticCurveTo(x + w, y + h, x + w - r.br, y + h);
-                this.lineTo(x + r.bl, y + h);
-                this.quadraticCurveTo(x, y + h, x, y + h - r.bl);
-                this.lineTo(x, y + r.tl);
-                this.quadraticCurveTo(x, y, x + r.tl, y);
-                this.closePath();
-            };
         }
 
         function drawTarget() {
@@ -156,241 +265,265 @@
             const x = targetBaseX;
             const y = targetBaseY;
 
-            // خلفية دائرية خفيفة ظل
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(x, y, size * 1.6, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(0,0,0,0.08)';
-            ctx.fill();
-            ctx.restore();
-
+            // Draw rings
             const rings = 4;
             for (let i = rings; i >= 0; i--) {
                 ctx.beginPath();
                 ctx.arc(x, y, size * (i + 1) / (rings + 1), 0, Math.PI * 2);
-                ctx.fillStyle = i % 2 === 0 ? '#ff4444' : '#ffffff';
+                ctx.fillStyle = i % 2 === 0 ? '#ff4444' : 'white';
                 ctx.fill();
                 ctx.strokeStyle = '#333';
                 ctx.lineWidth = 2;
                 ctx.stroke();
             }
 
-            // نقطة المركز
+            // Center dot
             ctx.beginPath();
-            ctx.arc(x, y, size * 0.1, 0, Math.PI * 2);
-            ctx.fillStyle = '#000';
-            ctx.fill();
+                ctx.arc(x, y, size * 0.1, 0, Math.PI * 2);
+                ctx.fillStyle = '#000';
+                ctx.fill();
 
-            // مؤشر المسافة أسفل الهدف
-            ctx.fillStyle = 'rgba(0,0,0,0.6)';
-            ctx.fillRect(x - 64, y + size + 18, 128, 34);
+            // Distance indicator below target
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(x - 60, y + size + 20, 120, 30);
             ctx.fillStyle = 'white';
             ctx.font = '20px Arial';
             ctx.textAlign = 'center';
             ctx.fillText(distance + ' متر', x, y + size + 42);
         }
 
-        // دالة رسم السلاح بشكل أكثر واقعية
         function drawGun() {
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-
-            // إزاحة ناتجة عن الجيروسكوب
-            const tiltX = gunOffsetX * 0.45;
-            const tiltY = gunOffsetY * 0.45;
-
-            const recoilY = -gunRecoil; // ارتداد إلى أعلى (سالب)
-            const sOff = -slideOffset;  // سحب السلايد للخلف (يظهر للأعلى مع السحب)
-
-            // === السلايد (المعدن العلوي) ===
-            const slideX = centerX - 44 + tiltX;
-            const slideY = centerY - 48 + recoilY + tiltY + sOff;
-            const slideW = 88;
-            const slideH = 44;
-
-            // تدرج معدني للسلايد
-            const gradSlide = ctx.createLinearGradient(slideX, slideY, slideX + slideW, slideY + slideH);
-            gradSlide.addColorStop(0, '#0b0b0b');
-            gradSlide.addColorStop(0.4, '#1a1a1a');
-            gradSlide.addColorStop(0.6, '#2b2b2b');
-            gradSlide.addColorStop(1, '#0f0f0f');
-
-            ctx.save();
-            ctx.fillStyle = gradSlide;
-            ctx.strokeStyle = '#151515';
+            const offsetY = gunRecoil;
+            
+            // Move gun with gyro but keep it centered
+            const tiltX = gunOffsetX * 0.5;
+            const tiltY = gunOffsetY * 0.5;
+            
+            // === مسدس جلوك 19 ===
+            
+            // السلايد العلوي (أسود غير لامع)
+            ctx.fillStyle = '#0d0d0d';
+            ctx.fillRect(centerX - 38 + tiltX, centerY - 32 + offsetY + tiltY, 76, 42);
+            
+            // شطف السلايد الأمامي
+            ctx.fillStyle = '#0d0d0d';
+            ctx.beginPath();
+            ctx.moveTo(centerX - 38 + tiltX, centerY - 32 + offsetY + tiltY);
+            ctx.lineTo(centerX - 42 + tiltX, centerY - 20 + offsetY + tiltY);
+            ctx.lineTo(centerX - 42 + tiltX, centerY + 10 + offsetY + tiltY);
+            ctx.lineTo(centerX - 38 + tiltX, centerY + 10 + offsetY + tiltY);
+            ctx.closePath();
+            ctx.fill();
+            
+            // فوهة السلاح
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.ellipse(centerX - 42 + tiltX, centerY - 6 + offsetY + tiltY, 9, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#1a1a1a';
             ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.roundRect(slideX, slideY, slideW, slideH, 3);
-            ctx.fill();
             ctx.stroke();
-
-            // Serrations (ثنيات) على السلايد
-            ctx.fillStyle = 'rgba(0,0,0,0.85)';
-            for (let i = 0; i < 6; i++) {
-                const sx = slideX + 8 + i * 12;
-                ctx.fillRect(sx, slideY + 6, 6, 28);
+            
+            // Serrations الخلفية (خطوط الإمساك)
+            ctx.fillStyle = '#000';
+            for(let i = 0; i < 8; i++) {
+                ctx.fillRect(centerX + 10 + i * 5 + tiltX, centerY - 28 + offsetY + tiltY, 2, 32);
             }
-
-            // فتحة الماسورة (barrel) تظهر من الأمام مع لمعة خفيفة
-            ctx.fillStyle = '#0a0a0a';
-            ctx.beginPath();
-            ctx.ellipse(centerX - 46 + tiltX, centerY - 20 + recoilY + tiltY + sOff, 8, 12, 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-
-            // لمعة معدنية طفيفة على حواف السلايد
-            ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-            ctx.beginPath();
-            ctx.moveTo(slideX + 6, slideY + 8);
-            ctx.lineTo(slideX + slideW - 6, slideY + 10);
-            ctx.stroke();
-
-            // === الإطار السفلي (polymer) ===
-            const frameX = centerX - 36 + tiltX;
-            const frameY = centerY - 6 + recoilY + tiltY;
-            const frameW = 72;
-            const frameH = 110;
-
-            const gradFrame = ctx.createLinearGradient(frameX, frameY, frameX, frameY + frameH);
-            gradFrame.addColorStop(0, '#2b2b2b');
-            gradFrame.addColorStop(1, '#1f1f1f');
-
-            ctx.fillStyle = gradFrame;
-            ctx.beginPath();
-            ctx.roundRect(frameX, frameY, frameW, frameH, 4);
-            ctx.fill();
-
-            // خطوط نسيج مبسطة للقبضة
-            ctx.fillStyle = 'rgba(0,0,0,0.65)';
-            for (let r = 0; r < 10; r++) {
-                const yy = frameY + 30 + r * 7;
-                ctx.fillRect(frameX + 6, yy, frameW - 12, 3);
+            
+            // Serrations الأمامية
+            for(let i = 0; i < 4; i++) {
+                ctx.fillRect(centerX - 35 + i * 5 + tiltX, centerY - 28 + offsetY + tiltY, 2, 32);
             }
-
-            // شعار صغير
-            ctx.fillStyle = 'rgba(255,255,255,0.85)';
-            ctx.font = 'bold 9px Arial';
-            ctx.fillText('GLOCK', centerX - 12 + tiltX, frameY + 18);
-
-            // === المشاوير (sights) الخلفية والأمامية ===
-            const rearSightX = centerX - 32 + tiltX;
-            const rearSightY = slideY - 4;
-            ctx.fillStyle = '#050505';
-            ctx.fillRect(rearSightX, rearSightY, 12, 16);
-            ctx.fillRect(rearSightX + 44, rearSightY, 12, 16);
-            ctx.fillStyle = '#eee';
-            ctx.fillRect(rearSightX + 2, rearSightY + 6, 8, 3);
-            ctx.fillRect(rearSightX + 46, rearSightY + 6, 8, 3);
-
-            const frontSightX = centerX - 7 + tiltX;
-            const frontSightY = slideY - 18;
-            ctx.fillStyle = '#060606';
+            
+            // مؤشر التعبئة (Loaded Chamber Indicator)
+            ctx.fillStyle = '#ff4444';
             ctx.beginPath();
-            ctx.roundRect(frontSightX, frontSightY, 14, 22, 2);
+            ctx.arc(centerX + 25 + tiltX, centerY - 25 + offsetY + tiltY, 2, 0, Math.PI * 2);
             ctx.fill();
-
-            // نقطة مضيئة أمامية مع هالة
-            ctx.save();
-            ctx.shadowBlur = 18;
-            ctx.shadowColor = '#00ff00';
-            ctx.fillStyle = '#00ff00';
+            
+            // الإطار السفلي (Polymer Frame) - رمادي
+            ctx.fillStyle = '#2a2a2a';
             ctx.beginPath();
-            ctx.arc(centerX + tiltX, frontSightY + 8, 4, 0, Math.PI * 2);
+            ctx.roundRect(centerX - 35 + tiltX, centerY + 10 + offsetY + tiltY, 70, 65, 2);
             ctx.fill();
-            ctx.restore();
-
-            // === المخزن (magazine) ===
-            const magX = centerX - 18 + tiltX;
-            const magY = frameY + 72;
-            ctx.fillStyle = '#0b0b0b';
-            ctx.fillRect(magX, magY, 36, 46);
-            ctx.strokeStyle = '#111';
-            ctx.strokeRect(magX, magY, 36, 46);
-
-            // خطوط تعريف المخزن
-            ctx.strokeStyle = 'rgba(255,255,255,0.03)';
-            for (let i = 0; i < 3; i++) {
+            
+            // منطقة القبضة المحززة
+            ctx.fillStyle = '#1a1a1a';
+            for(let i = 0; i < 12; i++) {
+                for(let j = 0; j < 3; j++) {
+                    ctx.fillRect(centerX - 28 + j * 8 + tiltX, centerY + 25 + i * 4 + offsetY + tiltY, 4, 2);
+                    ctx.fillRect(centerX + 10 + j * 8 + tiltX, centerY + 25 + i * 4 + offsetY + tiltY, 4, 2);
+                }
+            }
+            
+            // شعار جلوك
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 8px Arial';
+            ctx.fillText('GLOCK', centerX - 10 + tiltX, centerY + 20 + offsetY + tiltY);
+            ctx.font = '6px Arial';
+            ctx.fillText('9mm', centerX - 6 + tiltX, centerY + 28 + offsetY + tiltY);
+            
+            // Trigger Guard (حارس الزناد)
+            ctx.strokeStyle = '#2a2a2a';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.arc(centerX + tiltX, centerY + 58 + offsetY + tiltY, 14, 0, Math.PI);
+            ctx.stroke();
+            
+            // الزناد (Trigger Safety)
+            ctx.fillStyle = '#1a1a1a';
+            ctx.beginPath();
+            ctx.roundRect(centerX - 5 + tiltX, centerY + 48 + offsetY + tiltY, 10, 14, 2);
+            ctx.fill();
+            // أمان الزناد الصغير
+            ctx.fillStyle = '#ff6600';
+            ctx.fillRect(centerX - 1 + tiltX, centerY + 52 + offsetY + tiltY, 2, 6);
+            
+            // Magazine (المخزن)
+            ctx.fillStyle = '#0d0d0d';
+            ctx.fillRect(centerX - 17 + tiltX, centerY + 75 + offsetY + tiltY, 34, 40);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(centerX - 17 + tiltX, centerY + 75 + offsetY + tiltY, 34, 40);
+            // قاعدة المخزن
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(centerX - 19 + tiltX, centerY + 115 + offsetY + tiltY, 38, 8);
+            
+            // خطوط على المخزن
+            for(let i = 0; i < 3; i++) {
+                ctx.strokeStyle = '#2a2a2a';
+                ctx.lineWidth = 1;
                 ctx.beginPath();
-                ctx.moveTo(magX + 4, magY + 12 + i * 12);
-                ctx.lineTo(magX + 32, magY + 12 + i * 12);
+                ctx.moveTo(centerX - 15 + tiltX, centerY + 85 + i * 10 + offsetY + tiltY);
+                ctx.lineTo(centerX + 15 + tiltX, centerY + 85 + i * 10 + offsetY + tiltY);
                 ctx.stroke();
             }
+            
+            // === المشاعر (Sights) ===
+            
+            // المشعر الخلفي (Rear Sight) - أسود بفتحة بيضاء
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(centerX - 32 + tiltX, centerY - 37 + offsetY + tiltY, 12, 18);
+            ctx.fillRect(centerX + 20 + tiltX, centerY - 37 + offsetY + tiltY, 12, 18);
+            // الفتحة البيضاء
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(centerX - 22 + tiltX, centerY - 35 + offsetY + tiltY, 44, 3);
+            
+            // المشعر الأمامي (Front Sight) - أسود مع نقطة خضراء مضيئة
+            ctx.fillStyle = '#0a0a0a';
+            ctx.beginPath();
+            ctx.roundRect(centerX - 7 + tiltX, centerY - 48 + offsetY + tiltY, 14, 20, 1);
+            ctx.fill();
+            
+            // النقطة الخضراء المضيئة (Tritium Night Sight)
+            ctx.fillStyle = '#00ff00';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#00ff00';
+            ctx.beginPath();
+            ctx.arc(centerX + tiltX, centerY - 40 + offsetY + tiltY, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            
+            // إضافة حلقة ضوئية حول النقطة
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX + tiltX, centerY - 40 + offsetY + tiltY, 6, 0, Math.PI * 2);
+            ctx.stroke();
 
-            // تقليل الارتداد تدريجيًا
-            gunRecoil *= 0.82;
-
-            ctx.restore();
-
-            // نقطة التصويب لإعادة الاستخدام
-            const aimX = centerX + tiltX;
-            const aimY = frontSightY + 8 + tiltY + recoilY;
-            return { aimX, aimY };
+            gunRecoil *= 0.85;
+            
+            return {
+                aimX: centerX + tiltX,
+                aimY: centerY - 40 + offsetY + tiltY
+            };
         }
 
-        // إطلاق نار: يتعامل مع ammo, recoil, slide movement, hit detection
         function shoot() {
             if (!gameActive || currentAmmo <= 0 || isReloading) return;
 
             currentAmmo--;
             document.getElementById('currentAmmo').textContent = currentAmmo;
+            gunRecoil = 15;
 
-            // زيادة الارتداد
-            gunRecoil = 18;
-
-            // دفع السلايد للخلف
-            slideOffset = Math.min(slideOffset + slideMaxBack, slideMaxBack);
-            slideVelocity = 12;
-
-            // حساب الإصابة
+            // التصويب يكون من النقطة الخضراء الصغيرة على السلاح
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const tiltX = gunOffsetX * 0.45;
-            const tiltY = gunOffsetY * 0.45;
+            const tiltX = gunOffsetX * 0.5;
+            const tiltY = gunOffsetY * 0.5;
+            
+            // موضع النقطة الخضراء (نقطة التصويب)
             const aimX = centerX + tiltX;
             const aimY = centerY - 40 + tiltY;
-
+            
             const targetSize = getTargetSize();
+            
+            // حساب المسافة بين نقطة التصويب والهدف
             const dx = aimX - targetBaseX;
             const dy = aimY - targetBaseY;
             const distToTarget = Math.sqrt(dx * dx + dy * dy);
 
             if (distToTarget < targetSize) {
+                // Calculate score based on accuracy
                 const accuracy = 1 - (distToTarget / targetSize);
-                const points = Math.round(10 + accuracy * 40);
+                const points = Math.round(10 + accuracy * 40); // 10-50 points
                 score += points;
                 document.getElementById('scoreValue').textContent = score;
-
+                
+                // Show hit marker
                 const hitMarker = document.getElementById('hitMarker');
                 hitMarker.style.opacity = '1';
                 hitMarker.textContent = `✓ +${points}`;
-                setTimeout(() => { hitMarker.style.opacity = '0'; }, 600);
+                setTimeout(() => {
+                    hitMarker.style.opacity = '0';
+                }, 500);
 
-                // فلاش مرئي
-                ctx.fillStyle = 'rgba(255, 230, 120, 0.22)';
+                // Flash effect
+                ctx.fillStyle = 'rgba(255, 255, 0, 0.3)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
 
-            // إذا انتهى المخزون في المخزن، أعد تعبئة تلقائيًا إن توفّر
+            // Muzzle flash من فوهة السلاح
+            const flashX = centerX + tiltX;
+            const flashY = centerY - 38 + tiltY;
+            
+            // وميض كبير
+            ctx.fillStyle = 'rgba(255, 220, 0, 0.9)';
+            ctx.shadowBlur = 30;
+            ctx.shadowColor = 'rgba(255, 200, 0, 0.8)';
+            ctx.beginPath();
+            ctx.arc(flashX, flashY, 35, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // وميض داخلي ساطع
+            ctx.fillStyle = 'rgba(255, 255, 200, 0.95)';
+            ctx.beginPath();
+            ctx.arc(flashX, flashY, 20, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Reload if empty
             if (currentAmmo === 0 && totalAmmo > 0) {
                 reload();
             }
         }
 
         function reload() {
-            if (isReloading || totalAmmo === 0 || currentAmmo === 10) return;
+            if (isReloading || totalAmmo === 0) return;
+            
             isReloading = true;
-            // مؤقت تعبئة
             setTimeout(() => {
-                const needed = 10 - currentAmmo;
-                const taken = Math.min(needed, totalAmmo);
-                currentAmmo += taken;
-                totalAmmo -= taken;
+                const ammoNeeded = 10 - currentAmmo;
+                const ammoToReload = Math.min(ammoNeeded, totalAmmo);
+                currentAmmo += ammoToReload;
+                totalAmmo -= ammoToReload;
+                
                 document.getElementById('currentAmmo').textContent = currentAmmo;
                 document.getElementById('totalAmmo').textContent = totalAmmo;
                 isReloading = false;
-            }, 1400);
+            }, 1500);
         }
 
         function changeDistance(delta) {
@@ -398,32 +531,25 @@
             document.getElementById('distanceValue').textContent = distance;
         }
 
-        // حلقة التحديث: رسم الخلفية، تحريك السلايد، رسم الهدف والسلاح
         function updateGame() {
             if (!gameActive) return;
 
-            // حركة السلايد: إرجاع تدريجي للموضع الأصلي
-            if (slideOffset > 0) {
-                // قلل offset تدريجياً، استعمل velocity لتنعيم الحركة
-                slideOffset -= slideReturnSpeed * (1 + slideVelocity * 0.04);
-                slideVelocity *= 0.82;
-                if (slideOffset < 0) slideOffset = 0;
-                if (slideVelocity < 0.1) slideVelocity = 0;
-            }
-
-            // رسم الخلفية
+            // Clear canvas
             ctx.fillStyle = '#87CEEB';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Ground
             ctx.fillStyle = '#90EE90';
             ctx.fillRect(0, canvas.height * 0.6, canvas.width, canvas.height * 0.4);
 
-            // جبال وخلفية بسيطة
+            // Mountains in background
             ctx.fillStyle = '#5a6b52';
             ctx.beginPath();
             ctx.moveTo(0, canvas.height * 0.6);
             ctx.lineTo(canvas.width * 0.3, canvas.height * 0.3);
             ctx.lineTo(canvas.width * 0.6, canvas.height * 0.6);
             ctx.fill();
+
             ctx.fillStyle = '#6b7c64';
             ctx.beginPath();
             ctx.moveTo(canvas.width * 0.4, canvas.height * 0.6);
@@ -431,18 +557,15 @@
             ctx.lineTo(canvas.width, canvas.height * 0.6);
             ctx.fill();
 
-            // تحديث موقع الهدف المركزي عند تغيير حجم نافذة
-            targetBaseX = canvas.width / 2;
-            targetBaseY = canvas.height / 2;
-
-            // رسم الهدف ثم السلاح (السلاح في المقدمة)
+            // Draw target
             drawTarget();
+
+            // Draw gun (يُرسم بعد الهدف ليكون في المقدمة)
             drawGun();
 
             requestAnimationFrame(updateGame);
         }
 
-        // Start game
         function startGame() {
             document.getElementById('startScreen').style.display = 'none';
             gameActive = true;
@@ -450,22 +573,18 @@
             distance = 10;
             currentAmmo = 10;
             totalAmmo = 50;
-            isReloading = false;
-            gunRecoil = 0;
-            slideOffset = 0;
-            slideVelocity = 0;
-
+            
             document.getElementById('scoreValue').textContent = score;
             document.getElementById('distanceValue').textContent = distance;
             document.getElementById('currentAmmo').textContent = currentAmmo;
             document.getElementById('totalAmmo').textContent = totalAmmo;
-
+            
             requestAnimationFrame(updateGame);
         }
 
-        // أحداث الأزرار
+        // Event listeners
         document.getElementById('startBtn').addEventListener('click', () => {
-            // طلب إذن الجيروسكوب على iOS إن أمكن
+            // Request gyroscope permission
             if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
                 DeviceOrientationEvent.requestPermission()
                     .then(permissionState => {
@@ -482,20 +601,20 @@
                         startGame();
                     });
             } else {
-                // تحقق سريع من وجود الجيروسكوب
-                const onceHandler = (e) => {
-                    if (e && e.gamma !== null) {
+                // Check if gyro is available
+                window.addEventListener('deviceorientation', (e) => {
+                    if (e.gamma !== null) {
                         gyroSupported = true;
                         document.getElementById('gyroStatusText').textContent = 'نشط ✓';
                     }
-                };
-                window.addEventListener('deviceorientation', onceHandler, { once: true });
+                }, { once: true });
+                
                 setTimeout(() => {
                     if (!gyroSupported) {
                         document.getElementById('gyroStatusText').textContent = 'غير مدعوم';
                     }
-                }, 900);
-
+                }, 1000);
+                
                 startGame();
             }
         });
@@ -504,44 +623,30 @@
         document.getElementById('distanceUp').addEventListener('click', () => changeDistance(5));
         document.getElementById('distanceDown').addEventListener('click', () => changeDistance(-5));
 
-        // لمس الشاشة يطلق النار
-        canvas.addEventListener('touchend', (e) => {
-            if (gameActive) shoot();
-        });
-
-        // جيروسكوب: تحديث إزاحة السلاح بناءً على الميلان
+        // Gyroscope support
         window.addEventListener('deviceorientation', (e) => {
-            if (gameActive && e && e.gamma !== null && e.beta !== null) {
-                // المدى المصغّر للميل (تقييد لقيم صغيرة)
+            if (gameActive && e.gamma !== null && e.beta !== null) {
+                // حساب الميلان للسلاح - زيادة الحساسية
                 gyroX = Math.max(-1, Math.min(1, e.gamma / 30));
                 gyroY = Math.max(-1, Math.min(1, (e.beta - 45) / 30));
+                
+                // تحديث إزاحة السلاح بناءً على الجيروسكوب
                 gunOffsetX = gyroX * 200;
                 gunOffsetY = gyroY * 150;
             }
         });
 
-        // دعم الماوس لتجربة على الحاسوب: حرك الماوس لتحريك السلاح (محاكاة الجيروسكوب)
-        let isMouseDown = false;
-        window.addEventListener('mousemove', (e) => {
-            if (!gameActive) return;
-            // إحداثيات نسبة من مركز الشاشة
-            const dx = (e.clientX - canvas.width / 2) / (canvas.width / 2);
-            const dy = (e.clientY - canvas.height / 2) / (canvas.height / 2);
-            gunOffsetX = dx * 120;
-            gunOffsetY = dy * 80;
-        });
-        window.addEventListener('mousedown', (e) => {
-            if (gameActive) shoot();
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
 
-        // منع السلوك الافتراضي للتمرير عند المس (لأجهزة اللمس)
-        window.addEventListener('touchmove', (e) => { e.preventDefault(); }, { passive: false });
-
-        // تهيئة UI القيم الظاهرة
-        document.getElementById('scoreValue').textContent = score;
-        document.getElementById('distanceValue').textContent = distance;
-        document.getElementById('currentAmmo').textContent = currentAmmo;
-        document.getElementById('totalAmmo').textContent = totalAmmo;
+        // Touch controls for shooting
+        canvas.addEventListener('touchend', (e) => {
+            if (gameActive) {
+                shoot();
+            }
+        });
     </script>
 </body>
 </html>
