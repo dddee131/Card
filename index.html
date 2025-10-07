@@ -303,137 +303,258 @@
             
             // === اليد اليسرى (الداعمة) ===
             // الساعد الأيسر
-            ctx.fillStyle = '#d4a574';
+            const gradient1 = ctx.createLinearGradient(centerX - 100, 0, centerX - 50, 0);
+            gradient1.addColorStop(0, '#c49563');
+            gradient1.addColorStop(1, '#d4a574');
+            ctx.fillStyle = gradient1;
             ctx.beginPath();
-            ctx.moveTo(centerX - 100 + tiltX, canvas.height);
-            ctx.lineTo(centerX - 80 + tiltX, centerY + 80 + offsetY + tiltY);
-            ctx.lineTo(centerX - 50 + tiltX, centerY + 85 + offsetY + tiltY);
-            ctx.lineTo(centerX - 70 + tiltX, canvas.height);
+            ctx.moveTo(centerX - 120 + tiltX, canvas.height);
+            ctx.lineTo(centerX - 85 + tiltX, centerY + 75 + offsetY + tiltY);
+            ctx.lineTo(centerX - 55 + tiltX, centerY + 80 + offsetY + tiltY);
+            ctx.lineTo(centerX - 80 + tiltX, canvas.height);
             ctx.closePath();
             ctx.fill();
             
-            // اليد اليسرى (تمسك المسدس من الأمام)
+            // اليد اليسرى تحيط بالمسدس
             ctx.fillStyle = '#c49563';
             ctx.beginPath();
-            ctx.ellipse(centerX - 40 + tiltX, centerY + 60 + offsetY + tiltY, 25, 30, 0.3, 0, Math.PI * 2);
+            ctx.ellipse(centerX - 42 + tiltX, centerY + 55 + offsetY + tiltY, 28, 35, 0.4, 0, Math.PI * 2);
             ctx.fill();
             
-            // الأصابع اليسرى
+            // تفاصيل راحة اليد اليسرى
+            ctx.strokeStyle = '#b8875a';
+            ctx.lineWidth = 1;
             for(let i = 0; i < 3; i++) {
+                ctx.beginPath();
+                ctx.arc(centerX - 50 + i * 5 + tiltX, centerY + 60 + i * 3 + offsetY + tiltY, 2, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+            
+            // الأصابع اليسرى (أربعة أصابع تلتف)
+            for(let i = 0; i < 4; i++) {
                 ctx.fillStyle = '#b8875a';
-                ctx.fillRect(centerX - 45 + i * 8 + tiltX, centerY + 40 + offsetY + tiltY, 6, 25);
+                ctx.beginPath();
+                ctx.roundRect(centerX - 50 + i * 7 + tiltX, centerY + 35 + offsetY + tiltY, 6, 28, 3);
+                ctx.fill();
+                // مفاصل الأصابع
+                ctx.strokeStyle = '#a37750';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(centerX - 48 + i * 7 + tiltX, centerY + 45 + offsetY + tiltY);
+                ctx.lineTo(centerX - 45 + i * 7 + tiltX, centerY + 45 + offsetY + tiltY);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(centerX - 48 + i * 7 + tiltX, centerY + 53 + offsetY + tiltY);
+                ctx.lineTo(centerX - 45 + i * 7 + tiltX, centerY + 53 + offsetY + tiltY);
+                ctx.stroke();
             }
             
             // === اليد اليمنى (الممسكة) ===
             // الساعد الأيمن
-            ctx.fillStyle = '#d4a574';
+            const gradient2 = ctx.createLinearGradient(centerX + 50, 0, centerX + 100, 0);
+            gradient2.addColorStop(0, '#d4a574');
+            gradient2.addColorStop(1, '#c49563');
+            ctx.fillStyle = gradient2;
             ctx.beginPath();
             ctx.moveTo(canvas.width, canvas.height);
-            ctx.lineTo(centerX + 100 + tiltX, centerY + 100 + offsetY + tiltY);
-            ctx.lineTo(centerX + 70 + tiltX, centerY + 90 + offsetY + tiltY);
-            ctx.lineTo(canvas.width, centerY + 150);
+            ctx.lineTo(centerX + 105 + tiltX, centerY + 95 + offsetY + tiltY);
+            ctx.lineTo(centerX + 75 + tiltX, centerY + 85 + offsetY + tiltY);
+            ctx.lineTo(canvas.width - 20, canvas.height);
             ctx.closePath();
             ctx.fill();
             
-            // اليد اليمنى (القبضة)
+            // راحة اليد اليمنى
             ctx.fillStyle = '#c49563';
             ctx.beginPath();
-            ctx.ellipse(centerX + 40 + tiltX, centerY + 70 + offsetY + tiltY, 20, 35, -0.2, 0, Math.PI * 2);
+            ctx.ellipse(centerX + 42 + tiltX, centerY + 65 + offsetY + tiltY, 22, 38, -0.2, 0, Math.PI * 2);
             ctx.fill();
+            
+            // خطوط راحة اليد
+            ctx.strokeStyle = '#b8875a';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(centerX + 35 + tiltX, centerY + 50 + offsetY + tiltY);
+            ctx.quadraticCurveTo(centerX + 40 + tiltX, centerY + 60 + offsetY + tiltY, centerX + 38 + tiltX, centerY + 75 + offsetY + tiltY);
+            ctx.stroke();
             
             // الإبهام الأيمن
             ctx.fillStyle = '#b8875a';
             ctx.beginPath();
-            ctx.ellipse(centerX + 15 + tiltX, centerY + 50 + offsetY + tiltY, 12, 18, 0.5, 0, Math.PI * 2);
+            ctx.ellipse(centerX + 18 + tiltX, centerY + 45 + offsetY + tiltY, 13, 20, 0.6, 0, Math.PI * 2);
             ctx.fill();
-            
-            // الأصابع اليمنى على القبضة
-            for(let i = 0; i < 3; i++) {
-                ctx.fillStyle = '#b8875a';
-                ctx.fillRect(centerX + 30 + tiltX, centerY + 55 + i * 15 + offsetY + tiltY, 18, 10);
-            }
-            
-            // === السلاح ===
-            // Gun slide (الجزء العلوي)
-            ctx.fillStyle = '#1a1a1a';
-            ctx.fillRect(centerX - 35 + tiltX, centerY - 30 + offsetY + tiltY, 70, 40);
-            
-            // Gun barrel opening
-            ctx.fillStyle = '#000';
-            ctx.fillRect(centerX - 8 + tiltX, centerY - 35 + offsetY + tiltY, 16, 8);
-            
-            // Slide serrations (الخطوط على السلايد)
-            ctx.fillStyle = '#2a2a2a';
-            for(let i = 0; i < 5; i++) {
-                ctx.fillRect(centerX - 25 + i * 10 + tiltX, centerY - 25 + offsetY + tiltY, 3, 20);
-            }
-            
-            // Gun frame (الجسم السفلي)
-            ctx.fillStyle = '#2c2c2c';
-            ctx.fillRect(centerX - 30 + tiltX, centerY + 10 + offsetY + tiltY, 60, 60);
-            
-            // Trigger guard
-            ctx.strokeStyle = '#2c2c2c';
-            ctx.lineWidth = 4;
+            // مفصل الإبهام
+            ctx.strokeStyle = '#a37750';
+            ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.arc(centerX + tiltX, centerY + 55 + offsetY + tiltY, 12, 0, Math.PI);
+            ctx.arc(centerX + 20 + tiltX, centerY + 50 + offsetY + tiltY, 3, 0, Math.PI);
             ctx.stroke();
             
-            // Trigger
-            ctx.fillStyle = '#3a3a3a';
-            ctx.fillRect(centerX - 4 + tiltX, centerY + 45 + offsetY + tiltY, 8, 12);
+            // === مسدس جلوك 19 ===
             
-            // السبابة على الزناد
+            // السلايد العلوي (أسود غير لامع)
+            ctx.fillStyle = '#0d0d0d';
+            ctx.fillRect(centerX - 38 + tiltX, centerY - 32 + offsetY + tiltY, 76, 42);
+            
+            // شطف السلايد الأمامي
+            ctx.fillStyle = '#0d0d0d';
+            ctx.beginPath();
+            ctx.moveTo(centerX - 38 + tiltX, centerY - 32 + offsetY + tiltY);
+            ctx.lineTo(centerX - 42 + tiltX, centerY - 20 + offsetY + tiltY);
+            ctx.lineTo(centerX - 42 + tiltX, centerY + 10 + offsetY + tiltY);
+            ctx.lineTo(centerX - 38 + tiltX, centerY + 10 + offsetY + tiltY);
+            ctx.closePath();
+            ctx.fill();
+            
+            // فوهة السلاح
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.ellipse(centerX - 42 + tiltX, centerY - 6 + offsetY + tiltY, 9, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Serrations الخلفية (خطوط الإمساك)
+            ctx.fillStyle = '#000';
+            for(let i = 0; i < 8; i++) {
+                ctx.fillRect(centerX + 10 + i * 5 + tiltX, centerY - 28 + offsetY + tiltY, 2, 32);
+            }
+            
+            // Serrations الأمامية
+            for(let i = 0; i < 4; i++) {
+                ctx.fillRect(centerX - 35 + i * 5 + tiltX, centerY - 28 + offsetY + tiltY, 2, 32);
+            }
+            
+            // مؤشر التعبئة (Loaded Chamber Indicator)
+            ctx.fillStyle = '#ff4444';
+            ctx.beginPath();
+            ctx.arc(centerX + 25 + tiltX, centerY - 25 + offsetY + tiltY, 2, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // الإطار السفلي (Polymer Frame) - رمادي
+            ctx.fillStyle = '#2a2a2a';
+            ctx.beginPath();
+            ctx.roundRect(centerX - 35 + tiltX, centerY + 10 + offsetY + tiltY, 70, 65, 2);
+            ctx.fill();
+            
+            // منطقة القبضة المحززة
+            ctx.fillStyle = '#1a1a1a';
+            for(let i = 0; i < 12; i++) {
+                for(let j = 0; j < 3; j++) {
+                    ctx.fillRect(centerX - 28 + j * 8 + tiltX, centerY + 25 + i * 4 + offsetY + tiltY, 4, 2);
+                    ctx.fillRect(centerX + 10 + j * 8 + tiltX, centerY + 25 + i * 4 + offsetY + tiltY, 4, 2);
+                }
+            }
+            
+            // شعار جلوك
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 8px Arial';
+            ctx.fillText('GLOCK', centerX - 10 + tiltX, centerY + 20 + offsetY + tiltY);
+            ctx.font = '6px Arial';
+            ctx.fillText('9mm', centerX - 6 + tiltX, centerY + 28 + offsetY + tiltY);
+            
+            // Trigger Guard (حارس الزناد)
+            ctx.strokeStyle = '#2a2a2a';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.arc(centerX + tiltX, centerY + 58 + offsetY + tiltY, 14, 0, Math.PI);
+            ctx.stroke();
+            
+            // الزناد (Trigger Safety)
+            ctx.fillStyle = '#1a1a1a';
+            ctx.beginPath();
+            ctx.roundRect(centerX - 5 + tiltX, centerY + 48 + offsetY + tiltY, 10, 14, 2);
+            ctx.fill();
+            // أمان الزناد الصغير
+            ctx.fillStyle = '#ff6600';
+            ctx.fillRect(centerX - 1 + tiltX, centerY + 52 + offsetY + tiltY, 2, 6);
+            
+            // إصبع السبابة على الزناد
             ctx.fillStyle = '#b8875a';
             ctx.beginPath();
-            ctx.ellipse(centerX + 8 + tiltX, centerY + 50 + offsetY + tiltY, 8, 15, -0.3, 0, Math.PI * 2);
+            ctx.ellipse(centerX + 10 + tiltX, centerY + 54 + offsetY + tiltY, 9, 17, -0.4, 0, Math.PI * 2);
             ctx.fill();
-            
-            // Magazine
-            ctx.fillStyle = '#1a1a1a';
-            ctx.fillRect(centerX - 15 + tiltX, centerY + 70 + offsetY + tiltY, 30, 35);
-            
-            // Grip texture
-            ctx.strokeStyle = '#3a3a3a';
+            // مفصل السبابة
+            ctx.strokeStyle = '#a37750';
             ctx.lineWidth = 1;
-            for(let i = 0; i < 8; i++) {
+            ctx.beginPath();
+            ctx.arc(centerX + 12 + tiltX, centerY + 56 + offsetY + tiltY, 3, 0, Math.PI);
+            ctx.stroke();
+            
+            // الأصابع الثلاثة على القبضة
+            for(let i = 0; i < 3; i++) {
+                ctx.fillStyle = '#b8875a';
                 ctx.beginPath();
-                ctx.moveTo(centerX - 25 + tiltX, centerY + 20 + i * 8 + offsetY + tiltY);
-                ctx.lineTo(centerX - 20 + tiltX, centerY + 22 + i * 8 + offsetY + tiltY);
-                ctx.stroke();
+                ctx.roundRect(centerX + 32 + tiltX, centerY + 52 + i * 16 + offsetY + tiltY, 20, 12, 2);
+                ctx.fill();
+                // مفاصل الأصابع
+                ctx.strokeStyle = '#a37750';
+                ctx.lineWidth = 1;
+                for(let j = 0; j < 2; j++) {
+                    ctx.beginPath();
+                    ctx.moveTo(centerX + 35 + tiltX, centerY + 55 + i * 16 + j * 5 + offsetY + tiltY);
+                    ctx.lineTo(centerX + 49 + tiltX, centerY + 55 + i * 16 + j * 5 + offsetY + tiltY);
+                    ctx.stroke();
+                }
+            }
+            
+            // Magazine (المخزن)
+            ctx.fillStyle = '#0d0d0d';
+            ctx.fillRect(centerX - 17 + tiltX, centerY + 75 + offsetY + tiltY, 34, 40);
+            ctx.strokeStyle = '#1a1a1a';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(centerX - 17 + tiltX, centerY + 75 + offsetY + tiltY, 34, 40);
+            // قاعدة المخزن
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(centerX - 19 + tiltX, centerY + 115 + offsetY + tiltY, 38, 8);
+            
+            // خطوط على المخزن
+            for(let i = 0; i < 3; i++) {
+                ctx.strokeStyle = '#2a2a2a';
+                ctx.lineWidth = 1;
                 ctx.beginPath();
-                ctx.moveTo(centerX + 20 + tiltX, centerY + 20 + i * 8 + offsetY + tiltY);
-                ctx.lineTo(centerX + 25 + tiltX, centerY + 22 + i * 8 + offsetY + tiltY);
+                ctx.moveTo(centerX - 15 + tiltX, centerY + 85 + i * 10 + offsetY + tiltY);
+                ctx.lineTo(centerX + 15 + tiltX, centerY + 85 + i * 10 + offsetY + tiltY);
                 ctx.stroke();
             }
-
-            // Rear sight (المشعر الخلفي)
+            
+            // === المشاعر (Sights) ===
+            
+            // المشعر الخلفي (Rear Sight) - أسود بفتحة بيضاء
             ctx.fillStyle = '#0a0a0a';
-            ctx.fillRect(centerX - 30 + tiltX, centerY - 35 + offsetY + tiltY, 10, 15);
-            ctx.fillRect(centerX + 20 + tiltX, centerY - 35 + offsetY + tiltY, 10, 15);
+            ctx.fillRect(centerX - 32 + tiltX, centerY - 37 + offsetY + tiltY, 12, 18);
+            ctx.fillRect(centerX + 20 + tiltX, centerY - 37 + offsetY + tiltY, 12, 18);
+            // الفتحة البيضاء
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(centerX - 22 + tiltX, centerY - 35 + offsetY + tiltY, 44, 3);
             
-            // Rear sight notch
-            ctx.fillStyle = '#4a4a4a';
-            ctx.fillRect(centerX - 20 + tiltX, centerY - 33 + offsetY + tiltY, 40, 2);
-            
-            // Front sight post
+            // المشعر الأمامي (Front Sight) - أسود مع نقطة خضراء مضيئة
             ctx.fillStyle = '#0a0a0a';
-            ctx.fillRect(centerX - 6 + tiltX, centerY - 45 + offsetY + tiltY, 12, 18);
+            ctx.beginPath();
+            ctx.roundRect(centerX - 7 + tiltX, centerY - 48 + offsetY + tiltY, 14, 20, 1);
+            ctx.fill();
             
-            // نقطة التصويب الخضراء
+            // النقطة الخضراء المضيئة (Tritium Night Sight)
             ctx.fillStyle = '#00ff00';
-            ctx.shadowBlur = 15;
+            ctx.shadowBlur = 20;
             ctx.shadowColor = '#00ff00';
             ctx.beginPath();
-            ctx.arc(centerX + tiltX, centerY - 38 + offsetY + tiltY, 3, 0, Math.PI * 2);
+            ctx.arc(centerX + tiltX, centerY - 40 + offsetY + tiltY, 4, 0, Math.PI * 2);
             ctx.fill();
             ctx.shadowBlur = 0;
+            
+            // إضافة حلقة ضوئية حول النقطة
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX + tiltX, centerY - 40 + offsetY + tiltY, 6, 0, Math.PI * 2);
+            ctx.stroke();
 
             gunRecoil *= 0.85;
             
             return {
                 aimX: centerX + tiltX,
-                aimY: centerY - 38 + offsetY + tiltY
+                aimY: centerY - 40 + offsetY + tiltY
             };
         }
 
@@ -452,7 +573,7 @@
             
             // موضع النقطة الخضراء (نقطة التصويب)
             const aimX = centerX + tiltX;
-            const aimY = centerY - 38 + tiltY;
+            const aimY = centerY - 40 + tiltY;
             
             const targetSize = getTargetSize();
             
@@ -483,12 +604,20 @@
 
             // Muzzle flash من فوهة السلاح
             const flashX = centerX + tiltX;
-            const flashY = centerY - 35 + tiltY;
-            ctx.fillStyle = 'rgba(255, 200, 0, 0.9)';
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = 'rgba(255, 200, 0, 0.5)';
+            const flashY = centerY - 38 + tiltY;
+            
+            // وميض كبير
+            ctx.fillStyle = 'rgba(255, 220, 0, 0.9)';
+            ctx.shadowBlur = 30;
+            ctx.shadowColor = 'rgba(255, 200, 0, 0.8)';
             ctx.beginPath();
-            ctx.arc(flashX, flashY, 30, 0, Math.PI * 2);
+            ctx.arc(flashX, flashY, 35, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // وميض داخلي ساطع
+            ctx.fillStyle = 'rgba(255, 255, 200, 0.95)';
+            ctx.beginPath();
+            ctx.arc(flashX, flashY, 20, 0, Math.PI * 2);
             ctx.fill();
             ctx.shadowBlur = 0;
 
