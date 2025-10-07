@@ -111,6 +111,7 @@
             height: 100%;
             pointer-events: none;
             z-index: 50;
+            transition: transform 0.05s ease-out;
         }
 
         .gun-container {
@@ -312,6 +313,23 @@
             50% { box-shadow: 0 0 15px #0f0, 0 0 30px #0f0, 0 0 40px #0f0; }
         }
 
+        /* خط مساعد للتصويب */
+        .aim-line {
+            position: absolute;
+            bottom: 26%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 40vh;
+            background: linear-gradient(to top, 
+                rgba(0, 255, 0, 0.3) 0%,
+                rgba(0, 255, 0, 0.1) 50%,
+                transparent 100%);
+            pointer-events: none;
+            z-index: 55;
+            opacity: 0.5;
+        }
+
         /* المقبض */
         .grip {
             position: absolute;
@@ -418,6 +436,11 @@
             border: 2px solid #0f0;
             z-index: 100;
             pointer-events: none;
+            max-width: 90%;
+        }
+
+        .controls div {
+            margin: 5px 0;
         }
 
         .game-over {
@@ -569,6 +592,7 @@
                     <div class="front-sight">
                         <div class="front-sight-dot"></div>
                     </div>
+                    <div class="aim-line"></div>
                     
                     <div class="grip">
                         <div class="grip-texture"></div>
@@ -578,7 +602,8 @@
         </div>
 
         <div class="controls">
-            🖱️ حرك الماوس للتصويب | 📱 أو حرك الجهاز | 🔫 اضغط لإطلاق النار
+            <div>🎯 حرك المسدس في جميع الاتجاهات لتصويب الشعيرة الخضراء على الهدف</div>
+            <div>🖱️ الماوس: حرك للتصويب | 📱 الجيروسكوب: حرك الجهاز | 🔫 اضغط لإطلاق النار</div>
         </div>
 
         <div class="game-over" id="gameOver">
@@ -594,6 +619,8 @@
         const scene = document.getElementById('scene');
         const targetContainer = document.getElementById('targetContainer');
         const target = document.getElementById('target');
+        const gunView = document.querySelector('.gun-view');
+        const frontSight = document.querySelector('.front-sight-dot');
         const scoreElement = document.getElementById('score');
         const accuracyElement = document.getElementById('accuracy');
         const hitsElement = document.getElementById('hits');
@@ -607,18 +634,19 @@
         let score = 0;
         let shots = 0;
         let hits = 0;
-        let gunRotationX = 0;
-        let gunRotationY = 0;
+        let gunOffsetX = 0;
+        let gunOffsetY = 0;
         let gyroEnabled = false;
 
-        // حركة الماوس
+        // حركة الماوس - تحريك المسدس في جميع الاتجاهات
         document.addEventListener('mousemove', (e) => {
             if (!gyroEnabled) {
                 const centerX = window.innerWidth / 2;
                 const centerY = window.innerHeight / 2;
                 
-                gunRotationY = ((e.clientX - centerX) / centerX) * 25;
-                gunRotationX = ((e.clientY - centerY) / centerY) * -15;
+                // حركة المسدس (بكسلات) بدلاً من الدوران
+                gunOffsetX = ((e.clientX - centerX) / centerX) * 400; // نطاق أوسع
+                gunOffsetY = ((e.clientY - centerY) / centerY) * -300;
                 
                 updateGun();
             }
@@ -694,23 +722,22 @@
             const deltaGamma = gamma - baseGamma;
             const deltaBeta = beta - baseBeta;
             
-            // تحويل إلى حركة المسدس فقط (مع حساسية أعلى)
-            gunRotationY = (deltaGamma / 20) * 25; // زيادة الحساسية للمسدس
-            gunRotationX = (deltaBeta / 20) * -15;
+            // تحويل إلى حركة المسدس في جميع الاتجاهات
+            gunOffsetX = (deltaGamma / 20) * 400; // حركة أفقية واسعة
+            gunOffsetY = (deltaBeta / 20) * -300; // حركة عمودية واسعة
             
             // تحديد النطاق
-            gunRotationY = Math.max(-30, Math.min(30, gunRotationY));
-            gunRotationX = Math.max(-20, Math.min(20, gunRotationX));
+            gunOffsetX = Math.max(-500, Math.min(500, gunOffsetX));
+            gunOffsetY = Math.max(-400, Math.min(400, gunOffsetY));
             
             updateGun();
         }
 
-        // تحديث موضع المسدس فقط
+        // تحديث موضع المسدس - حركة كاملة في جميع الاتجاهات
         function updateGun() {
-            gunContainer.style.transform = `
-                translateX(-50%)
-                rotateX(${gunRotationX * 0.8}deg) 
-                rotateY(${gunRotationY * 0.8}deg)
+            gunView.style.transform = `
+                translateX(${gunOffsetX}px)
+                translateY(${gunOffsetY}px)
             `;
         }
 
@@ -733,31 +760,29 @@
             }, 80);
             
             // حركة ارتداد
-            gunContainer.style.transition = 'transform 0.05s';
-            const currentRotX = gunRotationX;
-            const currentRotY = gunRotationY;
-            gunContainer.style.transform = `
-                translateX(-50%) 
-                translateY(-30px)
-                rotateX(${currentRotX * 0.8}deg) 
-                rotateY(${currentRotY * 0.8}deg)
+            gunView.style.transition = 'transform 0.05s';
+            gunView.style.transform = `
+                translateX(${gunOffsetX}px)
+                translateY(${gunOffsetY - 30}px)
             `;
             setTimeout(() => {
-                gunContainer.style.transition = 'transform 0.15s';
+                gunView.style.transition = 'transform 0.15s';
                 updateGun();
             }, 60);
             
-            // فحص الإصابة
-            const clickX = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
-            const clickY = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
+            // حساب موقع الشعيرة الأمامية على الشاشة
+            const sightRect = frontSight.getBoundingClientRect();
+            const sightCenterX = sightRect.left + sightRect.width / 2;
+            const sightCenterY = sightRect.top + sightRect.height / 2;
             
             const targetRect = target.getBoundingClientRect();
             const targetCenterX = targetRect.left + targetRect.width / 2;
             const targetCenterY = targetRect.top + targetRect.height / 2;
             
+            // حساب المسافة بين الشعيرة والهدف
             const distance = Math.sqrt(
-                Math.pow(clickX - targetCenterX, 2) + 
-                Math.pow(clickY - targetCenterY, 2)
+                Math.pow(sightCenterX - targetCenterX, 2) + 
+                Math.pow(sightCenterY - targetCenterY, 2)
             );
             
             const targetRadius = targetRect.width / 2;
@@ -784,8 +809,8 @@
                 const scorePopup = document.createElement('div');
                 scorePopup.className = 'score-popup';
                 scorePopup.textContent = '+' + points;
-                scorePopup.style.left = clickX + 'px';
-                scorePopup.style.top = clickY + 'px';
+                scorePopup.style.left = targetCenterX + 'px';
+                scorePopup.style.top = targetCenterY + 'px';
                 document.querySelector('.game-container').appendChild(scorePopup);
                 setTimeout(() => scorePopup.remove(), 1000);
                 
