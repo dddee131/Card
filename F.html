@@ -15,34 +15,14 @@
 ```
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: #0a0a0a;
-        background-image: url('/200.jpg');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
+        background: #1e1e1e;
         min-height: 100vh;
         padding: 20px;
-        position: relative;
-    }
-
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0,0,0,0.85);
-        pointer-events: none;
-        z-index: 0;
     }
 
     .container {
         max-width: 1200px;
         margin: 0 auto;
-        position: relative;
-        z-index: 1;
     }
 
     header {
@@ -84,6 +64,7 @@
         box-shadow: 
             0 20px 60px rgba(0,0,0,0.3),
             inset 0 1px 0 rgba(255,255,255,0.05);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
         text-align: center;
         position: relative;
@@ -100,21 +81,23 @@
         height: 3px;
         background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
         opacity: 0;
+        transition: opacity 0.4s ease;
     }
 
     .section-card:hover::before {
-        opacity: 0;
+        opacity: 1;
     }
 
     .section-card:hover {
-        transform: none;
+        transform: translateY(-12px);
         box-shadow: 
-            0 20px 60px rgba(0,0,0,0.3),
-            inset 0 1px 0 rgba(255,255,255,0.05);
+            0 30px 80px rgba(0,0,0,0.4),
+            0 0 0 1px var(--accent-color),
+            inset 0 1px 0 rgba(255,255,255,0.1);
     }
 
     .section-card:active {
-        transform: none;
+        transform: translateY(-8px);
     }
 
     .icon-wrapper {
@@ -128,11 +111,12 @@
         position: relative;
         background: var(--accent-gradient);
         box-shadow: 0 8px 32px var(--shadow-color);
+        transition: all 0.4s ease;
     }
 
     .section-card:hover .icon-wrapper {
-        transform: none;
-        box-shadow: 0 8px 32px var(--shadow-color);
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 12px 40px var(--shadow-color);
     }
 
     .section-icon {
@@ -245,26 +229,33 @@
         margin-top: 20px;
         font-weight: 500;
         border: 1px solid rgba(255,255,255,0.1);
+        transition: all 0.3s ease;
     }
 
     .section-card:hover .click-hint {
-        background: rgba(255,255,255,0.05);
-        border-color: rgba(255,255,255,0.1);
-        transform: none;
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+        transform: translateX(-5px);
     }
 
     .click-hint::after {
         content: '←';
         font-size: 1.2em;
+        transition: transform 0.3s ease;
     }
 
     .section-card:hover .click-hint::after {
-        transform: none;
+        transform: translateX(-3px);
     }
 
+    /* تأثيرات إضافية */
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
+    }
+
+    header h1 {
+        animation: float 3s ease-in-out infinite;
     }
 
     .glow {
@@ -272,13 +263,14 @@
         width: 200px;
         height: 200px;
         background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
-        opacity: 0;
+        opacity: 0.1;
         border-radius: 50%;
         pointer-events: none;
+        transition: opacity 0.4s ease;
     }
 
     .section-card:hover .glow {
-        opacity: 0;
+        opacity: 0.2;
     }
 
     .safety .glow {
