@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة التصويب - منظور الشخص الأول</title>
+    <title>لعبة التصويب - منظور FPS</title>
     <style>
         * {
             margin: 0;
@@ -22,7 +22,7 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 40%, #90EE90 100%);
+            background: linear-gradient(to bottom, #87CEEB 0%, #B0E0E6 30%, #98D8C8 70%, #90EE90 100%);
             overflow: hidden;
         }
 
@@ -30,9 +30,10 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            transition: transform 0.1s ease-out;
+            transition: transform 0.05s ease-out;
         }
 
+        /* الـ HUD */
         .hud {
             position: absolute;
             top: 20px;
@@ -41,171 +42,333 @@
             display: flex;
             justify-content: space-between;
             z-index: 100;
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
             pointer-events: none;
         }
 
         .hud-item {
-            background: rgba(0,0,0,0.7);
-            padding: 10px 20px;
-            border-radius: 10px;
+            background: rgba(0,0,0,0.8);
+            color: #0f0;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #0f0;
+            text-shadow: 0 0 10px #0f0;
         }
 
-        .target {
+        /* الهدف */
+        .target-container {
             position: absolute;
-            width: 150px;
-            height: 150px;
-            top: 40%;
+            top: 35%;
             left: 50%;
             transform: translate(-50%, -50%);
-            cursor: crosshair;
+            transition: all 0.4s ease-out;
             z-index: 10;
         }
 
-        .target-rings {
+        .target {
+            width: 180px;
+            height: 180px;
+            cursor: crosshair;
+        }
+
+        .target-board {
+            position: relative;
             width: 100%;
             height: 100%;
             border-radius: 50%;
             background: 
                 radial-gradient(circle at center,
                     #FFD700 0%,
-                    #FFD700 8%,
-                    #FF0000 8%,
-                    #FF0000 20%,
-                    #0066CC 20%,
-                    #0066CC 40%,
-                    #000000 40%,
-                    #000000 60%,
-                    #FFFFFF 60%,
-                    #FFFFFF 80%,
-                    #000000 80%);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            position: relative;
-        }
-
-        .target-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 12%;
-            height: 12%;
-            background: #FFD700;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #FFD700;
+                    #FFD700 7%,
+                    #FF0000 7%,
+                    #FF0000 15%,
+                    #FFFFFF 15%,
+                    #FFFFFF 23%,
+                    #FF0000 23%,
+                    #FF0000 31%,
+                    #0066CC 31%,
+                    #0066CC 47%,
+                    #FFFFFF 47%,
+                    #FFFFFF 63%,
+                    #000000 63%,
+                    #000000 79%,
+                    #FFFFFF 79%,
+                    #FFFFFF 95%,
+                    #000000 95%);
+            box-shadow: 
+                0 15px 40px rgba(0,0,0,0.4),
+                inset 0 2px 5px rgba(255,255,255,0.3);
         }
 
         /* منظور المسدس من الأسفل */
-        .gun-container {
-            position: absolute;
-            bottom: -80px;
-            right: 5%;
-            width: 700px;
-            height: 500px;
-            z-index: 50;
+        .gun-view {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            transform-origin: bottom right;
+            z-index: 50;
         }
 
-        .gun {
+        .gun-container {
+            position: absolute;
+            bottom: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 900px;
+            height: 80%;
+        }
+
+        /* جسم المسدس */
+        .gun-body {
             position: relative;
             width: 100%;
             height: 100%;
         }
 
-        .gun-image {
+        /* الجزء الخلفي من المسدس (Slide Back) */
+        .slide-back {
             position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 600px;
-            height: auto;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.7));
-        }
-
-        /* الشعيرة الأمامية */
-        .front-sight {
-            position: absolute;
-            bottom: 380px;
-            right: 420px;
-            width: 10px;
-            height: 30px;
-            background: linear-gradient(to right, #333, #111);
-            border-radius: 2px 2px 0 0;
-            z-index: 60;
-        }
-
-        .front-sight::after {
-            content: '';
-            position: absolute;
-            top: 8px;
+            bottom: 15%;
             left: 50%;
             transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            background: #00ff00;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #00ff00, 0 0 15px #00ff00;
+            width: 350px;
+            height: 180px;
+            background: linear-gradient(to bottom,
+                #4a4a4a 0%,
+                #3a3a3a 30%,
+                #2a2a2a 60%,
+                #1a1a1a 100%);
+            border-radius: 15px 15px 8px 8px;
+            box-shadow: 
+                inset 0 5px 15px rgba(0,0,0,0.5),
+                0 10px 30px rgba(0,0,0,0.7);
+        }
+
+        /* خطوط الـ Slide */
+        .slide-serrations {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            right: 30px;
+            height: 40px;
+        }
+
+        .serration {
+            width: 4px;
+            height: 100%;
+            background: #1a1a1a;
+            float: left;
+            margin-left: 6px;
+            box-shadow: inset -1px 0 2px rgba(0,0,0,0.8);
         }
 
         /* الشعيرة الخلفية */
         .rear-sight {
             position: absolute;
-            bottom: 375px;
-            right: 220px;
-            width: 70px;
-            height: 25px;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 35px;
             background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
-            border-radius: 3px;
-            z-index: 60;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
         }
 
-        .rear-sight::before,
-        .rear-sight::after {
-            content: '';
+        .rear-sight-left,
+        .rear-sight-right {
             position: absolute;
             top: 0;
-            width: 25px;
+            width: 28px;
             height: 100%;
             background: #1a1a1a;
+            border: 2px solid #0a0a0a;
         }
 
-        .rear-sight::before {
+        .rear-sight-left {
             left: 0;
-            border-radius: 3px 0 0 3px;
+            border-radius: 4px 0 0 4px;
         }
 
-        .rear-sight::after {
+        .rear-sight-right {
             right: 0;
-            border-radius: 0 3px 3px 0;
+            border-radius: 0 4px 4px 0;
         }
 
-        .sight-notch {
+        .rear-sight-notch {
             position: absolute;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 15px;
+            width: 18px;
             height: 100%;
-            background: rgba(135, 206, 235, 0.4);
+            background: linear-gradient(to bottom,
+                rgba(135, 206, 235, 0.2),
+                rgba(135, 206, 235, 0.5));
+            box-shadow: inset 0 0 10px rgba(135, 206, 235, 0.3);
+        }
+
+        /* نقطة الإضاءة في الشعيرة الخلفية */
+        .rear-sight-dots {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            padding: 0 5px;
+        }
+
+        .sight-dot {
+            width: 8px;
+            height: 8px;
+            background: #0f0;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+        }
+
+        /* الجزء الأمامي من المسدس */
+        .slide-front {
+            position: absolute;
+            bottom: 18%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 140px;
+            background: linear-gradient(to bottom,
+                #3a3a3a,
+                #2a2a2a 50%,
+                #1a1a1a);
+            clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        }
+
+        /* الماسورة */
+        .barrel {
+            position: absolute;
+            bottom: 21%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 50px;
+            background: linear-gradient(to bottom,
+                #1a1a1a,
+                #0a0a0a 50%,
+                #000);
+            border-radius: 25px;
+            box-shadow: 
+                inset 0 3px 10px rgba(0,0,0,0.9),
+                0 5px 20px rgba(0,0,0,0.8);
+        }
+
+        .barrel::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            right: 10px;
+            height: 3px;
+            background: #0a0a0a;
+            transform: translateY(-50%);
+        }
+
+        /* الشعيرة الأمامية */
+        .front-sight {
+            position: absolute;
+            bottom: 24%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 45px;
+            background: linear-gradient(to right, #2a2a2a, #1a1a1a);
+            border-radius: 3px 3px 0 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+            z-index: 60;
+        }
+
+        .front-sight-dot {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: #0f0;
+            border-radius: 50%;
+            box-shadow: 
+                0 0 10px #0f0,
+                0 0 20px #0f0,
+                0 0 30px #0f0;
+            animation: sightGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes sightGlow {
+            0%, 100% { box-shadow: 0 0 10px #0f0, 0 0 20px #0f0; }
+            50% { box-shadow: 0 0 15px #0f0, 0 0 30px #0f0, 0 0 40px #0f0; }
+        }
+
+        /* المقبض */
+        .grip {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 200px;
+            background: linear-gradient(to right,
+                #3a3a3a,
+                #2a2a2a 50%,
+                #1a1a1a);
+            clip-path: polygon(30% 0, 70% 0, 85% 100%, 15% 100%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        /* نسيج المقبض */
+        .grip-texture {
+            position: absolute;
+            top: 30px;
+            left: 20%;
+            right: 20%;
+            bottom: 20px;
+            background-image: 
+                repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 4px,
+                    rgba(255,255,255,0.05) 4px,
+                    rgba(255,255,255,0.05) 8px),
+                repeating-linear-gradient(-45deg,
+                    transparent,
+                    transparent 4px,
+                    rgba(255,255,255,0.05) 4px,
+                    rgba(255,255,255,0.05) 8px);
         }
 
         /* فلاش الطلقة */
         .muzzle-flash {
             position: absolute;
-            bottom: 365px;
-            right: 560px;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #fff, #ffff00, #ff8800, transparent);
+            bottom: 21%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle,
+                #ffffff 0%,
+                #ffff00 20%,
+                #ff8800 40%,
+                #ff4400 60%,
+                transparent 100%);
             border-radius: 50%;
             opacity: 0;
             z-index: 100;
+            filter: blur(3px);
         }
 
-        /* تأثير الإصابة */
+        /* علامات الإصابة */
         .hit-marker {
             position: absolute;
             top: 50%;
@@ -213,54 +376,48 @@
             transform: translate(-50%, -50%);
             font-size: 60px;
             font-weight: bold;
-            color: #00ff00;
-            text-shadow: 0 0 20px #00ff00;
+            color: #0f0;
+            text-shadow: 0 0 20px #0f0, 0 0 40px #0f0;
             opacity: 0;
             z-index: 200;
             pointer-events: none;
-        }
-
-        .miss-marker {
-            position: absolute;
-            font-size: 40px;
-            color: rgba(255,255,255,0.7);
-            pointer-events: none;
-            animation: missAnim 0.5s forwards;
-        }
-
-        @keyframes missAnim {
-            0% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0.5); }
+            font-family: 'Courier New', monospace;
         }
 
         .score-popup {
             position: absolute;
-            font-size: 40px;
+            font-size: 50px;
             font-weight: bold;
             color: #FFD700;
-            text-shadow: 0 0 10px #FFD700;
+            text-shadow: 
+                0 0 10px #FFD700,
+                0 0 20px #FFD700,
+                2px 2px 5px rgba(0,0,0,0.8);
             pointer-events: none;
-            animation: scoreAnim 1s forwards;
+            animation: scoreFloat 1s forwards;
             z-index: 150;
         }
 
-        @keyframes scoreAnim {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-100px); }
+        @keyframes scoreFloat {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -150%) scale(1.5); }
         }
 
-        .controls-info {
+        /* معلومات التحكم */
+        .controls {
             position: absolute;
-            bottom: 20px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0,0,0,0.8);
-            color: white;
+            color: #0f0;
             padding: 15px 30px;
             border-radius: 10px;
             text-align: center;
             font-size: 16px;
+            border: 2px solid #0f0;
             z-index: 100;
+            pointer-events: none;
         }
 
         .game-over {
@@ -269,50 +426,59 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(0,0,0,0.95);
-            padding: 50px;
+            padding: 50px 70px;
             border-radius: 20px;
             text-align: center;
             color: white;
             display: none;
             z-index: 300;
+            border: 3px solid #0f0;
         }
 
         .game-over h2 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #FFD700;
+            font-size: 56px;
+            margin-bottom: 25px;
+            color: #0f0;
+            text-shadow: 0 0 20px #0f0;
         }
 
         .game-over p {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 30px;
+            color: #FFD700;
         }
 
         .restart-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 20px;
+            background: linear-gradient(135deg, #0f0 0%, #0a0 100%);
+            color: #000;
+            border: 3px solid #0f0;
+            padding: 15px 50px;
+            font-size: 24px;
+            font-weight: bold;
             border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s;
+            text-transform: uppercase;
         }
 
         .restart-btn:hover {
             transform: scale(1.1);
+            box-shadow: 0 0 30px #0f0;
         }
 
-        .gyro-status {
+        .gyro-btn {
             position: absolute;
-            top: 80px;
+            top: 100px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(255,165,0,0.9);
             color: white;
-            padding: 10px 20px;
+            padding: 15px 30px;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
             display: none;
             z-index: 100;
         }
@@ -322,144 +488,101 @@
     <div class="game-container">
         <div class="scene" id="scene">
             <div class="hud">
-                <div class="hud-item">النقاط: <span id="score">0</span></div>
-                <div class="hud-item">الدقة: <span id="accuracy">100</span>%</div>
-                <div class="hud-item">الذخيرة: <span id="ammo">∞</span></div>
+                <div class="hud-item">SCORE: <span id="score">0</span></div>
+                <div class="hud-item">ACCURACY: <span id="accuracy">100</span>%</div>
+                <div class="hud-item">HITS: <span id="hits">0</span></div>
             </div>
 
-            <div class="gyro-status" id="gyroStatus">اضغط على الشاشة لتفعيل الجيروسكوب</div>
+            <button class="gyro-btn" id="gyroBtn" onclick="requestGyroPermission()">
+                📱 تفعيل الجيروسكوب
+            </button>
 
-            <div class="target" id="target">
-                <div class="target-rings">
-                    <div class="target-center"></div>
+            <div class="target-container" id="targetContainer">
+                <div class="target" id="target">
+                    <div class="target-board"></div>
                 </div>
             </div>
 
-            <div class="hit-marker" id="hitMarker">✓ إصابة!</div>
+            <div class="hit-marker" id="hitMarker">✓ HIT!</div>
         </div>
 
-        <div class="gun-container" id="gunContainer">
-            <div class="gun">
-                <div class="muzzle-flash" id="muzzleFlash"></div>
-                <!-- صورة مسدس جلوك حقيقي -->
-                <svg class="gun-image" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
-                    <!-- ظل المسدس -->
-                    <defs>
-                        <filter id="gunShadow">
-                            <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-                            <feOffset dx="2" dy="4" result="offsetblur"/>
-                            <feComponentTransfer>
-                                <feFuncA type="linear" slope="0.5"/>
-                            </feComponentTransfer>
-                            <feMerge>
-                                <feMergeNode/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                        <linearGradient id="metalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#4a4a4a;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#2a2a2a;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
-                        </linearGradient>
-                        <linearGradient id="gripGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#3a3a3a;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
+        <div class="gun-view">
+            <div class="gun-container" id="gunContainer">
+                <div class="gun-body">
+                    <div class="muzzle-flash" id="muzzleFlash"></div>
                     
-                    <!-- الماسورة -->
-                    <rect x="420" y="155" width="160" height="35" rx="17" fill="url(#metalGrad)" filter="url(#gunShadow)"/>
-                    <rect x="425" y="162" width="150" height="3" fill="#0a0a0a"/>
-                    <circle cx="430" cy="172" r="3" fill="#1a1a1a"/>
+                    <div class="slide-back">
+                        <div class="slide-serrations">
+                            <div class="serration"></div>
+                            <div class="serration"></div>
+                            <div class="serration"></div>
+                            <div class="serration"></div>
+                            <div class="serration"></div>
+                            <div class="serration"></div>
+                            <div class="serration"></div>
+                            <div class="serration"></div>
+                            <div class="serration"></div>
+                            <div class="serration"></div>
+                        </div>
+                        
+                        <div class="rear-sight">
+                            <div class="rear-sight-left"></div>
+                            <div class="rear-sight-right"></div>
+                            <div class="rear-sight-notch"></div>
+                            <div class="rear-sight-dots">
+                                <div class="sight-dot"></div>
+                                <div class="sight-dot"></div>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <!-- جسم المسدس (Slide) -->
-                    <rect x="140" y="140" width="300" height="70" rx="8" fill="url(#metalGrad)" filter="url(#gunShadow)"/>
-                    <rect x="150" y="150" width="280" height="4" fill="#666"/>
-                    <rect x="420" y="150" width="20" height="50" fill="#2a2a2a"/>
+                    <div class="slide-front"></div>
                     
-                    <!-- التفاصيل العلوية -->
-                    <rect x="180" y="155" width="8" height="8" rx="2" fill="#1a1a1a"/>
-                    <rect x="200" y="155" width="8" height="8" rx="2" fill="#1a1a1a"/>
-                    <rect x="220" y="155" width="8" height="8" rx="2" fill="#1a1a1a"/>
+                    <div class="barrel"></div>
                     
-                    <!-- الإطار (Frame) -->
-                    <rect x="140" y="210" width="240" height="45" rx="5" fill="#2a2a2a" filter="url(#gunShadow)"/>
+                    <div class="front-sight">
+                        <div class="front-sight-dot"></div>
+                    </div>
                     
-                    <!-- المقبض (Grip) -->
-                    <path d="M 140 210 L 120 250 L 110 310 L 130 340 L 170 340 L 180 255 L 180 210 Z" 
-                          fill="url(#gripGrad)" filter="url(#gunShadow)"/>
-                    
-                    <!-- نسيج المقبض -->
-                    <g opacity="0.3">
-                        <line x1="125" y1="260" x2="175" y2="260" stroke="#666" stroke-width="1"/>
-                        <line x1="122" y1="270" x2="175" y2="270" stroke="#666" stroke-width="1"/>
-                        <line x1="120" y1="280" x2="172" y2="280" stroke="#666" stroke-width="1"/>
-                        <line x1="118" y1="290" x2="170" y2="290" stroke="#666" stroke-width="1"/>
-                        <line x1="116" y1="300" x2="168" y2="300" stroke="#666" stroke-width="1"/>
-                        <line x1="115" y1="310" x2="165" y2="310" stroke="#666" stroke-width="1"/>
-                        <line x1="117" y1="320" x2="162" y2="320" stroke="#666" stroke-width="1"/>
-                    </g>
-                    
-                    <!-- الزناد -->
-                    <ellipse cx="200" cy="250" rx="12" ry="20" fill="#1a1a1a" filter="url(#gunShadow)"/>
-                    
-                    <!-- حارس الزناد -->
-                    <path d="M 185 240 Q 170 250 185 270 L 190 268 Q 180 250 190 242 Z" 
-                          fill="#2a2a2a" filter="url(#gunShadow)"/>
-                    
-                    <!-- المخزن -->
-                    <rect x="145" y="260" width="30" height="78" rx="3" fill="#1a1a1a" filter="url(#gunShadow)"/>
-                    <rect x="150" y="265" width="20" height="3" fill="#666"/>
-                    
-                    <!-- تفاصيل إضافية -->
-                    <circle cx="350" cy="175" r="3" fill="#888"/>
-                    <rect x="250" y="145" width="80" height="8" rx="2" fill="#1a1a1a"/>
-                    
-                    <!-- العلامة التجارية Glock -->
-                    <text x="270" y="178" font-family="Arial" font-size="14" font-weight="bold" fill="#888">GLOCK</text>
-                </svg>
-                <div class="front-sight"></div>
-                <div class="rear-sight">
-                    <div class="sight-notch"></div>
+                    <div class="grip">
+                        <div class="grip-texture"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="controls-info">
-            <div>🖱️ استخدم الماوس للتصويب | 📱 أو قم بتحريك الجهاز</div>
-            <div>🔫 اضغط على الشاشة أو الماوس لإطلاق النار</div>
+        <div class="controls">
+            🖱️ حرك الماوس للتصويب | 📱 أو حرك الجهاز | 🔫 اضغط لإطلاق النار
         </div>
 
         <div class="game-over" id="gameOver">
-            <h2>أحسنت! 🎯</h2>
+            <h2>MISSION COMPLETE</h2>
             <p>النقاط النهائية: <span id="finalScore">0</span></p>
             <p>نسبة الدقة: <span id="finalAccuracy">0</span>%</p>
-            <button class="restart-btn" onclick="restartGame()">العب مرة أخرى</button>
+            <p>عدد الإصابات: <span id="finalHits">0</span></p>
+            <button class="restart-btn" onclick="restartGame()">▶ العب مرة أخرى</button>
         </div>
     </div>
 
     <script>
         const scene = document.getElementById('scene');
+        const targetContainer = document.getElementById('targetContainer');
         const target = document.getElementById('target');
         const scoreElement = document.getElementById('score');
         const accuracyElement = document.getElementById('accuracy');
+        const hitsElement = document.getElementById('hits');
         const hitMarker = document.getElementById('hitMarker');
         const muzzleFlash = document.getElementById('muzzleFlash');
         const gunContainer = document.getElementById('gunContainer');
-        const gyroStatus = document.getElementById('gyroStatus');
+        const gyroBtn = document.getElementById('gyroBtn');
         const gameOver = document.getElementById('gameOver');
-        const finalScoreElement = document.getElementById('finalScore');
-        const finalAccuracyElement = document.getElementById('finalAccuracy');
 
         let score = 0;
         let shots = 0;
         let hits = 0;
         let sceneRotationX = 0;
         let sceneRotationY = 0;
-        let targetOffsetX = 0;
-        let targetOffsetY = 0;
         let gyroEnabled = false;
-        let gyroPermissionRequested = false;
 
         // حركة الماوس
         document.addEventListener('mousemove', (e) => {
@@ -467,8 +590,8 @@
                 const centerX = window.innerWidth / 2;
                 const centerY = window.innerHeight / 2;
                 
-                sceneRotationY = ((e.clientX - centerX) / centerX) * 15;
-                sceneRotationX = ((e.clientY - centerY) / centerY) * -10;
+                sceneRotationY = ((e.clientX - centerX) / centerX) * 8;
+                sceneRotationX = ((e.clientY - centerY) / centerY) * -5;
                 
                 updateScene();
             }
@@ -489,7 +612,7 @@
             } else {
                 enableGyro();
             }
-            gyroStatus.style.display = 'none';
+            gyroBtn.style.display = 'none';
         }
 
         function enableGyro() {
@@ -500,11 +623,11 @@
         function handleOrientation(event) {
             if (!gyroEnabled) return;
             
-            const gamma = event.gamma; // يسار/يمين (-90 إلى 90)
-            const beta = event.beta;   // أمام/خلف (-180 إلى 180)
+            const gamma = event.gamma;
+            const beta = event.beta;
             
-            sceneRotationY = (gamma / 90) * 30;
-            sceneRotationX = ((beta - 45) / 90) * 20;
+            sceneRotationY = (gamma / 45) * 8;
+            sceneRotationX = ((beta - 45) / 45) * -5;
             
             updateScene();
         }
@@ -517,40 +640,38 @@
             `;
             
             gunContainer.style.transform = `
-                rotateX(${sceneRotationX * 0.3}deg) 
-                rotateY(${sceneRotationY * 0.3}deg)
+                translateX(-50%)
+                rotateX(${sceneRotationX * 0.2}deg) 
+                rotateY(${sceneRotationY * 0.2}deg)
             `;
         }
 
         // إطلاق النار
         document.addEventListener('click', shoot);
         document.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            
-            if (!gyroPermissionRequested && 'ontouchstart' in window) {
-                gyroPermissionRequested = true;
-                requestGyroPermission();
+            if (e.target.id !== 'gyroBtn') {
+                e.preventDefault();
+                shoot(e);
             }
-            
-            shoot(e);
         });
 
         function shoot(e) {
             shots++;
             
             // فلاش الطلقة
-            muzzleFlash.style.opacity = '1';
+            muzzleFlash.style.opacity = '0.9';
             setTimeout(() => {
                 muzzleFlash.style.opacity = '0';
-            }, 50);
+            }, 80);
             
-            // حركة ارتداد المسدس
+            // حركة ارتداد
             gunContainer.style.transition = 'transform 0.05s';
-            gunContainer.style.transform += ' translateY(-20px)';
+            const currentTransform = gunContainer.style.transform;
+            gunContainer.style.transform = currentTransform.replace('translateX(-50%)', 'translateX(-50%) translateY(-30px)');
             setTimeout(() => {
-                gunContainer.style.transition = 'transform 0.2s';
+                gunContainer.style.transition = 'transform 0.15s';
                 updateScene();
-            }, 50);
+            }, 60);
             
             // فحص الإصابة
             const clickX = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
@@ -568,16 +689,15 @@
             const targetRadius = targetRect.width / 2;
             
             if (distance < targetRadius) {
-                // إصابة!
                 hits++;
+                hitsElement.textContent = hits;
                 
-                // حساب النقاط حسب المسافة من المركز
                 let points = 10;
-                if (distance < targetRadius * 0.1) {
-                    points = 100; // مركز
-                } else if (distance < targetRadius * 0.3) {
-                    points = 50; // أحمر
-                } else if (distance < targetRadius * 0.5) {
+                if (distance < targetRadius * 0.08) {
+                    points = 100; // مركز ذهبي
+                } else if (distance < targetRadius * 0.16) {
+                    points = 50; // أحمر داخلي
+                } else if (distance < targetRadius * 0.32) {
                     points = 30; // أزرق
                 } else {
                     points = 10; // خارجي
@@ -599,19 +719,10 @@
                 hitMarker.style.opacity = '1';
                 setTimeout(() => {
                     hitMarker.style.opacity = '0';
-                }, 300);
+                }, 400);
                 
                 // تحريك الهدف
                 moveTarget();
-            } else {
-                // خطأ
-                const missMarker = document.createElement('div');
-                missMarker.className = 'miss-marker';
-                missMarker.textContent = '×';
-                missMarker.style.left = clickX + 'px';
-                missMarker.style.top = clickY + 'px';
-                document.querySelector('.game-container').appendChild(missMarker);
-                setTimeout(() => missMarker.remove(), 500);
             }
             
             // تحديث الدقة
@@ -621,15 +732,13 @@
 
         // تحريك الهدف
         function moveTarget() {
-            const maxX = window.innerWidth - 200;
-            const maxY = window.innerHeight - 300;
-            const minY = 100;
+            const maxX = window.innerWidth * 0.3;
+            const maxY = window.innerHeight * 0.15;
             
-            targetOffsetX = Math.random() * maxX - maxX / 2;
-            targetOffsetY = Math.random() * (maxY - minY) + minY - window.innerHeight / 2;
+            const randomX = (Math.random() - 0.5) * maxX;
+            const randomY = (Math.random() - 0.5) * maxY;
             
-            target.style.transition = 'transform 0.3s ease-out';
-            target.style.transform = `translate(calc(-50% + ${targetOffsetX}px), calc(-50% + ${targetOffsetY}px))`;
+            targetContainer.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
         }
 
         function restartGame() {
@@ -638,17 +747,25 @@
             hits = 0;
             scoreElement.textContent = score;
             accuracyElement.textContent = '100';
+            hitsElement.textContent = hits;
             gameOver.style.display = 'none';
             moveTarget();
         }
 
-        // عرض رسالة الجيروسكوب على الأجهزة المحمولة
+        // عرض زر الجيروسكوب على الأجهزة المحمولة
         if ('ontouchstart' in window) {
-            gyroStatus.style.display = 'block';
+            gyroBtn.style.display = 'block';
         }
 
         // تحريك الهدف في البداية
         moveTarget();
+        
+        // تحريك الهدف تلقائياً كل فترة
+        setInterval(() => {
+            if (gameOver.style.display !== 'block') {
+                moveTarget();
+            }
+        }, 5000);
     </script>
 </body>
 </html>
