@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية تعليم الرماية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('200.jpg') center/cover fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 50px;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .section-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .section-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .section-card:active {
+            transform: translateY(-5px);
+        }
+
+        .section-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .section-card h2 {
+            color: #1e3c72;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .section-card p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1.05em;
+        }
+
+        .safety {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+        }
+
+        .safety .section-icon {
+            color: #e74c3c;
+        }
+
+        .safety h2 {
+            color: #c0392b;
+        }
+
+        .skills {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+
+        .skills .section-icon {
+            color: #3498db;
+        }
+
+        .skills h2 {
+            color: #2980b9;
+        }
+
+        .weapons {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .weapons .section-icon {
+            color: #27ae60;
+        }
+
+        .weapons h2 {
+            color: #229954;
+        }
+
+        .info-box {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .info-box h3 {
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            color: #c0392b;
+        }
+
+        .info-box p {
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .sections-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-card {
+                padding: 30px 20px;
+            }
+        }
+
+        .click-hint {
+            display: inline-block;
+            background: #f39c12;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 أكاديمية تعليم الرماية</h1>
+            <p>تعلم فنون الرماية بأمان واحترافية</p>
+        </header>
+
+        <div class="sections-grid">
+            <!-- قسم إجراءات السلامة -->
+            <div class="section-card safety" onclick="openPDF('safety')">
+                <div class="section-icon">🛡️</div>
+                <h2>إجراءات السلامة</h2>
+                <p>تعرف على قواعد السلامة الأساسية والإجراءات الوقائية الضرورية قبل البدء في ممارسة الرماية</p>
+                <span class="click-hint">اضغط للمزيد</span>
+            </div>
+
+            <!-- قسم مهارات الرماية الخمسة -->
+            <div class="section-card skills" onclick="openPDF('skills')">
+                <div class="section-icon">🎯</div>
+                <h2>مهارات الرماية الخمسة</h2>
+                <p>أتقن المهارات الخمس الأساسية للرماية: الوضعية، القبضة، التنفس، التصويب، والضغط على الزناد</p>
+                <span class="click-hint">اضغط للمزيد</span>
+            </div>
+
+            <!-- قسم مسميات الأسلحة -->
+            <div class="section-card weapons" onclick="openPDF('weapons')">
+                <div class="section-icon">🔫</div>
+                <h2>مسميات الأسلحة</h2>
+                <p>تعرف على أجزاء السلاح ومسمياته المختلفة والمصطلحات التقنية المستخدمة في عالم الأسلحة</p>
+                <span class="click-hint">اضغط للمزيد</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>ملاحظة هامة</h3>
+            <p>يرجى الاطلاع على جميع إجراءات السلامة قبل البدء في التدريب العملي</p>
+        </div>
+
+        <footer>
+            <p>© 2025 أكاديمية تعليم الرماية - جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <script>
+        function openPDF(section) {
+            // هنا يمكنك وضع روابط ملفات PDF الحقيقية
+            const pdfLinks = {
+                'safety': 'safety_procedures.pdf',
+                'skills': 'shooting_skills.pdf',
+                'weapons': 'weapon_names.pdf'
+            };
+
+            const pdfNames = {
+                'safety': 'إجراءات السلامة',
+                'skills': 'مهارات الرماية الخمسة',
+                'weapons': 'مسميات الأسلحة'
+            };
+
+            // محاولة فتح ملف PDF
+            const link = pdfLinks[section];
+            
+            // في حالة عدم وجود الملف، يظهر رسالة
+            alert(`سيتم فتح ملف: ${pdfNames[section]}\n\nالملف: ${link}\n\nملاحظة: قم بإضافة ملفات PDF في نفس مجلد الموقع بالأسماء التالية:\n- safety_procedures.pdf\n- shooting_skills.pdf\n- weapon_names.pdf`);
+            
+            // فتح الملف في نافذة جديدة
+            window.open(link, '_blank');
+        }
+    </script>
+</body>
+</html>
