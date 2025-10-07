@@ -294,79 +294,79 @@
 
         function drawGun() {
             const centerX = canvas.width / 2;
-            const centerY = canvas.height - 100;
+            const centerY = canvas.height / 2; // تغيير الموضع ليكون في منتصف الشاشة
             const offsetY = gunRecoil;
             
             // Move gun with gyro but keep it centered
-            const tiltX = gunOffsetX * 0.3;
-            const tiltY = gunOffsetY * 0.3;
+            const tiltX = gunOffsetX * 0.5;
+            const tiltY = gunOffsetY * 0.5;
             
             // Gun slide (الجزء العلوي)
             ctx.fillStyle = '#1a1a1a';
-            ctx.fillRect(centerX - 35 + tiltX, centerY - 120 + offsetY + tiltY, 70, 40);
+            ctx.fillRect(centerX - 35 + tiltX, centerY - 30 + offsetY + tiltY, 70, 40);
             
             // Gun barrel opening
             ctx.fillStyle = '#000';
-            ctx.fillRect(centerX - 8 + tiltX, centerY - 125 + offsetY + tiltY, 16, 8);
+            ctx.fillRect(centerX - 8 + tiltX, centerY - 35 + offsetY + tiltY, 16, 8);
             
             // Slide serrations (الخطوط على السلايد)
             ctx.fillStyle = '#2a2a2a';
             for(let i = 0; i < 5; i++) {
-                ctx.fillRect(centerX - 25 + i * 10 + tiltX, centerY - 115 + offsetY + tiltY, 3, 20);
+                ctx.fillRect(centerX - 25 + i * 10 + tiltX, centerY - 25 + offsetY + tiltY, 3, 20);
             }
             
             // Gun frame (الجسم السفلي)
             ctx.fillStyle = '#2c2c2c';
-            ctx.fillRect(centerX - 30 + tiltX, centerY - 80 + offsetY + tiltY, 60, 60);
+            ctx.fillRect(centerX - 30 + tiltX, centerY + 10 + offsetY + tiltY, 60, 60);
             
             // Trigger guard
             ctx.strokeStyle = '#2c2c2c';
             ctx.lineWidth = 4;
             ctx.beginPath();
-            ctx.arc(centerX + tiltX, centerY - 35 + offsetY + tiltY, 12, 0, Math.PI);
+            ctx.arc(centerX + tiltX, centerY + 55 + offsetY + tiltY, 12, 0, Math.PI);
             ctx.stroke();
             
             // Trigger
             ctx.fillStyle = '#3a3a3a';
-            ctx.fillRect(centerX - 4 + tiltX, centerY - 45 + offsetY + tiltY, 8, 12);
+            ctx.fillRect(centerX - 4 + tiltX, centerY + 45 + offsetY + tiltY, 8, 12);
             
             // Magazine
             ctx.fillStyle = '#1a1a1a';
-            ctx.fillRect(centerX - 15 + tiltX, centerY - 20 + offsetY + tiltY, 30, 35);
+            ctx.fillRect(centerX - 15 + tiltX, centerY + 70 + offsetY + tiltY, 30, 35);
             
             // Grip texture
             ctx.strokeStyle = '#3a3a3a';
             ctx.lineWidth = 1;
             for(let i = 0; i < 8; i++) {
                 ctx.beginPath();
-                ctx.moveTo(centerX - 25 + tiltX, centerY - 70 + i * 8 + offsetY + tiltY);
-                ctx.lineTo(centerX - 20 + tiltX, centerY - 68 + i * 8 + offsetY + tiltY);
+                ctx.moveTo(centerX - 25 + tiltX, centerY + 20 + i * 8 + offsetY + tiltY);
+                ctx.lineTo(centerX - 20 + tiltX, centerY + 22 + i * 8 + offsetY + tiltY);
                 ctx.stroke();
                 ctx.beginPath();
-                ctx.moveTo(centerX + 20 + tiltX, centerY - 70 + i * 8 + offsetY + tiltY);
-                ctx.lineTo(centerX + 25 + tiltX, centerY - 68 + i * 8 + offsetY + tiltY);
+                ctx.moveTo(centerX + 20 + tiltX, centerY + 20 + i * 8 + offsetY + tiltY);
+                ctx.lineTo(centerX + 25 + tiltX, centerY + 22 + i * 8 + offsetY + tiltY);
                 ctx.stroke();
             }
 
             // Rear sight (المشعر الخلفي) - مستطيلات سوداء على الجانبين
             ctx.fillStyle = '#0a0a0a';
-            ctx.fillRect(centerX - 30 + tiltX, centerY - 125 + offsetY + tiltY, 10, 15);
-            ctx.fillRect(centerX + 20 + tiltX, centerY - 125 + offsetY + tiltY, 10, 15);
+            ctx.fillRect(centerX - 30 + tiltX, centerY - 35 + offsetY + tiltY, 10, 15);
+            ctx.fillRect(centerX + 20 + tiltX, centerY - 35 + offsetY + tiltY, 10, 15);
             
             // Rear sight notch (الفتحة الخلفية)
             ctx.fillStyle = '#4a4a4a';
-            ctx.fillRect(centerX - 20 + tiltX, centerY - 123 + offsetY + tiltY, 40, 2);
+            ctx.fillRect(centerX - 20 + tiltX, centerY - 33 + offsetY + tiltY, 40, 2);
             
             // Front sight post (المشعر الأمامي) - مستطيل أسود مع نقطة خضراء
             ctx.fillStyle = '#0a0a0a';
-            ctx.fillRect(centerX - 6 + tiltX, centerY - 135 + offsetY + tiltY, 12, 18);
+            ctx.fillRect(centerX - 6 + tiltX, centerY - 45 + offsetY + tiltY, 12, 18);
             
             // نقطة التصويب الخضراء الصغيرة - هذه هي نقطة التصويب الفعلية
             ctx.fillStyle = '#00ff00';
             ctx.shadowBlur = 15;
             ctx.shadowColor = '#00ff00';
             ctx.beginPath();
-            ctx.arc(centerX + tiltX, centerY - 128 + offsetY + tiltY, 3, 0, Math.PI * 2);
+            ctx.arc(centerX + tiltX, centerY - 38 + offsetY + tiltY, 3, 0, Math.PI * 2);
             ctx.fill();
             ctx.shadowBlur = 0;
 
@@ -375,7 +375,7 @@
             // إرجاع موضع النقطة الخضراء للتصويب
             return {
                 aimX: centerX + tiltX,
-                aimY: centerY - 128 + offsetY + tiltY
+                aimY: centerY - 38 + offsetY + tiltY
             };
         }
 
@@ -388,13 +388,13 @@
 
             // التصويب يكون من النقطة الخضراء الصغيرة على السلاح
             const centerX = canvas.width / 2;
-            const centerY = canvas.height - 100;
-            const tiltX = gunOffsetX * 0.3;
-            const tiltY = gunOffsetY * 0.3;
+            const centerY = canvas.height / 2;
+            const tiltX = gunOffsetX * 0.5;
+            const tiltY = gunOffsetY * 0.5;
             
             // موضع النقطة الخضراء (نقطة التصويب)
             const aimX = centerX + tiltX;
-            const aimY = centerY - 128 + tiltY;
+            const aimY = centerY - 38 + tiltY;
             
             const targetSize = getTargetSize();
             
@@ -425,7 +425,7 @@
 
             // Muzzle flash من فوهة السلاح
             const flashX = centerX + tiltX;
-            const flashY = centerY - 125 + tiltY;
+            const flashY = centerY - 35 + tiltY;
             ctx.fillStyle = 'rgba(255, 200, 0, 0.9)';
             ctx.shadowBlur = 20;
             ctx.shadowColor = 'rgba(255, 200, 0, 0.5)';
@@ -556,13 +556,13 @@
         // Gyroscope support
         window.addEventListener('deviceorientation', (e) => {
             if (gameActive && e.gamma !== null && e.beta !== null) {
-                // حساب الميلان للسلاح فقط (حركة خفيفة)
-                gyroX = Math.max(-1, Math.min(1, e.gamma / 45));
-                gyroY = Math.max(-1, Math.min(1, (e.beta - 45) / 45));
+                // حساب الميلان للسلاح - زيادة الحساسية
+                gyroX = Math.max(-1, Math.min(1, e.gamma / 30));
+                gyroY = Math.max(-1, Math.min(1, (e.beta - 45) / 30));
                 
                 // تحديث إزاحة السلاح بناءً على الجيروسكوب
-                gunOffsetX = gyroX * 150;
-                gunOffsetY = gyroY * 80;
+                gunOffsetX = gyroX * 200;
+                gunOffsetY = gyroY * 150;
             }
         });
 
