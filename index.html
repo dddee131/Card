@@ -51,36 +51,7 @@
         }
 
         #crosshair {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 40px;
-            height: 40px;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .crosshair-line {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 0 5px rgba(0,0,0,0.8);
-        }
-
-        .horizontal {
-            width: 20px;
-            height: 2px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .vertical {
-            width: 2px;
-            height: 20px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            display: none;
         }
 
         #startScreen {
@@ -214,7 +185,7 @@
 <body>
     <canvas id="gameCanvas"></canvas>
     
-    <div id="crosshair">
+    <div id="crosshair" style="display: none;">
         <div class="crosshair-line horizontal"></div>
         <div class="crosshair-line vertical"></div>
         <div class="crosshair-line horizontal" style="left: 10px; width: 15px;"></div>
@@ -322,49 +293,66 @@
         }
 
         function drawGun() {
-            const centerX = canvas.width / 2 + gunOffsetX;
-            const centerY = canvas.height - 150 + gunOffsetY;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2 + 150;
             const offsetY = gunRecoil;
+            
+            // Move gun with gyro but keep it centered
+            const tiltX = gunOffsetX * 0.3;
+            const tiltY = gunOffsetY * 0.3;
             
             // Gun shadow
             ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.fillRect(centerX - 28, centerY - 18 + offsetY + 5, 60, 100);
+            ctx.fillRect(centerX - 28 + tiltX, centerY - 18 + offsetY + 5 + tiltY, 60, 100);
             
             // Gun body
             ctx.fillStyle = '#2c2c2c';
-            ctx.fillRect(centerX - 30, centerY - 20 + offsetY, 60, 100);
+            ctx.fillRect(centerX - 30 + tiltX, centerY - 20 + offsetY + tiltY, 60, 100);
             
             // Gun barrel
             ctx.fillStyle = '#1a1a1a';
-            ctx.fillRect(centerX - 10, centerY - 80 + offsetY, 20, 60);
+            ctx.fillRect(centerX - 10 + tiltX, centerY - 80 + offsetY + tiltY, 20, 60);
             
             // Gun slide
             ctx.fillStyle = '#404040';
-            ctx.fillRect(centerX - 32, centerY - 15 + offsetY, 64, 20);
+            ctx.fillRect(centerX - 32 + tiltX, centerY - 15 + offsetY + tiltY, 64, 20);
             
             // Gun details
             ctx.fillStyle = '#555';
-            ctx.fillRect(centerX - 35, centerY + 30 + offsetY, 70, 15);
+            ctx.fillRect(centerX - 35 + tiltX, centerY + 30 + offsetY + tiltY, 70, 15);
             
             // Trigger
             ctx.fillStyle = '#ff6600';
-            ctx.fillRect(centerX - 5, centerY + 40 + offsetY, 10, 15);
+            ctx.fillRect(centerX - 5 + tiltX, centerY + 40 + offsetY + tiltY, 10, 15);
             
             // Trigger guard
             ctx.strokeStyle = '#444';
             ctx.lineWidth = 3;
             ctx.beginPath();
-            ctx.arc(centerX, centerY + 50 + offsetY, 15, 0, Math.PI);
+            ctx.arc(centerX + tiltX, centerY + 50 + offsetY + tiltY, 15, 0, Math.PI);
             ctx.stroke();
 
-            // Front sight
+            // Front sight (المشعر الأمامي) - هذا هو الشعيرة الرئيسية للتصويب
             ctx.fillStyle = '#00ff00';
-            ctx.fillRect(centerX - 5, centerY - 85 + offsetY, 10, 8);
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#00ff00';
+            ctx.fillRect(centerX - 4 + tiltX, centerY - 88 + offsetY + tiltY, 8, 10);
+            ctx.shadowBlur = 0;
             
-            // Rear sight
+            // Rear sight posts (المشعر الخلفي)
             ctx.fillStyle = '#00ff00';
-            ctx.fillRect(centerX - 15, centerY - 25 + offsetY, 10, 5);
-            ctx.fillRect(centerX + 5, centerY - 25 + offsetY, 10, 5);
+            ctx.fillRect(centerX - 18 + tiltX, centerY - 28 + offsetY + tiltY, 8, 6);
+            ctx.fillRect(centerX + 10 + tiltX, centerY - 28 + offsetY + tiltY, 8, 6);
+            
+            // Sight alignment line (خط التصويب)
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(centerX + tiltX, centerY - 83 + offsetY + tiltY);
+            ctx.lineTo(centerX + tiltX, 0);
+            ctx.stroke();
+            ctx.setLineDash([]);
 
             gunRecoil *= 0.85;
         }
@@ -376,14 +364,18 @@
             document.getElementById('currentAmmo').textContent = currentAmmo;
             gunRecoil = 15;
 
-            // Check if hit target
-            const aimX = canvas.width / 2;
-            const aimY = canvas.height / 2;
+            // التصويب يكون من موضع الشعيرة الأمامية للسلاح
+            const centerX = canvas.width / 2;
+            const tiltX = gunOffsetX * 0.3;
+            const aimX = centerX + tiltX;
+            const aimY = 0; // خط التصويب يمتد لأعلى الشاشة
+            
+            // نقطة التصويب الفعلية هي امتداد خط الشعيرة
             const targetSize = getTargetSize();
             
             const dx = aimX - targetBaseX;
-            const dy = aimY - targetBaseY;
-            const distToTarget = Math.sqrt(dx * dx + dy * dy);
+            const dy = targetBaseY; // المسافة العمودية من أعلى الشاشة للهدف
+            const distToTarget = Math.abs(dx); // المسافة الأفقية فقط
 
             if (distToTarget < targetSize) {
                 // Calculate score based on accuracy
@@ -406,8 +398,8 @@
             }
 
             // Muzzle flash
-            const flashX = canvas.width / 2 + gunOffsetX;
-            const flashY = canvas.height - 230 + gunOffsetY;
+            const flashX = centerX + tiltX;
+            const flashY = canvas.height / 2 + 150 - 80;
             ctx.fillStyle = 'rgba(255, 200, 0, 0.9)';
             ctx.beginPath();
             ctx.arc(flashX, flashY, 25, 0, Math.PI * 2);
@@ -469,11 +461,7 @@
             // Draw target
             drawTarget();
 
-            // Update gun offset based on gyroscope
-            gunOffsetX = gyroX * 150;
-            gunOffsetY = gyroY * 80;
-
-            // Draw gun
+            // Draw gun (يُرسم بعد الهدف ليكون في المقدمة)
             drawGun();
 
             requestAnimationFrame(updateGame);
@@ -539,8 +527,13 @@
         // Gyroscope support
         window.addEventListener('deviceorientation', (e) => {
             if (gameActive && e.gamma !== null && e.beta !== null) {
+                // حساب الميلان للسلاح فقط (حركة خفيفة)
                 gyroX = Math.max(-1, Math.min(1, e.gamma / 45));
                 gyroY = Math.max(-1, Math.min(1, (e.beta - 45) / 45));
+                
+                // تحديث إزاحة السلاح بناءً على الجيروسكوب
+                gunOffsetX = gyroX * 150;
+                gunOffsetY = gyroY * 80;
             }
         });
 
