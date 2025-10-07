@@ -73,7 +73,6 @@
             color: white;
             font-size: 48px;
             margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
 
         #startScreen p {
@@ -94,13 +93,11 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
         }
 
         #startBtn:hover {
             background: #45a049;
             transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(76, 175, 80, 0.7);
         }
 
         #controls {
@@ -115,7 +112,6 @@
             gap: 20px;
             align-items: center;
             direction: rtl;
-            backdrop-filter: blur(5px);
         }
 
         .control-btn {
@@ -157,7 +153,6 @@
             padding: 15px 25px;
             border-radius: 10px;
             direction: rtl;
-            backdrop-filter: blur(5px);
         }
 
         #hitMarker {
@@ -184,51 +179,11 @@
             color: white;
             font-size: 18px;
             direction: rtl;
-            backdrop-filter: blur(5px);
-        }
-
-        #bloodEffect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0;
-            z-index: 15;
-            transition: opacity 0.3s;
-        }
-
-        #scopeOverlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
-            background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.8) 70%);
-        }
-
-        #breathEffect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 3;
-            opacity: 0;
-            transition: transform 3s ease-in-out;
         }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
-    
-    <div id="scopeOverlay"></div>
-    <div id="breathEffect"></div>
-    <div id="bloodEffect"></div>
     
     <div id="crosshair" style="display: none;">
         <div class="crosshair-line horizontal"></div>
@@ -294,11 +249,6 @@
 
         // Gun position
         let gunRecoil = 0;
-        
-        // Realism effects
-        let breathTimer = 0;
-        let bloodEffect = 0;
-        let smokeParticles = [];
 
         // Target position (fixed)
         const targetBaseX = canvas.width / 2;
@@ -315,55 +265,31 @@
             const x = targetBaseX;
             const y = targetBaseY;
 
-            // Draw rings with realistic shading
+            // Draw rings
             const rings = 4;
             for (let i = rings; i >= 0; i--) {
                 ctx.beginPath();
                 ctx.arc(x, y, size * (i + 1) / (rings + 1), 0, Math.PI * 2);
-                
-                // Create gradient for realistic lighting
-                const gradient = ctx.createRadialGradient(x, y, size * i / (rings + 1), x, y, size * (i + 1) / (rings + 1));
-                
-                if (i % 2 === 0) {
-                    gradient.addColorStop(0, '#ff4444');
-                    gradient.addColorStop(1, '#cc0000');
-                } else {
-                    gradient.addColorStop(0, '#ffffff');
-                    gradient.addColorStop(1, '#e6e6e6');
-                }
-                
-                ctx.fillStyle = gradient;
+                ctx.fillStyle = i % 2 === 0 ? '#ff4444' : 'white';
                 ctx.fill();
-                
-                // Add realistic shadow
-                ctx.strokeStyle = i % 2 === 0 ? '#990000' : '#b3b3b3';
+                ctx.strokeStyle = '#333';
                 ctx.lineWidth = 2;
                 ctx.stroke();
             }
 
-            // Center dot with realistic highlight
+            // Center dot
             ctx.beginPath();
-            ctx.arc(x, y, size * 0.1, 0, Math.PI * 2);
-            
-            const centerGradient = ctx.createRadialGradient(x - size * 0.05, y - size * 0.05, 0, x, y, size * 0.1);
-            centerGradient.addColorStop(0, '#333333');
-            centerGradient.addColorStop(1, '#000000');
-            
-            ctx.fillStyle = centerGradient;
-            ctx.fill();
+                ctx.arc(x, y, size * 0.1, 0, Math.PI * 2);
+                ctx.fillStyle = '#000';
+                ctx.fill();
 
-            // Distance indicator below target with realistic styling
+            // Distance indicator below target
             ctx.fillStyle = 'rgba(0,0,0,0.7)';
             ctx.fillRect(x - 60, y + size + 20, 120, 30);
             ctx.fillStyle = 'white';
             ctx.font = '20px Arial';
             ctx.textAlign = 'center';
             ctx.fillText(distance + ' متر', x, y + size + 42);
-            
-            // Add shadow to distance indicator
-            ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-            ctx.lineWidth = 1;
-            ctx.strokeRect(x - 60, y + size + 20, 120, 30);
         }
 
         function drawGun() {
@@ -375,120 +301,10 @@
             const tiltX = gunOffsetX * 0.5;
             const tiltY = gunOffsetY * 0.5;
             
-            // === اليد اليسرى (الداعمة) ===
-            // الساعد الأيسر مع تفاصيل عضلية
-            const gradient1 = ctx.createLinearGradient(centerX - 100, 0, centerX - 50, 0);
-            gradient1.addColorStop(0, '#c49563');
-            gradient1.addColorStop(0.5, '#d4a574');
-            gradient1.addColorStop(1, '#c49563');
-            ctx.fillStyle = gradient1;
-            ctx.beginPath();
-            ctx.moveTo(centerX - 120 + tiltX, canvas.height);
-            ctx.lineTo(centerX - 85 + tiltX, centerY + 75 + offsetY + tiltY);
-            ctx.lineTo(centerX - 55 + tiltX, centerY + 80 + offsetY + tiltY);
-            ctx.lineTo(centerX - 80 + tiltX, canvas.height);
-            ctx.closePath();
-            ctx.fill();
-            
-            // تفاصيل عضلية على الساعد
-            ctx.strokeStyle = '#b8875a';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(centerX - 100 + tiltX, canvas.height - 50);
-            ctx.lineTo(centerX - 90 + tiltX, centerY + 60 + offsetY + tiltY);
-            ctx.stroke();
-            
-            // اليد اليسرى تحيط بالمسدس
-            ctx.fillStyle = '#c49563';
-            ctx.beginPath();
-            ctx.ellipse(centerX - 42 + tiltX, centerY + 55 + offsetY + tiltY, 28, 35, 0.4, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // تفاصيل راحة اليد اليسرى
-            ctx.strokeStyle = '#b8875a';
-            ctx.lineWidth = 1;
-            for(let i = 0; i < 3; i++) {
-                ctx.beginPath();
-                ctx.arc(centerX - 50 + i * 5 + tiltX, centerY + 60 + i * 3 + offsetY + tiltY, 2, 0, Math.PI * 2);
-                ctx.stroke();
-            }
-            
-            // الأصابع اليسرى (أربعة أصابع تلتف)
-            for(let i = 0; i < 4; i++) {
-                ctx.fillStyle = '#b8875a';
-                ctx.beginPath();
-                ctx.roundRect(centerX - 50 + i * 7 + tiltX, centerY + 35 + offsetY + tiltY, 6, 28, 3);
-                ctx.fill();
-                // مفاصل الأصابع
-                ctx.strokeStyle = '#a37750';
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(centerX - 48 + i * 7 + tiltX, centerY + 45 + offsetY + tiltY);
-                ctx.lineTo(centerX - 45 + i * 7 + tiltX, centerY + 45 + offsetY + tiltY);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(centerX - 48 + i * 7 + tiltX, centerY + 53 + offsetY + tiltY);
-                ctx.lineTo(centerX - 45 + i * 7 + tiltX, centerY + 53 + offsetY + tiltY);
-                ctx.stroke();
-            }
-            
-            // === اليد اليمنى (الممسكة) ===
-            // الساعد الأيمن
-            const gradient2 = ctx.createLinearGradient(centerX + 50, 0, centerX + 100, 0);
-            gradient2.addColorStop(0, '#d4a574');
-            gradient2.addColorStop(0.5, '#c49563');
-            gradient2.addColorStop(1, '#d4a574');
-            ctx.fillStyle = gradient2;
-            ctx.beginPath();
-            ctx.moveTo(canvas.width, canvas.height);
-            ctx.lineTo(centerX + 105 + tiltX, centerY + 95 + offsetY + tiltY);
-            ctx.lineTo(centerX + 75 + tiltX, centerY + 85 + offsetY + tiltY);
-            ctx.lineTo(canvas.width - 20, canvas.height);
-            ctx.closePath();
-            ctx.fill();
-            
-            // تفاصيل عضلية على الساعد الأيمن
-            ctx.strokeStyle = '#b8875a';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(centerX + 100 + tiltX, canvas.height - 50);
-            ctx.lineTo(centerX + 90 + tiltX, centerY + 70 + offsetY + tiltY);
-            ctx.stroke();
-            
-            // راحة اليد اليمنى
-            ctx.fillStyle = '#c49563';
-            ctx.beginPath();
-            ctx.ellipse(centerX + 42 + tiltX, centerY + 65 + offsetY + tiltY, 22, 38, -0.2, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // خطوط راحة اليد
-            ctx.strokeStyle = '#b8875a';
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(centerX + 35 + tiltX, centerY + 50 + offsetY + tiltY);
-            ctx.quadraticCurveTo(centerX + 40 + tiltX, centerY + 60 + offsetY + tiltY, centerX + 38 + tiltX, centerY + 75 + offsetY + tiltY);
-            ctx.stroke();
-            
-            // الإبهام الأيمن
-            ctx.fillStyle = '#b8875a';
-            ctx.beginPath();
-            ctx.ellipse(centerX + 18 + tiltX, centerY + 45 + offsetY + tiltY, 13, 20, 0.6, 0, Math.PI * 2);
-            ctx.fill();
-            // مفصل الإبهام
-            ctx.strokeStyle = '#a37750';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.arc(centerX + 20 + tiltX, centerY + 50 + offsetY + tiltY, 3, 0, Math.PI);
-            ctx.stroke();
-            
             // === مسدس جلوك 19 ===
             
-            // السلايد العلوي (أسود غير لامع) مع تدرج واقعي
-            const slideGradient = ctx.createLinearGradient(centerX - 38 + tiltX, centerY - 32 + offsetY + tiltY, centerX + 38 + tiltX, centerY + 10 + offsetY + tiltY);
-            slideGradient.addColorStop(0, '#0a0a0a');
-            slideGradient.addColorStop(0.5, '#1a1a1a');
-            slideGradient.addColorStop(1, '#0a0a0a');
-            ctx.fillStyle = slideGradient;
+            // السلايد العلوي (أسود غير لامع)
+            ctx.fillStyle = '#0d0d0d';
             ctx.fillRect(centerX - 38 + tiltX, centerY - 32 + offsetY + tiltY, 76, 42);
             
             // شطف السلايد الأمامي
@@ -528,11 +344,7 @@
             ctx.fill();
             
             // الإطار السفلي (Polymer Frame) - رمادي
-            const frameGradient = ctx.createLinearGradient(centerX - 35 + tiltX, centerY + 10 + offsetY + tiltY, centerX + 35 + tiltX, centerY + 75 + offsetY + tiltY);
-            frameGradient.addColorStop(0, '#2a2a2a');
-            frameGradient.addColorStop(0.5, '#3a3a3a');
-            frameGradient.addColorStop(1, '#2a2a2a');
-            ctx.fillStyle = frameGradient;
+            ctx.fillStyle = '#2a2a2a';
             ctx.beginPath();
             ctx.roundRect(centerX - 35 + tiltX, centerY + 10 + offsetY + tiltY, 70, 65, 2);
             ctx.fill();
@@ -568,35 +380,6 @@
             // أمان الزناد الصغير
             ctx.fillStyle = '#ff6600';
             ctx.fillRect(centerX - 1 + tiltX, centerY + 52 + offsetY + tiltY, 2, 6);
-            
-            // إصبع السبابة على الزناد
-            ctx.fillStyle = '#b8875a';
-            ctx.beginPath();
-            ctx.ellipse(centerX + 10 + tiltX, centerY + 54 + offsetY + tiltY, 9, 17, -0.4, 0, Math.PI * 2);
-            ctx.fill();
-            // مفصل السبابة
-            ctx.strokeStyle = '#a37750';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.arc(centerX + 12 + tiltX, centerY + 56 + offsetY + tiltY, 3, 0, Math.PI);
-            ctx.stroke();
-            
-            // الأصابع الثلاثة على القبضة
-            for(let i = 0; i < 3; i++) {
-                ctx.fillStyle = '#b8875a';
-                ctx.beginPath();
-                ctx.roundRect(centerX + 32 + tiltX, centerY + 52 + i * 16 + offsetY + tiltY, 20, 12, 2);
-                ctx.fill();
-                // مفاصل الأصابع
-                ctx.strokeStyle = '#a37750';
-                ctx.lineWidth = 1;
-                for(let j = 0; j < 2; j++) {
-                    ctx.beginPath();
-                    ctx.moveTo(centerX + 35 + tiltX, centerY + 55 + i * 16 + j * 5 + offsetY + tiltY);
-                    ctx.lineTo(centerX + 49 + tiltX, centerY + 55 + i * 16 + j * 5 + offsetY + tiltY);
-                    ctx.stroke();
-                }
-            }
             
             // Magazine (المخزن)
             ctx.fillStyle = '#0d0d0d';
@@ -700,14 +483,6 @@
                 // Flash effect
                 ctx.fillStyle = 'rgba(255, 255, 0, 0.3)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Blood effect
-                bloodEffect = 1;
-                document.getElementById('bloodEffect').style.opacity = '0.7';
-                setTimeout(() => {
-                    bloodEffect = 0;
-                    document.getElementById('bloodEffect').style.opacity = '0';
-                }, 300);
             }
 
             // Muzzle flash من فوهة السلاح
@@ -728,46 +503,10 @@
             ctx.arc(flashX, flashY, 20, 0, Math.PI * 2);
             ctx.fill();
             ctx.shadowBlur = 0;
-            
-            // Add smoke particles
-            for (let i = 0; i < 5; i++) {
-                smokeParticles.push({
-                    x: flashX,
-                    y: flashY,
-                    size: Math.random() * 10 + 5,
-                    speedX: (Math.random() - 0.5) * 5,
-                    speedY: (Math.random() - 0.5) * 5,
-                    opacity: 0.7,
-                    life: 1.0
-                });
-            }
 
             // Reload if empty
             if (currentAmmo === 0 && totalAmmo > 0) {
                 reload();
-            }
-        }
-
-        function updateSmoke() {
-            for (let i = smokeParticles.length - 1; i >= 0; i--) {
-                const particle = smokeParticles[i];
-                
-                // Update position
-                particle.x += particle.speedX;
-                particle.y += particle.speedY;
-                particle.life -= 0.02;
-                particle.opacity = particle.life * 0.7;
-                
-                // Draw particle
-                ctx.fillStyle = `rgba(200, 200, 200, ${particle.opacity})`;
-                ctx.beginPath();
-                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Remove dead particles
-                if (particle.life <= 0) {
-                    smokeParticles.splice(i, 1);
-                }
             }
         }
 
@@ -823,14 +562,6 @@
 
             // Draw gun (يُرسم بعد الهدف ليكون في المقدمة)
             drawGun();
-            
-            // Draw smoke particles
-            updateSmoke();
-            
-            // Update breath effect
-            breathTimer += 0.02;
-            const breathOffset = Math.sin(breathTimer) * 2;
-            document.getElementById('breathEffect').style.transform = `translateY(${breathOffset}px)`;
 
             requestAnimationFrame(updateGame);
         }
