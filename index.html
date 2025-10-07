@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة التصويب</title>
+    <title>لعبة التصويب - الجيروسكوب</title>
     <style>
         * {
             margin: 0;
@@ -14,12 +14,12 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
-            background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 100%);
+            background: #000;
+            touch-action: none;
         }
 
         #gameCanvas {
             display: block;
-            cursor: none;
             background: linear-gradient(to bottom, #87CEEB 0%, #90EE90 100%);
         }
 
@@ -41,10 +41,13 @@
             margin-bottom: 10px;
         }
 
-        #health {
-            background: rgba(255,0,0,0.5);
+        #distance {
+            background: rgba(0,0,0,0.5);
             padding: 10px 20px;
             border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: bold;
         }
 
         #crosshair {
@@ -60,8 +63,8 @@
 
         .crosshair-line {
             position: absolute;
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 5px rgba(0,0,0,0.8);
         }
 
         .horizontal {
@@ -86,7 +89,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.9);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -126,45 +129,51 @@
             transform: scale(1.1);
         }
 
-        #gameOver {
+        #controls {
             position: absolute;
-            top: 50%;
+            bottom: 30px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.9);
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            display: none;
-            z-index: 100;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
             direction: rtl;
         }
 
-        #gameOver h2 {
-            color: #ff4444;
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-
-        #gameOver p {
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            border-radius: 50%;
             color: white;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        #restartBtn {
-            padding: 15px 40px;
-            font-size: 24px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 10px;
+            font-size: 32px;
             cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:active {
+            background: rgba(255,255,255,0.4);
+            transform: scale(0.95);
+        }
+
+        #shootBtn {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,0,0,0.3);
+            border: 3px solid #ff4444;
+            font-size: 24px;
         }
 
         #ammo {
             position: absolute;
-            bottom: 30px;
+            bottom: 120px;
             right: 30px;
             color: white;
             font-size: 28px;
@@ -172,6 +181,32 @@
             background: rgba(0,0,0,0.5);
             padding: 15px 25px;
             border-radius: 10px;
+            direction: rtl;
+        }
+
+        #hitMarker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff00;
+            font-size: 72px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff00;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 20;
+        }
+
+        #gyroStatus {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
             direction: rtl;
         }
     </style>
@@ -182,36 +217,41 @@
     <div id="crosshair">
         <div class="crosshair-line horizontal"></div>
         <div class="crosshair-line vertical"></div>
-        <div class="crosshair-line horizontal" style="left: 10px;"></div>
-        <div class="crosshair-line horizontal" style="left: calc(100% - 10px);"></div>
-        <div class="crosshair-line vertical" style="top: 10px;"></div>
-        <div class="crosshair-line vertical" style="top: calc(100% - 10px);"></div>
+        <div class="crosshair-line horizontal" style="left: 10px; width: 15px;"></div>
+        <div class="crosshair-line horizontal" style="left: calc(100% - 10px); width: 15px;"></div>
+        <div class="crosshair-line vertical" style="top: 10px; height: 15px;"></div>
+        <div class="crosshair-line vertical" style="top: calc(100% - 10px); height: 15px;"></div>
     </div>
 
     <div id="ui">
         <div id="score">النقاط: <span id="scoreValue">0</span></div>
-        <div id="health">الصحة: <span id="healthValue">100</span></div>
+        <div id="distance">المسافة: <span id="distanceValue">10</span> متر</div>
     </div>
+
+    <div id="gyroStatus">الجيروسكوب: <span id="gyroStatusText">جاري التحميل...</span></div>
 
     <div id="ammo">
         <span id="currentAmmo">10</span> / <span id="totalAmmo">50</span>
     </div>
 
-    <div id="startScreen">
-        <h1>🎯 لعبة التصويب</h1>
-        <p>
-            استخدم الماوس أو الجيروسكوب للتصويب<br>
-            انقر بالزر الأيسر للإطلاق<br>
-            اضغط R لإعادة التعبئة<br>
-            صوّب على الأهداف واحصل على أعلى نقاط!
-        </p>
-        <button id="startBtn">ابدأ اللعب</button>
+    <div id="hitMarker">✓ إصابة!</div>
+
+    <div id="controls">
+        <button class="control-btn" id="distanceDown">-</button>
+        <div style="color: white; font-size: 20px;">المسافة</div>
+        <button class="control-btn" id="distanceUp">+</button>
+        <button class="control-btn" id="shootBtn">🔫</button>
     </div>
 
-    <div id="gameOver">
-        <h2>انتهت اللعبة!</h2>
-        <p>نقاطك النهائية: <span id="finalScore">0</span></p>
-        <button id="restartBtn">العب مرة أخرى</button>
+    <div id="startScreen">
+        <h1>🎯 لعبة التصويب بالجيروسكوب</h1>
+        <p>
+            حرك جهازك للتصويب على الهدف<br>
+            استخدم أزرار + و - لتغيير المسافة<br>
+            اضغط زر الإطلاق 🔫 للتصويب<br>
+            صوّب على مركز الهدف واحصل على أعلى نقاط!
+        </p>
+        <button id="startBtn">ابدأ اللعب</button>
     </div>
 
     <script>
@@ -224,102 +264,109 @@
         // Game state
         let gameActive = false;
         let score = 0;
-        let health = 100;
+        let distance = 10; // meters
         let currentAmmo = 10;
         let totalAmmo = 50;
         let isReloading = false;
+        let gyroSupported = false;
         
-        // Gyroscope and mouse
+        // Gyroscope
         let gyroX = 0;
         let gyroY = 0;
-        let mouseX = canvas.width / 2;
-        let mouseY = canvas.height / 2;
-        let useGyro = false;
+        let gunOffsetX = 0;
+        let gunOffsetY = 0;
 
         // Gun position
-        let gunX = canvas.width / 2;
-        let gunY = canvas.height - 150;
         let gunRecoil = 0;
 
-        // Targets
-        let targets = [];
-        const targetSpawnRate = 2000;
-        let lastTargetSpawn = 0;
+        // Target position (fixed)
+        const targetBaseX = canvas.width / 2;
+        const targetBaseY = canvas.height * 0.3;
 
-        class Target {
-            constructor() {
-                this.radius = 30 + Math.random() * 30;
-                this.x = Math.random() * (canvas.width - this.radius * 2) + this.radius;
-                this.y = Math.random() * (canvas.height * 0.6 - this.radius * 2) + this.radius;
-                this.speedX = (Math.random() - 0.5) * 2;
-                this.speedY = (Math.random() - 0.5) * 2;
-                this.color = `hsl(${Math.random() * 360}, 70%, 50%)`;
-                this.rings = 3;
-            }
+        function getTargetSize() {
+            // Target gets smaller with distance (perspective)
+            const baseSize = 100;
+            return baseSize / (distance / 10);
+        }
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+        function drawTarget() {
+            const size = getTargetSize();
+            const x = targetBaseX;
+            const y = targetBaseY;
 
-                if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) {
-                    this.speedX *= -1;
-                }
-                if (this.y - this.radius < 0 || this.y + this.radius > canvas.height * 0.6) {
-                    this.speedY *= -1;
-                }
-            }
-
-            draw() {
-                for (let i = this.rings; i >= 0; i--) {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius * (i + 1) / (this.rings + 1), 0, Math.PI * 2);
-                    ctx.fillStyle = i % 2 === 0 ? this.color : 'white';
-                    ctx.fill();
-                    ctx.strokeStyle = '#333';
-                    ctx.lineWidth = 2;
-                    ctx.stroke();
-                }
-
-                // Center dot
+            // Draw rings
+            const rings = 4;
+            for (let i = rings; i >= 0; i--) {
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-                ctx.fillStyle = 'red';
+                ctx.arc(x, y, size * (i + 1) / (rings + 1), 0, Math.PI * 2);
+                ctx.fillStyle = i % 2 === 0 ? '#ff4444' : 'white';
                 ctx.fill();
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+                ctx.stroke();
             }
 
-            checkHit(x, y) {
-                const dist = Math.sqrt((x - this.x) ** 2 + (y - this.y) ** 2);
-                return dist < this.radius;
-            }
+            // Center dot
+            ctx.beginPath();
+            ctx.arc(x, y, size * 0.1, 0, Math.PI * 2);
+            ctx.fillStyle = '#000';
+            ctx.fill();
+
+            // Distance indicator below target
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(x - 60, y + size + 20, 120, 30);
+            ctx.fillStyle = 'white';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(distance + ' متر', x, y + size + 42);
         }
 
         function drawGun() {
+            const centerX = canvas.width / 2 + gunOffsetX;
+            const centerY = canvas.height - 150 + gunOffsetY;
             const offsetY = gunRecoil;
             
+            // Gun shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.fillRect(centerX - 28, centerY - 18 + offsetY + 5, 60, 100);
+            
             // Gun body
-            ctx.fillStyle = '#333';
-            ctx.fillRect(gunX - 30, gunY - 20 + offsetY, 60, 100);
+            ctx.fillStyle = '#2c2c2c';
+            ctx.fillRect(centerX - 30, centerY - 20 + offsetY, 60, 100);
             
             // Gun barrel
-            ctx.fillStyle = '#222';
-            ctx.fillRect(gunX - 10, gunY - 80 + offsetY, 20, 60);
+            ctx.fillStyle = '#1a1a1a';
+            ctx.fillRect(centerX - 10, centerY - 80 + offsetY, 20, 60);
+            
+            // Gun slide
+            ctx.fillStyle = '#404040';
+            ctx.fillRect(centerX - 32, centerY - 15 + offsetY, 64, 20);
             
             // Gun details
             ctx.fillStyle = '#555';
-            ctx.fillRect(gunX - 35, gunY + 30 + offsetY, 70, 15);
+            ctx.fillRect(centerX - 35, centerY + 30 + offsetY, 70, 15);
+            
+            // Trigger
+            ctx.fillStyle = '#ff6600';
+            ctx.fillRect(centerX - 5, centerY + 40 + offsetY, 10, 15);
             
             // Trigger guard
             ctx.strokeStyle = '#444';
             ctx.lineWidth = 3;
             ctx.beginPath();
-            ctx.arc(gunX, gunY + 50 + offsetY, 15, 0, Math.PI);
+            ctx.arc(centerX, centerY + 50 + offsetY, 15, 0, Math.PI);
             ctx.stroke();
 
-            // Sight
-            ctx.fillStyle = '#ff6600';
-            ctx.fillRect(gunX - 5, gunY - 85 + offsetY, 10, 10);
+            // Front sight
+            ctx.fillStyle = '#00ff00';
+            ctx.fillRect(centerX - 5, centerY - 85 + offsetY, 10, 8);
+            
+            // Rear sight
+            ctx.fillStyle = '#00ff00';
+            ctx.fillRect(centerX - 15, centerY - 25 + offsetY, 10, 5);
+            ctx.fillRect(centerX + 5, centerY - 25 + offsetY, 10, 5);
 
-            gunRecoil *= 0.8;
+            gunRecoil *= 0.85;
         }
 
         function shoot() {
@@ -327,31 +374,46 @@
 
             currentAmmo--;
             document.getElementById('currentAmmo').textContent = currentAmmo;
-            gunRecoil = 10;
+            gunRecoil = 15;
 
-            // Check hits
-            const aimX = useGyro ? canvas.width / 2 : mouseX;
-            const aimY = useGyro ? canvas.height / 2 : mouseY;
+            // Check if hit target
+            const aimX = canvas.width / 2;
+            const aimY = canvas.height / 2;
+            const targetSize = getTargetSize();
+            
+            const dx = aimX - targetBaseX;
+            const dy = aimY - targetBaseY;
+            const distToTarget = Math.sqrt(dx * dx + dy * dy);
 
-            for (let i = targets.length - 1; i >= 0; i--) {
-                if (targets[i].checkHit(aimX, aimY)) {
-                    score += 10;
-                    document.getElementById('scoreValue').textContent = score;
-                    targets.splice(i, 1);
-                    
-                    // Flash effect
-                    ctx.fillStyle = 'rgba(255, 255, 0, 0.3)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    break;
-                }
+            if (distToTarget < targetSize) {
+                // Calculate score based on accuracy
+                const accuracy = 1 - (distToTarget / targetSize);
+                const points = Math.round(10 + accuracy * 40); // 10-50 points
+                score += points;
+                document.getElementById('scoreValue').textContent = score;
+                
+                // Show hit marker
+                const hitMarker = document.getElementById('hitMarker');
+                hitMarker.style.opacity = '1';
+                hitMarker.textContent = `✓ +${points}`;
+                setTimeout(() => {
+                    hitMarker.style.opacity = '0';
+                }, 500);
+
+                // Flash effect
+                ctx.fillStyle = 'rgba(255, 255, 0, 0.3)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
             }
 
             // Muzzle flash
-            ctx.fillStyle = 'rgba(255, 200, 0, 0.8)';
+            const flashX = canvas.width / 2 + gunOffsetX;
+            const flashY = canvas.height - 230 + gunOffsetY;
+            ctx.fillStyle = 'rgba(255, 200, 0, 0.9)';
             ctx.beginPath();
-            ctx.arc(gunX, gunY - 80, 20, 0, Math.PI * 2);
+            ctx.arc(flashX, flashY, 25, 0, Math.PI * 2);
             ctx.fill();
 
+            // Reload if empty
             if (currentAmmo === 0 && totalAmmo > 0) {
                 reload();
             }
@@ -373,57 +435,46 @@
             }, 1500);
         }
 
-        function spawnTarget() {
-            if (targets.length < 5) {
-                targets.push(new Target());
-            }
+        function changeDistance(delta) {
+            distance = Math.max(5, Math.min(50, distance + delta));
+            document.getElementById('distanceValue').textContent = distance;
         }
 
-        function updateGame(timestamp) {
+        function updateGame() {
             if (!gameActive) return;
 
             // Clear canvas
-            ctx.fillStyle = 'rgba(135, 206, 235, 1)';
+            ctx.fillStyle = '#87CEEB';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Ground
             ctx.fillStyle = '#90EE90';
             ctx.fillRect(0, canvas.height * 0.6, canvas.width, canvas.height * 0.4);
 
-            // Update gun position
-            if (useGyro) {
-                gunX = canvas.width / 2 - gyroX * 200;
-                gunY = canvas.height - 150 - gyroY * 100;
-            } else {
-                gunX = mouseX;
-                gunY = canvas.height - 150;
-            }
+            // Mountains in background
+            ctx.fillStyle = '#5a6b52';
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height * 0.6);
+            ctx.lineTo(canvas.width * 0.3, canvas.height * 0.3);
+            ctx.lineTo(canvas.width * 0.6, canvas.height * 0.6);
+            ctx.fill();
 
-            // Spawn targets
-            if (timestamp - lastTargetSpawn > targetSpawnRate) {
-                spawnTarget();
-                lastTargetSpawn = timestamp;
-            }
+            ctx.fillStyle = '#6b7c64';
+            ctx.beginPath();
+            ctx.moveTo(canvas.width * 0.4, canvas.height * 0.6);
+            ctx.lineTo(canvas.width * 0.7, canvas.height * 0.35);
+            ctx.lineTo(canvas.width, canvas.height * 0.6);
+            ctx.fill();
 
-            // Update and draw targets
-            targets.forEach(target => {
-                target.update();
-                target.draw();
-            });
+            // Draw target
+            drawTarget();
+
+            // Update gun offset based on gyroscope
+            gunOffsetX = gyroX * 150;
+            gunOffsetY = gyroY * 80;
 
             // Draw gun
             drawGun();
-
-            // Damage player if too many targets
-            if (targets.length >= 5) {
-                health -= 0.1;
-                document.getElementById('healthValue').textContent = Math.floor(health);
-                
-                if (health <= 0) {
-                    endGame();
-                    return;
-                }
-            }
 
             requestAnimationFrame(updateGame);
         }
@@ -432,23 +483,16 @@
             document.getElementById('startScreen').style.display = 'none';
             gameActive = true;
             score = 0;
-            health = 100;
+            distance = 10;
             currentAmmo = 10;
             totalAmmo = 50;
-            targets = [];
             
             document.getElementById('scoreValue').textContent = score;
-            document.getElementById('healthValue').textContent = health;
+            document.getElementById('distanceValue').textContent = distance;
             document.getElementById('currentAmmo').textContent = currentAmmo;
             document.getElementById('totalAmmo').textContent = totalAmmo;
             
             requestAnimationFrame(updateGame);
-        }
-
-        function endGame() {
-            gameActive = false;
-            document.getElementById('finalScore').textContent = score;
-            document.getElementById('gameOver').style.display = 'block';
         }
 
         // Event listeners
@@ -458,47 +502,58 @@
                 DeviceOrientationEvent.requestPermission()
                     .then(permissionState => {
                         if (permissionState === 'granted') {
-                            useGyro = true;
+                            gyroSupported = true;
+                            document.getElementById('gyroStatusText').textContent = 'نشط ✓';
+                        } else {
+                            document.getElementById('gyroStatusText').textContent = 'غير مفعل';
                         }
                         startGame();
                     })
-                    .catch(console.error);
+                    .catch(() => {
+                        document.getElementById('gyroStatusText').textContent = 'غير مدعوم';
+                        startGame();
+                    });
             } else {
+                // Check if gyro is available
+                window.addEventListener('deviceorientation', (e) => {
+                    if (e.gamma !== null) {
+                        gyroSupported = true;
+                        document.getElementById('gyroStatusText').textContent = 'نشط ✓';
+                    }
+                }, { once: true });
+                
+                setTimeout(() => {
+                    if (!gyroSupported) {
+                        document.getElementById('gyroStatusText').textContent = 'غير مدعوم';
+                    }
+                }, 1000);
+                
                 startGame();
             }
         });
 
-        document.getElementById('restartBtn').addEventListener('click', () => {
-            document.getElementById('gameOver').style.display = 'none';
-            startGame();
-        });
-
-        canvas.addEventListener('click', shoot);
-
-        canvas.addEventListener('mousemove', (e) => {
-            if (!useGyro) {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-            }
-        });
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'r' || e.key === 'R') {
-                reload();
-            }
-        });
+        document.getElementById('shootBtn').addEventListener('click', shoot);
+        document.getElementById('distanceUp').addEventListener('click', () => changeDistance(5));
+        document.getElementById('distanceDown').addEventListener('click', () => changeDistance(-5));
 
         // Gyroscope support
         window.addEventListener('deviceorientation', (e) => {
-            if (useGyro && gameActive) {
-                gyroX = e.gamma / 90; // -1 to 1
-                gyroY = e.beta / 90;  // -1 to 1
+            if (gameActive && e.gamma !== null && e.beta !== null) {
+                gyroX = Math.max(-1, Math.min(1, e.gamma / 45));
+                gyroY = Math.max(-1, Math.min(1, (e.beta - 45) / 45));
             }
         });
 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+        });
+
+        // Touch controls for shooting
+        canvas.addEventListener('touchend', (e) => {
+            if (gameActive) {
+                shoot();
+            }
         });
     </script>
 </body>
