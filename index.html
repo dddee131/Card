@@ -607,8 +607,8 @@
         let score = 0;
         let shots = 0;
         let hits = 0;
-        let sceneRotationX = 0;
-        let sceneRotationY = 0;
+        let gunRotationX = 0;
+        let gunRotationY = 0;
         let gyroEnabled = false;
 
         // حركة الماوس
@@ -617,10 +617,10 @@
                 const centerX = window.innerWidth / 2;
                 const centerY = window.innerHeight / 2;
                 
-                sceneRotationY = ((e.clientX - centerX) / centerX) * 8;
-                sceneRotationX = ((e.clientY - centerY) / centerY) * -5;
+                gunRotationY = ((e.clientX - centerX) / centerX) * 25;
+                gunRotationX = ((e.clientY - centerY) / centerY) * -15;
                 
-                updateScene();
+                updateGun();
             }
         });
 
@@ -694,28 +694,23 @@
             const deltaGamma = gamma - baseGamma;
             const deltaBeta = beta - baseBeta;
             
-            // تحويل إلى حركة المشهد (مع حساسية معكوسة)
-            sceneRotationY = (deltaGamma / 30) * 12; // زيادة الحساسية
-            sceneRotationX = (deltaBeta / 30) * -8;
+            // تحويل إلى حركة المسدس فقط (مع حساسية أعلى)
+            gunRotationY = (deltaGamma / 20) * 25; // زيادة الحساسية للمسدس
+            gunRotationX = (deltaBeta / 20) * -15;
             
             // تحديد النطاق
-            sceneRotationY = Math.max(-15, Math.min(15, sceneRotationY));
-            sceneRotationX = Math.max(-10, Math.min(10, sceneRotationX));
+            gunRotationY = Math.max(-30, Math.min(30, gunRotationY));
+            gunRotationX = Math.max(-20, Math.min(20, gunRotationX));
             
-            updateScene();
+            updateGun();
         }
 
-        // تحديث المشهد
-        function updateScene() {
-            scene.style.transform = `
-                rotateX(${sceneRotationX}deg) 
-                rotateY(${sceneRotationY}deg)
-            `;
-            
+        // تحديث موضع المسدس فقط
+        function updateGun() {
             gunContainer.style.transform = `
                 translateX(-50%)
-                rotateX(${sceneRotationX * 0.2}deg) 
-                rotateY(${sceneRotationY * 0.2}deg)
+                rotateX(${gunRotationX * 0.8}deg) 
+                rotateY(${gunRotationY * 0.8}deg)
             `;
         }
 
@@ -739,11 +734,17 @@
             
             // حركة ارتداد
             gunContainer.style.transition = 'transform 0.05s';
-            const currentTransform = gunContainer.style.transform;
-            gunContainer.style.transform = currentTransform.replace('translateX(-50%)', 'translateX(-50%) translateY(-30px)');
+            const currentRotX = gunRotationX;
+            const currentRotY = gunRotationY;
+            gunContainer.style.transform = `
+                translateX(-50%) 
+                translateY(-30px)
+                rotateX(${currentRotX * 0.8}deg) 
+                rotateY(${currentRotY * 0.8}deg)
+            `;
             setTimeout(() => {
                 gunContainer.style.transition = 'transform 0.15s';
-                updateScene();
+                updateGun();
             }, 60);
             
             // فحص الإصابة
