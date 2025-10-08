@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -180,86 +181,11 @@
             font-size: 18px;
             direction: rtl;
         }
-
-        /* أنماط النياشين */
-        .target-marker {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .target-marker-inner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            border: 3px solid rgba(255, 255, 255, 0.7);
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        }
-
-        .target-marker-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 15px;
-            height: 15px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-        }
-
-        .target-marker-cross {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.7);
-        }
-
-        .target-marker-cross.horizontal {
-            top: 50%;
-            left: 10px;
-            width: calc(100% - 20px);
-            height: 2px;
-            transform: translateY(-50%);
-        }
-
-        .target-marker-cross.vertical {
-            left: 50%;
-            top: 10px;
-            height: calc(100% - 20px);
-            width: 2px;
-            transform: translateX(-50%);
-        }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
     
-    <!-- النياشين -->
-    <div class="target-marker" id="markerLeft" style="left: 20%; top: 50%;">
-        <div class="target-marker-inner"></div>
-        <div class="target-marker-cross horizontal"></div>
-        <div class="target-marker-cross vertical"></div>
-        <div class="target-marker-center"></div>
-    </div>
-    
-    <div class="target-marker" id="markerCenter" style="left: 50%; top: 50%;">
-        <div class="target-marker-inner"></div>
-        <div class="target-marker-cross horizontal"></div>
-        <div class="target-marker-cross vertical"></div>
-        <div class="target-marker-center"></div>
-    </div>
-    
-    <div class="target-marker" id="markerRight" style="left: 80%; top: 50%;">
-        <div class="target-marker-inner"></div>
-        <div class="target-marker-cross horizontal"></div>
-        <div class="target-marker-cross vertical"></div>
-        <div class="target-marker-center"></div>
-    </div>
-
     <div id="crosshair" style="display: none;">
         <div class="crosshair-line horizontal"></div>
         <div class="crosshair-line vertical"></div>
@@ -329,13 +255,6 @@
         const targetBaseX = canvas.width / 2;
         const targetBaseY = canvas.height / 2;
 
-        // Target positions for markers
-        const markerPositions = [
-            { x: canvas.width * 0.2, y: canvas.height * 0.5, active: true },
-            { x: canvas.width * 0.5, y: canvas.height * 0.5, active: true },
-            { x: canvas.width * 0.8, y: canvas.height * 0.5, active: true }
-        ];
-
         function getTargetSize() {
             // Target gets smaller with distance (perspective)
             const baseSize = 100;
@@ -344,40 +263,34 @@
 
         function drawTarget() {
             const size = getTargetSize();
-            
-            // Draw all active targets
-            markerPositions.forEach((pos, index) => {
-                if (pos.active) {
-                    const x = pos.x;
-                    const y = pos.y;
+            const x = targetBaseX;
+            const y = targetBaseY;
 
-                    // Draw rings
-                    const rings = 4;
-                    for (let i = rings; i >= 0; i--) {
-                        ctx.beginPath();
-                        ctx.arc(x, y, size * (i + 1) / (rings + 1), 0, Math.PI * 2);
-                        ctx.fillStyle = i % 2 === 0 ? '#ff4444' : 'white';
-                        ctx.fill();
-                        ctx.strokeStyle = '#333';
-                        ctx.lineWidth = 2;
-                        ctx.stroke();
-                    }
+            // Draw rings
+            const rings = 4;
+            for (let i = rings; i >= 0; i--) {
+                ctx.beginPath();
+                ctx.arc(x, y, size * (i + 1) / (rings + 1), 0, Math.PI * 2);
+                ctx.fillStyle = i % 2 === 0 ? '#ff4444' : 'white';
+                ctx.fill();
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
 
-                    // Center dot
-                    ctx.beginPath();
-                    ctx.arc(x, y, size * 0.1, 0, Math.PI * 2);
-                    ctx.fillStyle = '#000';
-                    ctx.fill();
+            // Center dot
+            ctx.beginPath();
+                ctx.arc(x, y, size * 0.1, 0, Math.PI * 2);
+                ctx.fillStyle = '#000';
+                ctx.fill();
 
-                    // Distance indicator below target
-                    ctx.fillStyle = 'rgba(0,0,0,0.7)';
-                    ctx.fillRect(x - 60, y + size + 20, 120, 30);
-                    ctx.fillStyle = 'white';
-                    ctx.font = '20px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(distance + ' متر', x, y + size + 42);
-                }
-            });
+            // Distance indicator below target
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(x - 60, y + size + 20, 120, 30);
+            ctx.fillStyle = 'white';
+            ctx.font = '20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(distance + ' متر', x, y + size + 42);
         }
 
         function drawGun() {
@@ -548,41 +461,22 @@
             
             const targetSize = getTargetSize();
             
-            // التحقق من إصابة أي من النياشين
-            let hit = false;
-            let hitPoints = 0;
-            
-            markerPositions.forEach((pos, index) => {
-                if (pos.active) {
-                    // حساب المسافة بين نقطة التصويب والهدف
-                    const dx = aimX - pos.x;
-                    const dy = aimY - pos.y;
-                    const distToTarget = Math.sqrt(dx * dx + dy * dy);
+            // حساب المسافة بين نقطة التصويب والهدف
+            const dx = aimX - targetBaseX;
+            const dy = aimY - targetBaseY;
+            const distToTarget = Math.sqrt(dx * dx + dy * dy);
 
-                    if (distToTarget < targetSize) {
-                        // Calculate score based on accuracy
-                        const accuracy = 1 - (distToTarget / targetSize);
-                        const points = Math.round(10 + accuracy * 40); // 10-50 points
-                        score += points;
-                        hitPoints = points;
-                        hit = true;
-                        
-                        // إخفاء النيش الذي تم إصابته
-                        pos.active = false;
-                        
-                        // إعادة النياشين بعد فترة
-                        setTimeout(() => {
-                            pos.active = true;
-                        }, 2000);
-                    }
-                }
-            });
-            
-            if (hit) {
+            if (distToTarget < targetSize) {
+                // Calculate score based on accuracy
+                const accuracy = 1 - (distToTarget / targetSize);
+                const points = Math.round(10 + accuracy * 40); // 10-50 points
+                score += points;
+                document.getElementById('scoreValue').textContent = score;
+                
                 // Show hit marker
                 const hitMarker = document.getElementById('hitMarker');
                 hitMarker.style.opacity = '1';
-                hitMarker.textContent = `✓ +${hitPoints}`;
+                hitMarker.textContent = `✓ +${points}`;
                 setTimeout(() => {
                     hitMarker.style.opacity = '0';
                 }, 500);
@@ -590,8 +484,6 @@
                 // Flash effect
                 ctx.fillStyle = 'rgba(255, 255, 0, 0.3)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                document.getElementById('scoreValue').textContent = score;
             }
 
             // Muzzle flash من فوهة السلاح
@@ -748,22 +640,6 @@
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            
-            // تحديث مواقع النياشين بعد تغيير حجم الشاشة
-            markerPositions[0].x = canvas.width * 0.2;
-            markerPositions[0].y = canvas.height * 0.5;
-            markerPositions[1].x = canvas.width * 0.5;
-            markerPositions[1].y = canvas.height * 0.5;
-            markerPositions[2].x = canvas.width * 0.8;
-            markerPositions[2].y = canvas.height * 0.5;
-            
-            // تحديث مواضع عناصر النياشين في الـDOM
-            document.getElementById('markerLeft').style.left = '20%';
-            document.getElementById('markerLeft').style.top = '50%';
-            document.getElementById('markerCenter').style.left = '50%';
-            document.getElementById('markerCenter').style.top = '50%';
-            document.getElementById('markerRight').style.left = '80%';
-            document.getElementById('markerRight').style.top = '50%';
         });
 
         // Touch controls for shooting
