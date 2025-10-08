@@ -67,26 +67,5 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function openPDF(section) {
-            const pdfLinks = {
-                'safety': 'safety_procedures.pdf',
-                'skills': 'shooting_skills.pdf',
-                'weapons': 'weapon_names.pdf'
-            };
-
-            const pdfNames = {
-                'safety': 'إجراءات السلامة',
-                'skills': 'مهارات الرماية الخمسة',
-                'weapons': 'مسميات الأسلحة'
-            };
-
-            const link = pdfLinks[section];
-            
-            alert(`سيتم فتح ملف: ${pdfNames[section]}\n\nالملف: ${link}\n\nملاحظة: قم بإضافة ملفات PDF في نفس مجلد الموقع بالأسماء التالية:\n- safety_procedures.pdf\n- shooting_skills.pdf\n- weapon_names.pdf`);
-            
-            window.open(link, '_blank');
-        }
-    </script>
 </body>
 </html>
