@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 600px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
@@ -35,168 +35,21 @@
             font-size: 2em;
         }
 
-        .target-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .target {
-            width: 300px;
-            height: 300px;
-            position: relative;
-            border-radius: 50%;
-            background: #000;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-        }
-
-        .ring {
-            position: absolute;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-            font-size: 14px;
-        }
-
-        .ring-1 {
-            width: 280px;
-            height: 280px;
-            background: #ff5252;
-        }
-
-        .ring-2 {
-            width: 250px;
-            height: 250px;
-            background: #ff6b6b;
-        }
-
-        .ring-3 {
-            width: 220px;
-            height: 220px;
-            background: #ff9800;
-        }
-
-        .ring-4 {
-            width: 190px;
-            height: 190px;
-            background: #ffb74d;
-        }
-
-        .ring-5 {
-            width: 160px;
-            height: 160px;
-            background: #ffeb3b;
-            color: #333;
-        }
-
-        .ring-6 {
-            width: 130px;
-            height: 130px;
-            background: #a5d6a7;
-        }
-
-        .ring-7 {
-            width: 100px;
-            height: 100px;
-            background: #4caf50;
-        }
-
-        .ring-8 {
-            width: 70px;
-            height: 70px;
-            background: #2196f3;
-        }
-
-        .ring-9 {
-            width: 40px;
-            height: 40px;
-            background: #3f51b5;
-        }
-
-        .ring-10 {
-            width: 20px;
-            height: 20px;
-            background: #9c27b0;
-        }
-
-        .crosshair {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .crosshair::before, .crosshair::after {
-            content: '';
-            position: absolute;
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .crosshair::before {
-            width: 100%;
-            height: 1px;
-            top: 50%;
-        }
-
-        .crosshair::after {
-            width: 1px;
-            height: 100%;
-            left: 50%;
-        }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 16px;
-            border: none;
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
             border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            color: white;
+            margin-bottom: 20px;
+            border-right: 4px solid #ffc107;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .instructions ul {
+            margin-right: 20px;
+            margin-top: 10px;
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .instructions li {
+            margin: 5px 0;
         }
 
         .scoring-section {
@@ -220,6 +73,7 @@
         .zone-input label {
             flex: 1;
             font-weight: bold;
+            font-size: 16px;
         }
 
         .zone-input input {
@@ -229,6 +83,38 @@
             border-radius: 5px;
             font-size: 16px;
             text-align: center;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         .results {
@@ -286,68 +172,39 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
-        .instructions {
-            background: #fff3cd;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-right: 4px solid #ffc107;
-        }
-
-        .instructions ul {
-            margin-right: 20px;
-            margin-top: 10px;
-        }
-
-        .instructions li {
-            margin: 5px 0;
-        }
-
         .hidden {
             display: none;
         }
 
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
+        .points-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             gap: 10px;
-            justify-content: center;
-            margin-top: 15px;
-            max-width: 500px;
+            margin: 20px 0;
+            text-align: center;
         }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-        }
-
-        .legend-color {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
+        .point-item {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-weight: bold;
         }
 
         @media (max-width: 768px) {
-            .target {
-                width: 250px;
-                height: 250px;
+            .points-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
             
-            .ring-1 { width: 230px; height: 230px; }
-            .ring-2 { width: 210px; height: 210px; }
-            .ring-3 { width: 190px; height: 190px; }
-            .ring-4 { width: 170px; height: 170px; }
-            .ring-5 { width: 150px; height: 150px; }
-            .ring-6 { width: 130px; height: 130px; }
-            .ring-7 { width: 110px; height: 110px; }
-            .ring-8 { width: 90px; height: 90px; }
-            .ring-9 { width: 70px; height: 70px; }
-            .ring-10 { width: 50px; height: 50px; }
-            
-            .ring {
-                font-size: 11px;
+            .container {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .points-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -365,115 +222,69 @@
             </ul>
         </div>
 
-        <div class="target-section">
-            <div class="target">
-                <div class="ring ring-1">1</div>
-                <div class="ring ring-2">2</div>
-                <div class="ring ring-3">3</div>
-                <div class="ring ring-4">4</div>
-                <div class="ring ring-5">5</div>
-                <div class="ring ring-6">6</div>
-                <div class="ring ring-7">7</div>
-                <div class="ring ring-8">8</div>
-                <div class="ring ring-9">9</div>
-                <div class="ring ring-10">10</div>
-                <div class="crosshair"></div>
-            </div>
-            
-            <div class="legend">
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #ff5252;"></div>
-                    <span>1 نقطة</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #ff6b6b;"></div>
-                    <span>2 نقطة</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #ff9800;"></div>
-                    <span>3 نقطة</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #ffb74d;"></div>
-                    <span>4 نقطة</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #ffeb3b;"></div>
-                    <span>5 نقطة</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #a5d6a7;"></div>
-                    <span>6 نقطة</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #4caf50;"></div>
-                    <span>7 نقطة</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #2196f3;"></div>
-                    <span>8 نقطة</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #3f51b5;"></div>
-                    <span>9 نقطة</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-color" style="background: #9c27b0;"></div>
-                    <span>10 نقطة</span>
-                </div>
-            </div>
+        <div class="points-grid">
+            <div class="point-item">1 نقطة</div>
+            <div class="point-item">2 نقطة</div>
+            <div class="point-item">3 نقطة</div>
+            <div class="point-item">4 نقطة</div>
+            <div class="point-item">5 نقطة</div>
+            <div class="point-item">6 نقطة</div>
+            <div class="point-item">7 نقطة</div>
+            <div class="point-item">8 نقطة</div>
+            <div class="point-item">9 نقطة</div>
+            <div class="point-item">10 نقطة</div>
         </div>
 
         <div class="scoring-section">
             <h3 style="text-align: center; margin-bottom: 20px;">أدخل عدد الإصابات لكل منطقة</h3>
             
             <div class="zone-input">
-                <label><strong>🎯 المركز (10 نقاط):</strong></label>
+                <label>🎯 المركز (10 نقاط):</label>
                 <input type="number" id="zone10" min="0" value="0" />
             </div>
             
             <div class="zone-input">
-                <label><strong>⭕ المنطقة 9 نقاط:</strong></label>
+                <label>⭕ المنطقة 9 نقاط:</label>
                 <input type="number" id="zone9" min="0" value="0" />
             </div>
             
             <div class="zone-input">
-                <label><strong>⭕ المنطقة 8 نقاط:</strong></label>
+                <label>⭕ المنطقة 8 نقاط:</label>
                 <input type="number" id="zone8" min="0" value="0" />
             </div>
             
             <div class="zone-input">
-                <label><strong>⭕ المنطقة 7 نقاط:</strong></label>
+                <label>⭕ المنطقة 7 نقاط:</label>
                 <input type="number" id="zone7" min="0" value="0" />
             </div>
             
             <div class="zone-input">
-                <label><strong>⭕ المنطقة 6 نقاط:</strong></label>
+                <label>⭕ المنطقة 6 نقاط:</label>
                 <input type="number" id="zone6" min="0" value="0" />
             </div>
 
             <div class="zone-input">
-                <label><strong>⭕ المنطقة 5 نقاط:</strong></label>
+                <label>⭕ المنطقة 5 نقاط:</label>
                 <input type="number" id="zone5" min="0" value="0" />
             </div>
 
             <div class="zone-input">
-                <label><strong>⭕ المنطقة 4 نقاط:</strong></label>
+                <label>⭕ المنطقة 4 نقاط:</label>
                 <input type="number" id="zone4" min="0" value="0" />
             </div>
 
             <div class="zone-input">
-                <label><strong>⭕ المنطقة 3 نقاط:</strong></label>
+                <label>⭕ المنطقة 3 نقاط:</label>
                 <input type="number" id="zone3" min="0" value="0" />
             </div>
 
             <div class="zone-input">
-                <label><strong>⭕ المنطقة 2 نقطة:</strong></label>
+                <label>⭕ المنطقة 2 نقطة:</label>
                 <input type="number" id="zone2" min="0" value="0" />
             </div>
 
             <div class="zone-input">
-                <label><strong>⭕ المنطقة 1 نقطة:</strong></label>
+                <label>⭕ المنطقة 1 نقطة:</label>
                 <input type="number" id="zone1" min="0" value="0" />
             </div>
 
