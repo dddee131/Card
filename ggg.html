@@ -1,592 +1,481 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تقييم أهداف الرماية - ذكي</title>
+    <title>حاسبة أهداف الرماية</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-```
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-        padding: 20px;
-    }
-
-    .container {
-        max-width: 900px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-
-    h1 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 20px;
-        font-size: 2em;
-    }
-
-    .ai-badge {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 8px 20px;
-        border-radius: 20px;
-        display: inline-block;
-        margin: 0 auto 20px;
-        font-size: 0.9em;
-        text-align: center;
-        width: 100%;
-    }
-
-    .camera-section {
-        position: relative;
-        margin-bottom: 20px;
-    }
-
-    #video, #canvas {
-        width: 100%;
-        max-height: 500px;
-        border-radius: 15px;
-        background: #000;
-        display: none;
-    }
-
-    #canvas {
-        display: block;
-    }
-
-    .controls {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin: 20px 0;
-    }
-
-    button {
-        padding: 15px 30px;
-        font-size: 16px;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: all 0.3s;
-        color: white;
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .btn-success {
-        background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
-    }
-
-    .btn-danger {
-        background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
-    }
-
-    .btn-warning {
-        background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
-    }
-
-    button:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-
-    button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-    .results {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 15px;
-        margin-top: 20px;
-    }
-
-    .result-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px;
-        background: white;
-        margin: 10px 0;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .result-item .label {
-        font-weight: bold;
-        color: #555;
-    }
-
-    .result-item .value {
-        font-size: 1.5em;
-        color: #667eea;
-        font-weight: bold;
-    }
-
-    .score-display {
-        text-align: center;
-        font-size: 3em;
-        color: #667eea;
-        font-weight: bold;
-        margin: 20px 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .instructions {
-        background: #fff3cd;
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        border-right: 4px solid #ffc107;
-    }
-
-    .instructions ul {
-        margin-right: 20px;
-        margin-top: 10px;
-    }
-
-    .instructions li {
-        margin: 5px 0;
-    }
-
-    .processing {
-        text-align: center;
-        padding: 20px;
-        background: #e3f2fd;
-        border-radius: 10px;
-        margin: 20px 0;
-        display: none;
-    }
-
-    .processing.active {
-        display: block;
-    }
-
-    .loader {
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #667eea;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-        margin: 10px auto;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
-    .shot-item {
-        background: white;
-        padding: 10px 15px;
-        margin: 5px 0;
-        border-radius: 8px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-right: 4px solid #667eea;
-    }
-
-    .detection-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        pointer-events: none;
-    }
-
-    .hit-marker {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        border: 3px solid #ff0000;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        animation: pulse 1s infinite;
-    }
-
-    @keyframes pulse {
-        0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.7; }
-    }
-
-    .hidden {
-        display: none;
-    }
-</style>
-```
-
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .target-container {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .target {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            border-radius: 50%;
+            background: #000;
+            cursor: crosshair;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+        
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .ring-1 {
+            width: 280px;
+            height: 280px;
+            background: #ff5252;
+        }
+        
+        .ring-2 {
+            width: 230px;
+            height: 230px;
+            background: #ff9800;
+        }
+        
+        .ring-3 {
+            width: 180px;
+            height: 180px;
+            background: #ffeb3b;
+        }
+        
+        .ring-4 {
+            width: 130px;
+            height: 130px;
+            background: #4caf50;
+        }
+        
+        .ring-5 {
+            width: 80px;
+            height: 80px;
+            background: #2196f3;
+        }
+        
+        .ring-6 {
+            width: 30px;
+            height: 30px;
+            background: #9c27b0;
+        }
+        
+        .crosshair {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .crosshair::before, .crosshair::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .crosshair::before {
+            width: 100%;
+            height: 1px;
+            top: 50%;
+        }
+        
+        .crosshair::after {
+            width: 1px;
+            height: 100%;
+            left: 50%;
+        }
+        
+        .bullet-hole {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            box-shadow: 0 0 3px white;
+        }
+        
+        .controls {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .score-display {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .score-value {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #ffeb3b;
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
+        }
+        
+        .score-label {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        
+        .shots-list {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .shots-list h3 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .shot-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .shot-item:last-child {
+            border-bottom: none;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            background: #2196f3;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        button:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+        }
+        
+        #resetBtn {
+            background: #f44336;
+        }
+        
+        #resetBtn:hover {
+            background: #d32f2f;
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            width: 100%;
+        }
+        
+        .instructions h3 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .instructions ul {
+            list-style-type: none;
+            padding-right: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .instructions li::before {
+            content: "•";
+            color: #ffeb3b;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .target {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .ring-1 { width: 230px; height: 230px; }
+            .ring-2 { width: 190px; height: 190px; }
+            .ring-3 { width: 150px; height: 150px; }
+            .ring-4 { width: 110px; height: 110px; }
+            .ring-5 { width: 70px; height: 70px; }
+            .ring-6 { width: 25px; height: 25px; }
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <h1>حاسبة أهداف الرماية</h1>
+        <p class="description">انقر على الهدف لتحديد موقع الرصاصة. سيتم حساب النقاط تلقائياً بناءً على موقع الرصاصة في الهدف.</p>
+    </header>
+    
     <div class="container">
-        <h1>🎯 تقييم أهداف الرماية</h1>
-        <div class="ai-badge">🤖 مدعوم بالذكاء الاصطناعي - كشف تلقائي للإصابات</div>
-
-```
-    <div class="instructions">
-        <strong>📋 تعليمات الاستخدام:</strong>
-        <ul>
-            <li>اضغط "فتح الكاميرا" لبدء التصوير</li>
-            <li>وجّه الكاميرا نحو الهدف بوضوح</li>
-            <li>اضغط "📸 تحليل الهدف" لالتقاط وتحليل الصورة</li>
-            <li>سيقوم الذكاء الاصطناعي بكشف الإصابات تلقائياً</li>
-            <li>انتظر قليلاً حتى يكتمل التحليل</li>
-        </ul>
-    </div>
-
-    <div class="camera-section">
-        <video id="video" autoplay playsinline></video>
-        <canvas id="canvas"></canvas>
-        <div class="detection-overlay" id="overlay"></div>
-    </div>
-
-    <div class="controls">
-        <button class="btn-primary" id="startCamera">📷 فتح الكاميرا</button>
-        <button class="btn-success" id="analyze" disabled>🤖 تحليل الهدف</button>
-        <button class="btn-warning" id="retake" disabled>🔄 إعادة التصوير</button>
-        <button class="btn-danger" id="reset">🗑️ مسح الكل</button>
-    </div>
-
-    <div class="processing" id="processing">
-        <div class="loader"></div>
-        <p><strong>🔍 جاري تحليل الهدف بالذكاء الاصطناعي...</strong></p>
-        <p>يتم الآن كشف الإصابات وحساب النقاط تلقائياً</p>
-    </div>
-
-    <div id="resultsSection" class="hidden">
-        <div class="score-display" id="totalScore">0</div>
-        
-        <div class="results">
-            <div class="result-item">
-                <span class="label">🎯 إجمالي الإصابات المكتشفة:</span>
-                <span class="value" id="totalShots">0</span>
+        <div class="main-content">
+            <div class="target-container">
+                <div class="target" id="target">
+                    <div class="ring ring-1"></div>
+                    <div class="ring ring-2"></div>
+                    <div class="ring ring-3"></div>
+                    <div class="ring ring-4"></div>
+                    <div class="ring ring-5"></div>
+                    <div class="ring ring-6"></div>
+                    <div class="crosshair"></div>
+                    <!-- سيتم إضافة ثقوب الرصاص هنا ديناميكياً -->
+                </div>
+                <p>انقر على الهدف لوضع الرصاصة</p>
             </div>
-            <div class="result-item">
-                <span class="label">📊 معدل النقاط:</span>
-                <span class="value" id="avgScore">0</span>
-            </div>
-            <div class="result-item">
-                <span class="label">🏆 أعلى منطقة:</span>
-                <span class="value" id="bestZone">-</span>
-            </div>
-            <div class="result-item">
-                <span class="label">🎪 دقة الكشف:</span>
-                <span class="value" id="accuracy">عالية</span>
-            </div>
-        </div>
-
-        <div class="results" style="margin-top: 20px;">
-            <h4 style="text-align: center; margin-bottom: 15px;">📍 تفاصيل الإصابات المكتشفة:</h4>
-            <div id="shotsList"></div>
-        </div>
-    </div>
-</div>
-
-<script>
-    let stream = null;
-    let videoElement = null;
-
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const overlay = document.getElementById('overlay');
-    const startCameraBtn = document.getElementById('startCamera');
-    const analyzeBtn = document.getElementById('analyze');
-    const retakeBtn = document.getElementById('retake');
-    const resetBtn = document.getElementById('reset');
-    const processing = document.getElementById('processing');
-    const resultsSection = document.getElementById('resultsSection');
-
-    // فتح الكاميرا
-    startCameraBtn.addEventListener('click', async () => {
-        try {
-            stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { 
-                    facingMode: 'environment',
-                    width: { ideal: 1920 },
-                    height: { ideal: 1080 }
-                },
-                audio: false 
-            });
-            video.srcObject = stream;
-            video.style.display = 'block';
-            canvas.style.display = 'none';
-            startCameraBtn.disabled = true;
-            analyzeBtn.disabled = false;
-        } catch (err) {
-            alert('لا يمكن الوصول إلى الكاميرا: ' + err.message);
-        }
-    });
-
-    // تحليل الهدف بالذكاء الاصطناعي
-    analyzeBtn.addEventListener('click', async () => {
-        // التقاط الصورة
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0);
-        
-        video.style.display = 'none';
-        canvas.style.display = 'block';
-        
-        // إيقاف الكاميرا
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-        }
-        
-        analyzeBtn.disabled = true;
-        retakeBtn.disabled = false;
-        processing.classList.add('active');
-        resultsSection.classList.add('hidden');
-
-        // محاكاة تحليل الذكاء الاصطناعي
-        await simulateAIDetection(ctx, canvas.width, canvas.height);
-    });
-
-    // محاكاة كشف الإصابات بالذكاء الاصطناعي
-    async function simulateAIDetection(ctx, width, height) {
-        // انتظار لمحاكاة معالجة AI
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        // محاكاة كشف الإصابات (في التطبيق الحقيقي سيتم استخدام نموذج AI)
-        const detectedHits = detectTargetHits(ctx, width, height);
-        
-        // رسم علامات الإصابات
-        drawHitMarkers(ctx, detectedHits, width, height);
-        
-        // حساب النتائج
-        calculateResults(detectedHits);
-        
-        processing.classList.remove('active');
-        resultsSection.classList.remove('hidden');
-    }
-
-    // كشف الإصابات (محاكاة - في الواقع يحتاج نموذج AI حقيقي)
-    function detectTargetHits(ctx, width, height) {
-        const imageData = ctx.getImageData(0, 0, width, height);
-        const data = imageData.data;
-        
-        const hits = {
-            zone10: 0,
-            zone9: 0,
-            zone8: 0,
-            zone7: 0,
-            zone6: 0,
-            positions: []
-        };
-
-        const centerX = width / 2;
-        const centerY = height / 2;
-        const maxRadius = Math.min(width, height) / 2;
-
-        // البحث عن نقاط داكنة (الإصابات)
-        const darkThreshold = 100;
-        const detectedPoints = [];
-
-        for (let y = 0; y < height; y += 10) {
-            for (let x = 0; x < width; x += 10) {
-                const i = (y * width + x) * 4;
-                const r = data[i];
-                const g = data[i + 1];
-                const b = data[i + 2];
-                const brightness = (r + g + b) / 3;
-
-                // كشف النقاط الداكنة
-                if (brightness < darkThreshold) {
-                    const dx = x - centerX;
-                    const dy = y - centerY;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const normalizedDistance = distance / maxRadius;
-
-                    if (normalizedDistance < 1) {
-                        detectedPoints.push({ x, y, distance: normalizedDistance });
-                    }
-                }
-            }
-        }
-
-        // تجميع النقاط المتقاربة كإصابة واحدة
-        const clusteredHits = clusterPoints(detectedPoints, 30);
-
-        // تصنيف الإصابات حسب المناطق
-        clusteredHits.forEach(hit => {
-            hits.positions.push({ x: hit.x, y: hit.y });
             
-            if (hit.distance < 0.15) {
-                hits.zone10++;
-            } else if (hit.distance < 0.3) {
-                hits.zone9++;
-            } else if (hit.distance < 0.45) {
-                hits.zone8++;
-            } else if (hit.distance < 0.65) {
-                hits.zone7++;
-            } else if (hit.distance < 0.85) {
-                hits.zone6++;
-            }
-        });
-
-        // إضافة بعض الإصابات العشوائية للتوضيح (يمكن إزالتها)
-        if (clusteredHits.length === 0) {
-            const randomHits = Math.floor(Math.random() * 8) + 3;
-            for (let i = 0; i < randomHits; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 0.8;
-                const x = centerX + Math.cos(angle) * distance * maxRadius;
-                const y = centerY + Math.sin(angle) * distance * maxRadius;
+            <div class="controls">
+                <div class="score-display">
+                    <div class="score-value" id="totalScore">0</div>
+                    <div class="score-label">إجمالي النقاط</div>
+                </div>
                 
-                hits.positions.push({ x, y });
-                
-                if (distance < 0.15) hits.zone10++;
-                else if (distance < 0.3) hits.zone9++;
-                else if (distance < 0.45) hits.zone8++;
-                else if (distance < 0.65) hits.zone7++;
-                else hits.zone6++;
-            }
-        }
-
-        return hits;
-    }
-
-    // تجميع النقاط المتقاربة
-    function clusterPoints(points, threshold) {
-        const clusters = [];
-        const used = new Set();
-
-        points.forEach((point, i) => {
-            if (used.has(i)) return;
-
-            const cluster = [point];
-            used.add(i);
-
-            points.forEach((other, j) => {
-                if (i !== j && !used.has(j)) {
-                    const dx = point.x - other.x;
-                    const dy = point.y - other.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < threshold) {
-                        cluster.push(other);
-                        used.add(j);
-                    }
-                }
-            });
-
-            // حساب مركز المجموعة
-            const avgX = cluster.reduce((sum, p) => sum + p.x, 0) / cluster.length;
-            const avgY = cluster.reduce((sum, p) => sum + p.y, 0) / cluster.length;
-            const avgDist = cluster.reduce((sum, p) => sum + p.distance, 0) / cluster.length;
-
-            clusters.push({ x: avgX, y: avgY, distance: avgDist });
-        });
-
-        return clusters;
-    }
-
-    // رسم علامات الإصابات
-    function drawHitMarkers(ctx, hits, width, height) {
-        hits.positions.forEach(pos => {
-            ctx.strokeStyle = '#ff0000';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.arc(pos.x, pos.y, 15, 0, Math.PI * 2);
-            ctx.stroke();
-
-            ctx.strokeStyle = '#ffffff';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(pos.x - 20, pos.y);
-            ctx.lineTo(pos.x + 20, pos.y);
-            ctx.moveTo(pos.x, pos.y - 20);
-            ctx.lineTo(pos.x, pos.y + 20);
-            ctx.stroke();
-        });
-    }
-
-    // حساب النتائج
-    function calculateResults(hits) {
-        const totalScore = (hits.zone10 * 10) + (hits.zone9 * 9) + 
-                         (hits.zone8 * 8) + (hits.zone7 * 7) + (hits.zone6 * 6);
-        const totalShots = hits.zone10 + hits.zone9 + hits.zone8 + hits.zone7 + hits.zone6;
-        const avgScore = totalShots > 0 ? (totalScore / totalShots).toFixed(2) : 0;
-
-        const zones = [
-            { name: 'المركز (10)', count: hits.zone10, points: 10 },
-            { name: 'المنطقة 9', count: hits.zone9, points: 9 },
-            { name: 'المنطقة 8', count: hits.zone8, points: 8 },
-            { name: 'المنطقة 7', count: hits.zone7, points: 7 },
-            { name: 'المنطقة 6', count: hits.zone6, points: 6 }
-        ];
-        const bestZone = zones.reduce((max, zone) => zone.count > max.count ? zone : max);
-
-        document.getElementById('totalScore').textContent = totalScore + ' نقطة';
-        document.getElementById('totalShots').textContent = totalShots;
-        document.getElementById('avgScore').textContent = avgScore;
-        document.getElementById('bestZone').textContent = bestZone.count > 0 ? bestZone.name : 'لا توجد إصابات';
-
-        const shotsList = document.getElementById('shotsList');
-        shotsList.innerHTML = '';
-        
-        zones.forEach(zone => {
-            if (zone.count > 0) {
-                const points = zone.points * zone.count;
-                shotsList.innerHTML += `
-                    <div class="shot-item">
-                        <span>${zone.name}: ${zone.count} إصابة</span>
-                        <span style="color: #667eea; font-weight: bold;">${points} نقطة</span>
+                <div class="shots-list">
+                    <h3>سجل الطلقات</h3>
+                    <div id="shotsContainer">
+                        <!-- سيتم إضافة الطلقات هنا ديناميكياً -->
                     </div>
-                `;
+                </div>
+                
+                <div class="buttons">
+                    <button id="resetBtn">إعادة تعيين</button>
+                    <button id="undoBtn">تراجع</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>كيفية الاستخدام</h3>
+            <ul>
+                <li>انقر على أي مكان في الهدف لوضع الرصاصة</li>
+                <li>سيتم حساب النقاط بناءً على موقع الرصاصة</li>
+                <li>المنطقة الأصفر (الوسط): 10 نقاط</li>
+                <li>المنطقة الزرقاء: 8 نقاط</li>
+                <li>المنطقة الخضراء: 6 نقاط</li>
+                <li>المنطقة الصفراء: 4 نقاط</li>
+                <li>المنطقة البرتقالية: 2 نقطة</li>
+                <li>المنطقة الحمراء: 1 نقطة</li>
+                <li>استخدم زر "تراجع" لإزالة آخر رصاصة</li>
+                <li>استخدم زر "إعادة تعيين" لبدء من جديد</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const target = document.getElementById('target');
+            const totalScoreElement = document.getElementById('totalScore');
+            const shotsContainer = document.getElementById('shotsContainer');
+            const resetBtn = document.getElementById('resetBtn');
+            const undoBtn = document.getElementById('undoBtn');
+            
+            let shots = [];
+            let totalScore = 0;
+            
+            // نقاط كل منطقة في الهدف
+            const ringScores = [1, 2, 4, 6, 8, 10];
+            
+            // إضافة حدث النقر على الهدف
+            target.addEventListener('click', function(e) {
+                const rect = target.getBoundingClientRect();
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // حساب موقع النقر بالنسبة لمركز الهدف
+                const clickX = e.clientX - rect.left;
+                const clickY = e.clientY - rect.top;
+                
+                // حساب المسافة من المركز
+                const distance = Math.sqrt(
+                    Math.pow(clickX - centerX, 2) + 
+                    Math.pow(clickY - centerY, 2)
+                );
+                
+                // حساب نصف قطر كل منطقة
+                const ringRadius = rect.width / 2;
+                const ringWidth = ringRadius / ringScores.length;
+                
+                // تحديد المنطقة التي تم النقر عليها
+                let ringIndex = Math.floor(distance / ringWidth);
+                
+                // إذا كانت المسافة أكبر من نصف قطر الهدف، تعتبر خارج الهدف
+                if (ringIndex >= ringScores.length) {
+                    ringIndex = -1; // خارج الهدف
+                }
+                
+                // حساب النقاط
+                const score = ringIndex >= 0 ? ringScores[ringScores.length - 1 - ringIndex] : 0;
+                
+                // إضافة الرصاصة إلى القائمة
+                addShot(clickX, clickY, score, ringIndex);
+            });
+            
+            // دالة لإضافة رصاصة جديدة
+            function addShot(x, y, score, ringIndex) {
+                const shot = {
+                    x: x,
+                    y: y,
+                    score: score,
+                    ringIndex: ringIndex,
+                    id: Date.now() // استخدام الطابع الزمني كمعرف فريد
+                };
+                
+                shots.push(shot);
+                updateDisplay();
             }
+            
+            // دالة لتحديث العرض
+            function updateDisplay() {
+                // تحديث النقاط الإجمالية
+                totalScore = shots.reduce((sum, shot) => sum + shot.score, 0);
+                totalScoreElement.textContent = totalScore;
+                
+                // تحديث قائمة الطلقات
+                shotsContainer.innerHTML = '';
+                shots.forEach((shot, index) => {
+                    const shotElement = document.createElement('div');
+                    shotElement.className = 'shot-item';
+                    shotElement.innerHTML = `
+                        <span>طلقة ${index + 1}</span>
+                        <span>${shot.score} نقطة</span>
+                    `;
+                    shotsContainer.appendChild(shotElement);
+                });
+                
+                // تحديث الهدف برسوم الرصاص
+                updateTarget();
+            }
+            
+            // دالة لتحديث الهدف برسوم الرصاص
+            function updateTarget() {
+                // إزالة جميع ثقوب الرصاص السابقة
+                const existingHoles = document.querySelectorAll('.bullet-hole');
+                existingHoles.forEach(hole => hole.remove());
+                
+                // إضافة ثقوب الرصاص الجديدة
+                shots.forEach(shot => {
+                    const hole = document.createElement('div');
+                    hole.className = 'bullet-hole';
+                    hole.style.left = `${shot.x}px`;
+                    hole.style.top = `${shot.y}px`;
+                    
+                    // تحديد لون الثقب بناءً على المنطقة
+                    const ringColors = ['#9c27b0', '#2196f3', '#4caf50', '#ffeb3b', '#ff9800', '#ff5252'];
+                    if (shot.ringIndex >= 0) {
+                        hole.style.backgroundColor = ringColors[shot.ringIndex];
+                    } else {
+                        hole.style.backgroundColor = '#000'; // خارج الهدف
+                    }
+                    
+                    target.appendChild(hole);
+                });
+            }
+            
+            // إعادة تعيين كل شيء
+            resetBtn.addEventListener('click', function() {
+                shots = [];
+                updateDisplay();
+            });
+            
+            // تراجع عن آخر رصاصة
+            undoBtn.addEventListener('click', function() {
+                if (shots.length > 0) {
+                    shots.pop();
+                    updateDisplay();
+                }
+            });
+            
+            // التهيئة الأولية
+            updateDisplay();
         });
-    }
-
-    // إعادة التصوير
-    retakeBtn.addEventListener('click', () => {
-        canvas.style.display = 'none';
-        video.style.display = 'block';
-        startCameraBtn.disabled = false;
-        analyzeBtn.disabled = true;
-        retakeBtn.disabled = true;
-        resultsSection.classList.add('hidden');
-        startCameraBtn.click();
-    });
-
-    // مسح الكل
-    resetBtn.addEventListener('click', () => {
-        if (confirm('هل تريد مسح جميع البيانات؟')) {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-            }
-            
-            video.style.display = 'none';
-            canvas.style.display = 'none';
-            resultsSection.classList.add('hidden');
-            processing.classList.remove('active');
-            
-            startCameraBtn.disabled = false;
-            analyzeBtn.disabled = true;
-            retakeBtn.disabled = true;
-            
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-    });
-</script>
-```
-
+    </script>
 </body>
 </html>
