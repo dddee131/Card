@@ -3,279 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة أهداف الرماية</title>
+    <title>🎯 حاسبة أهداف الرماية</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .target-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-        
-        .container {
-            max-width: 1000px;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-top: 20px;
-        }
-        
-        header {
-            text-align: center;
             margin-bottom: 30px;
         }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .description {
-            font-size: 1.1rem;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-        
-        .main-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-        }
-        
-        .target-container {
-            flex: 1;
-            min-width: 300px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
+
         .target {
             width: 300px;
             height: 300px;
             position: relative;
             border-radius: 50%;
             background: #000;
-            cursor: crosshair;
             margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             overflow: hidden;
         }
-        
+
         .ring {
             position: absolute;
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
         }
-        
+
         .ring-1 {
             width: 280px;
             height: 280px;
             background: #ff5252;
         }
-        
+
         .ring-2 {
             width: 230px;
             height: 230px;
             background: #ff9800;
         }
-        
+
         .ring-3 {
             width: 180px;
             height: 180px;
             background: #ffeb3b;
+            color: #333;
         }
-        
+
         .ring-4 {
             width: 130px;
             height: 130px;
             background: #4caf50;
         }
-        
+
         .ring-5 {
             width: 80px;
             height: 80px;
             background: #2196f3;
         }
-        
+
         .ring-6 {
             width: 30px;
             height: 30px;
             background: #9c27b0;
         }
-        
+
         .crosshair {
             position: absolute;
             width: 100%;
             height: 100%;
             pointer-events: none;
         }
-        
+
         .crosshair::before, .crosshair::after {
             content: '';
             position: absolute;
             background: rgba(255, 255, 255, 0.3);
         }
-        
+
         .crosshair::before {
             width: 100%;
             height: 1px;
             top: 50%;
         }
-        
+
         .crosshair::after {
             width: 1px;
             height: 100%;
             left: 50%;
         }
-        
-        .bullet-hole {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #000;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            box-shadow: 0 0 3px white;
-        }
-        
+
         .controls {
-            flex: 1;
-            min-width: 300px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .score-display {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        
-        .score-value {
-            font-size: 4rem;
-            font-weight: bold;
-            color: #ffeb3b;
-            text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
-        }
-        
-        .score-label {
-            font-size: 1.2rem;
-            margin-top: 10px;
-        }
-        
-        .shots-list {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        
-        .shots-list h3 {
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        
-        .shot-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .shot-item:last-child {
-            border-bottom: none;
-        }
-        
-        .buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
             justify-content: center;
+            margin: 20px 0;
         }
-        
+
         button {
-            padding: 12px 25px;
+            padding: 15px 30px;
+            font-size: 16px;
             border: none;
-            border-radius: 5px;
-            background: #2196f3;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
-        }
-        
-        button:hover {
-            background: #1976d2;
-            transform: translateY(-2px);
-        }
-        
-        #resetBtn {
-            background: #f44336;
-        }
-        
-        #resetBtn:hover {
-            background: #d32f2f;
-        }
-        
-        .instructions {
-            margin-top: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
             border-radius: 10px;
-            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            color: white;
         }
-        
-        .instructions h3 {
-            margin-bottom: 10px;
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .scoring-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .zone-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .zone-input label {
+            flex: 1;
+            font-weight: bold;
+        }
+
+        .zone-input input {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
             text-align: center;
         }
-        
-        .instructions ul {
-            list-style-type: none;
-            padding-right: 20px;
+
+        .results {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
         }
-        
-        .instructions li {
-            margin-bottom: 8px;
-            position: relative;
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
-        .instructions li::before {
-            content: "•";
-            color: #ffeb3b;
+
+        .result-item .label {
             font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-left: 10px;
+            color: #555;
         }
-        
+
+        .result-item .value {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .shots-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .shot-item {
+            background: white;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-right: 4px solid #667eea;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 3em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-right: 4px solid #ffc107;
+        }
+
+        .instructions ul {
+            margin-right: 20px;
+            margin-top: 10px;
+        }
+
+        .instructions li {
+            margin: 5px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
         @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
             .target {
                 width: 250px;
                 height: 250px;
@@ -291,190 +318,204 @@
     </style>
 </head>
 <body>
-    <header>
-        <h1>حاسبة أهداف الرماية</h1>
-        <p class="description">انقر على الهدف لتحديد موقع الرصاصة. سيتم حساب النقاط تلقائياً بناءً على موقع الرصاصة في الهدف.</p>
-    </header>
-    
     <div class="container">
-        <div class="main-content">
-            <div class="target-container">
-                <div class="target" id="target">
-                    <div class="ring ring-1"></div>
-                    <div class="ring ring-2"></div>
-                    <div class="ring ring-3"></div>
-                    <div class="ring ring-4"></div>
-                    <div class="ring ring-5"></div>
-                    <div class="ring ring-6"></div>
-                    <div class="crosshair"></div>
-                    <!-- سيتم إضافة ثقوب الرصاص هنا ديناميكياً -->
-                </div>
-                <p>انقر على الهدف لوضع الرصاصة</p>
+        <h1>🎯 حاسبة أهداف الرماية</h1>
+
+        <div class="instructions">
+            <strong>📋 تعليمات الاستخدام:</strong>
+            <ul>
+                <li>أدخل عدد الإصابات في كل منطقة من مناطق الهدف</li>
+                <li>سيتم حساب النقاط تلقائياً بناءً على قيمة كل منطقة</li>
+                <li>يمكنك تعديل القيم في أي وقت وسيتم تحديث النتائج فوراً</li>
+            </ul>
+        </div>
+
+        <div class="target-section">
+            <div class="target">
+                <div class="ring ring-1">1 نقطة</div>
+                <div class="ring ring-2">2 نقطة</div>
+                <div class="ring ring-3">4 نقطة</div>
+                <div class="ring ring-4">6 نقطة</div>
+                <div class="ring ring-5">8 نقطة</div>
+                <div class="ring ring-6">10 نقطة</div>
+                <div class="crosshair"></div>
             </div>
             
-            <div class="controls">
-                <div class="score-display">
-                    <div class="score-value" id="totalScore">0</div>
-                    <div class="score-label">إجمالي النقاط</div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ff5252;"></div>
+                    <span>1 نقطة</span>
                 </div>
-                
-                <div class="shots-list">
-                    <h3>سجل الطلقات</h3>
-                    <div id="shotsContainer">
-                        <!-- سيتم إضافة الطلقات هنا ديناميكياً -->
-                    </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ff9800;"></div>
+                    <span>2 نقطة</span>
                 </div>
-                
-                <div class="buttons">
-                    <button id="resetBtn">إعادة تعيين</button>
-                    <button id="undoBtn">تراجع</button>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #ffeb3b;"></div>
+                    <span>4 نقطة</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #4caf50;"></div>
+                    <span>6 نقطة</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #2196f3;"></div>
+                    <span>8 نقطة</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #9c27b0;"></div>
+                    <span>10 نقطة</span>
                 </div>
             </div>
         </div>
-        
-        <div class="instructions">
-            <h3>كيفية الاستخدام</h3>
-            <ul>
-                <li>انقر على أي مكان في الهدف لوضع الرصاصة</li>
-                <li>سيتم حساب النقاط بناءً على موقع الرصاصة</li>
-                <li>المنطقة الأصفر (الوسط): 10 نقاط</li>
-                <li>المنطقة الزرقاء: 8 نقاط</li>
-                <li>المنطقة الخضراء: 6 نقاط</li>
-                <li>المنطقة الصفراء: 4 نقاط</li>
-                <li>المنطقة البرتقالية: 2 نقطة</li>
-                <li>المنطقة الحمراء: 1 نقطة</li>
-                <li>استخدم زر "تراجع" لإزالة آخر رصاصة</li>
-                <li>استخدم زر "إعادة تعيين" لبدء من جديد</li>
-            </ul>
+
+        <div class="scoring-section">
+            <h3 style="text-align: center; margin-bottom: 20px;">أدخل عدد الإصابات لكل منطقة</h3>
+            
+            <div class="zone-input">
+                <label><strong>🎯 المركز (10 نقاط):</strong></label>
+                <input type="number" id="zone10" min="0" value="0" />
+            </div>
+            
+            <div class="zone-input">
+                <label><strong>⭕ المنطقة 8 نقاط:</strong></label>
+                <input type="number" id="zone8" min="0" value="0" />
+            </div>
+            
+            <div class="zone-input">
+                <label><strong>⭕ المنطقة 6 نقاط:</strong></label>
+                <input type="number" id="zone6" min="0" value="0" />
+            </div>
+            
+            <div class="zone-input">
+                <label><strong>⭕ المنطقة 4 نقاط:</strong></label>
+                <input type="number" id="zone4" min="0" value="0" />
+            </div>
+            
+            <div class="zone-input">
+                <label><strong>⭕ المنطقة 2 نقطة:</strong></label>
+                <input type="number" id="zone2" min="0" value="0" />
+            </div>
+
+            <div class="zone-input">
+                <label><strong>⭕ المنطقة 1 نقطة:</strong></label>
+                <input type="number" id="zone1" min="0" value="0" />
+            </div>
+
+            <div class="controls">
+                <button class="btn-success" id="calculate">🧮 احسب النقاط</button>
+                <button class="btn-danger" id="reset">🗑️ مسح الكل</button>
+            </div>
+        </div>
+
+        <div id="resultsSection" class="hidden">
+            <div class="score-display" id="totalScore">0</div>
+            
+            <div class="results">
+                <div class="result-item">
+                    <span class="label">إجمالي الإصابات:</span>
+                    <span class="value" id="totalShots">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="label">معدل النقاط:</span>
+                    <span class="value" id="avgScore">0</span>
+                </div>
+                <div class="result-item">
+                    <span class="label">أعلى منطقة:</span>
+                    <span class="value" id="bestZone">-</span>
+                </div>
+            </div>
+
+            <div class="shots-list" id="shotsList"></div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const target = document.getElementById('target');
-            const totalScoreElement = document.getElementById('totalScore');
-            const shotsContainer = document.getElementById('shotsContainer');
-            const resetBtn = document.getElementById('resetBtn');
-            const undoBtn = document.getElementById('undoBtn');
+        const calculateBtn = document.getElementById('calculate');
+        const resetBtn = document.getElementById('reset');
+        const resultsSection = document.getElementById('resultsSection');
+
+        // حساب النقاط
+        calculateBtn.addEventListener('click', () => {
+            const zone10 = parseInt(document.getElementById('zone10').value) || 0;
+            const zone8 = parseInt(document.getElementById('zone8').value) || 0;
+            const zone6 = parseInt(document.getElementById('zone6').value) || 0;
+            const zone4 = parseInt(document.getElementById('zone4').value) || 0;
+            const zone2 = parseInt(document.getElementById('zone2').value) || 0;
+            const zone1 = parseInt(document.getElementById('zone1').value) || 0;
+
+            const totalScore = (zone10 * 10) + (zone8 * 8) + (zone6 * 6) + (zone4 * 4) + (zone2 * 2) + (zone1 * 1);
+            const totalShots = zone10 + zone8 + zone6 + zone4 + zone2 + zone1;
+            const avgScore = totalShots > 0 ? (totalScore / totalShots).toFixed(2) : 0;
+
+            // إيجاد أعلى منطقة
+            const zones = [
+                { name: 'المركز (10)', count: zone10 },
+                { name: 'المنطقة 8', count: zone8 },
+                { name: 'المنطقة 6', count: zone6 },
+                { name: 'المنطقة 4', count: zone4 },
+                { name: 'المنطقة 2', count: zone2 },
+                { name: 'المنطقة 1', count: zone1 }
+            ];
+            const bestZone = zones.reduce((max, zone) => zone.count > max.count ? zone : max);
+
+            // عرض النتائج
+            document.getElementById('totalScore').textContent = totalScore + ' نقطة';
+            document.getElementById('totalShots').textContent = totalShots;
+            document.getElementById('avgScore').textContent = avgScore;
+            document.getElementById('bestZone').textContent = bestZone.count > 0 ? bestZone.name : 'لا توجد إصابات';
+
+            // عرض قائمة التفاصيل
+            const shotsList = document.getElementById('shotsList');
+            shotsList.innerHTML = '<h4 style="text-align: center; margin-bottom: 10px;">تفاصيل الإصابات:</h4>';
             
-            let shots = [];
-            let totalScore = 0;
-            
-            // نقاط كل منطقة في الهدف
-            const ringScores = [1, 2, 4, 6, 8, 10];
-            
-            // إضافة حدث النقر على الهدف
-            target.addEventListener('click', function(e) {
-                const rect = target.getBoundingClientRect();
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                // حساب موقع النقر بالنسبة لمركز الهدف
-                const clickX = e.clientX - rect.left;
-                const clickY = e.clientY - rect.top;
-                
-                // حساب المسافة من المركز
-                const distance = Math.sqrt(
-                    Math.pow(clickX - centerX, 2) + 
-                    Math.pow(clickY - centerY, 2)
-                );
-                
-                // حساب نصف قطر كل منطقة
-                const ringRadius = rect.width / 2;
-                const ringWidth = ringRadius / ringScores.length;
-                
-                // تحديد المنطقة التي تم النقر عليها
-                let ringIndex = Math.floor(distance / ringWidth);
-                
-                // إذا كانت المسافة أكبر من نصف قطر الهدف، تعتبر خارج الهدف
-                if (ringIndex >= ringScores.length) {
-                    ringIndex = -1; // خارج الهدف
-                }
-                
-                // حساب النقاط
-                const score = ringIndex >= 0 ? ringScores[ringScores.length - 1 - ringIndex] : 0;
-                
-                // إضافة الرصاصة إلى القائمة
-                addShot(clickX, clickY, score, ringIndex);
-            });
-            
-            // دالة لإضافة رصاصة جديدة
-            function addShot(x, y, score, ringIndex) {
-                const shot = {
-                    x: x,
-                    y: y,
-                    score: score,
-                    ringIndex: ringIndex,
-                    id: Date.now() // استخدام الطابع الزمني كمعرف فريد
-                };
-                
-                shots.push(shot);
-                updateDisplay();
-            }
-            
-            // دالة لتحديث العرض
-            function updateDisplay() {
-                // تحديث النقاط الإجمالية
-                totalScore = shots.reduce((sum, shot) => sum + shot.score, 0);
-                totalScoreElement.textContent = totalScore;
-                
-                // تحديث قائمة الطلقات
-                shotsContainer.innerHTML = '';
-                shots.forEach((shot, index) => {
-                    const shotElement = document.createElement('div');
-                    shotElement.className = 'shot-item';
-                    shotElement.innerHTML = `
-                        <span>طلقة ${index + 1}</span>
-                        <span>${shot.score} نقطة</span>
+            zones.forEach((zone, index) => {
+                if (zone.count > 0) {
+                    const points = (10 - index * 2) * zone.count;
+                    shotsList.innerHTML += `
+                        <div class="shot-item">
+                            <span>${zone.name}: ${zone.count} إصابة</span>
+                            <span style="color: #667eea; font-weight: bold;">${points} نقطة</span>
+                        </div>
                     `;
-                    shotsContainer.appendChild(shotElement);
-                });
-                
-                // تحديث الهدف برسوم الرصاص
-                updateTarget();
-            }
-            
-            // دالة لتحديث الهدف برسوم الرصاص
-            function updateTarget() {
-                // إزالة جميع ثقوب الرصاص السابقة
-                const existingHoles = document.querySelectorAll('.bullet-hole');
-                existingHoles.forEach(hole => hole.remove());
-                
-                // إضافة ثقوب الرصاص الجديدة
-                shots.forEach(shot => {
-                    const hole = document.createElement('div');
-                    hole.className = 'bullet-hole';
-                    hole.style.left = `${shot.x}px`;
-                    hole.style.top = `${shot.y}px`;
-                    
-                    // تحديد لون الثقب بناءً على المنطقة
-                    const ringColors = ['#9c27b0', '#2196f3', '#4caf50', '#ffeb3b', '#ff9800', '#ff5252'];
-                    if (shot.ringIndex >= 0) {
-                        hole.style.backgroundColor = ringColors[shot.ringIndex];
-                    } else {
-                        hole.style.backgroundColor = '#000'; // خارج الهدف
-                    }
-                    
-                    target.appendChild(hole);
-                });
-            }
-            
-            // إعادة تعيين كل شيء
-            resetBtn.addEventListener('click', function() {
-                shots = [];
-                updateDisplay();
-            });
-            
-            // تراجع عن آخر رصاصة
-            undoBtn.addEventListener('click', function() {
-                if (shots.length > 0) {
-                    shots.pop();
-                    updateDisplay();
                 }
             });
+
+            resultsSection.classList.remove('hidden');
+        });
+
+        // مسح الكل
+        resetBtn.addEventListener('click', () => {
+            if (confirm('هل تريد مسح جميع البيانات؟')) {
+                document.getElementById('zone10').value = 0;
+                document.getElementById('zone8').value = 0;
+                document.getElementById('zone6').value = 0;
+                document.getElementById('zone4').value = 0;
+                document.getElementById('zone2').value = 0;
+                document.getElementById('zone1').value = 0;
+                
+                resultsSection.classList.add('hidden');
+            }
+        });
+
+        // تحديث النقاط تلقائياً عند تغيير القيم
+        ['zone10', 'zone8', 'zone6', 'zone4', 'zone2', 'zone1'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                if (!resultsSection.classList.contains('hidden')) {
+                    calculateBtn.click();
+                }
+            });
+        });
+
+        // حساب النتائج عند التحميل الأولي إذا كانت هناك قيم
+        window.addEventListener('load', () => {
+            const hasValues = ['zone10', 'zone8', 'zone6', 'zone4', 'zone2', 'zone1'].some(id => {
+                return parseInt(document.getElementById(id).value) > 0;
+            });
             
-            // التهيئة الأولية
-            updateDisplay();
+            if (hasValues) {
+                calculateBtn.click();
+            }
         });
     </script>
 </body>
