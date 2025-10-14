@@ -178,17 +178,11 @@
         margin: 5px 0;
     }
 
-    .camera-overlay {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-        height: 80%;
-        border: 3px dashed #fff;
-        border-radius: 50%;
-        pointer-events: none;
-        opacity: 0.7;
+    #capturedImage {
+        width: 100%;
+        border-radius: 15px;
+        margin-top: 20px;
+        display: none;
     }
 
     .zone-input {
@@ -222,21 +216,23 @@
     <div class="instructions">
         <strong>📋 تعليمات الاستخدام:</strong>
         <ul>
-            <li>اضغط "فتح الكاميرا" لبدء العمل</li>
-            <li>اجعل الهدف واضحاً في الكاميرا مباشرة</li>
-            <li>أدخل عدد الإصابات في كل منطقة أثناء مشاهدة الهدف</li>
+            <li>اضغط "فتح الكاميرا" لبدء التصوير</li>
+            <li>صوّر الهدف بوضوح</li>
+            <li>أدخل عدد الإصابات في كل منطقة</li>
             <li>سيتم حساب النقاط تلقائياً</li>
         </ul>
     </div>
 
     <div class="camera-section">
         <video id="video" autoplay playsinline></video>
-        <div class="camera-overlay"></div>
         <canvas id="canvas"></canvas>
+        <img id="capturedImage" alt="الهدف المصور">
     </div>
 
     <div class="controls">
         <button class="btn-primary" id="startCamera">📷 فتح الكاميرا</button>
+        <button class="btn-success" id="capture" disabled>📸 التقاط صورة</button>
+        <button class="btn-warning" id="retake" disabled>🔄 إعادة التصوير</button>
         <button class="btn-danger" id="reset">🗑️ مسح الكل</button>
     </div>
 
@@ -297,16 +293,20 @@
 
 <script>
     let stream = null;
+    let capturedImageData = null;
 
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
+    const capturedImage = document.getElementById('capturedImage');
     const startCameraBtn = document.getElementById('startCamera');
+    const captureBtn = document.getElementById('capture');
+    const retakeBtn = document.getElementById('retake');
     const resetBtn = document.getElementById('reset');
     const calculateBtn = document.getElementById('calculate');
     const scoringSection = document.getElementById('scoringSection');
     const resultsSection = document.getElementById('resultsSection');
 
-    // فتح الكاميرا مباشرة
+    // فتح الكاميرا
     startCameraBtn.addEventListener('click', async () => {
         try {
             stream = await navigator.mediaDevices.getUserMedia({ 
@@ -315,11 +315,44 @@
             });
             video.srcObject = stream;
             video.style.display = 'block';
+            capturedImage.style.display = 'none';
+            captureBtn.disabled = false;
             startCameraBtn.disabled = true;
-            scoringSection.classList.remove('hidden');
         } catch (err) {
             alert('لا يمكن الوصول إلى الكاميرا: ' + err.message);
         }
+    });
+
+    // التقاط صورة
+    captureBtn.addEventListener('click', () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0);
+        
+        capturedImageData = canvas.toDataURL('image/png');
+        capturedImage.src = capturedImageData;
+        capturedImage.style.display = 'block';
+        video.style.display = 'none';
+        
+        // إيقاف الكاميرا
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+        
+        captureBtn.disabled = true;
+        retakeBtn.disabled = false;
+        scoringSection.classList.remove('hidden');
+    });
+
+    // إعادة التصوير
+    retakeBtn.addEventListener('click', () => {
+        capturedImage.style.display = 'none';
+        video.style.display = 'block';
+        startCameraBtn.click();
+        retakeBtn.disabled = true;
+        scoringSection.classList.add('hidden');
+        resultsSection.classList.add('hidden');
     });
 
     // حساب النقاط
@@ -371,7 +404,7 @@
 
     // مسح الكل
     resetBtn.addEventListener('click', () => {
-        if (confirm('هل تريد مسح جميع البيانات وإيقاف الكاميرا؟')) {
+        if (confirm('هل تريد مسح جميع البيانات؟')) {
             document.getElementById('zone10').value = 0;
             document.getElementById('zone9').value = 0;
             document.getElementById('zone8').value = 0;
@@ -380,9 +413,12 @@
             
             scoringSection.classList.add('hidden');
             resultsSection.classList.add('hidden');
-            video.style.display = 'none';
+            capturedImage.style.display = 'none';
+            video.style.display = 'block';
             
             startCameraBtn.disabled = false;
+            captureBtn.disabled = true;
+            retakeBtn.disabled = true;
             
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
