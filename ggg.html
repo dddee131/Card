@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -11,560 +12,646 @@
             box-sizing: border-box;
         }
 
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        min-height: 100vh;
+        padding: 20px;
+        color: #333;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+        border-radius: 25px;
+        padding: 40px;
+        box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    h1 {
+        text-align: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 35px;
+        font-size: 2.5em;
+        font-weight: 800;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        letter-spacing: 1px;
+    }
+
+    .instructions {
+        background: linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%);
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        border-right: 6px solid #ffa500;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .instructions strong {
+        color: #d97706;
+        font-size: 1.2em;
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .instructions ul {
+        margin-right: 25px;
+        margin-top: 12px;
+    }
+
+    .instructions li {
+        margin: 10px 0;
+        line-height: 1.6;
+        color: #666;
+    }
+
+    .scoring-section {
+        background: linear-gradient(135deg, #f8fafc 0%, #e8f0f9 100%);
+        padding: 30px;
+        border-radius: 20px;
+        margin-top: 25px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        border: 2px solid rgba(102,126,234,0.2);
+    }
+
+    .scoring-section h3 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #4a5568;
+        font-size: 1.4em;
+        font-weight: 700;
+    }
+
+    .zone-input {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin: 12px 0;
+        padding: 15px 20px;
+        background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .zone-input:hover {
+        transform: translateX(-5px);
+        box-shadow: 0 5px 20px rgba(102,126,234,0.15);
+        border-color: rgba(102,126,234,0.3);
+    }
+
+    .zone-input label {
+        flex: 1;
+        font-weight: 600;
+        font-size: 17px;
+        color: #2d3748;
+    }
+
+    .zone-input input {
+        width: 100px;
+        padding: 12px;
+        border: 3px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 18px;
+        text-align: center;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        background: #ffffff;
+    }
+
+    .zone-input input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
+        transform: scale(1.05);
+    }
+
+    .controls {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 35px 0 20px 0;
+    }
+
+    button {
+        padding: 16px 40px;
+        font-size: 17px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: all 0.3s ease;
+        color: white;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    button::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.3);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    button:hover::before {
+        width: 300px;
+        height: 300px;
+    }
+
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    button:active {
+        transform: translateY(-1px);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+
+    .btn-print {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .results {
+        background: linear-gradient(135deg, #f8fafc 0%, #e8f0f9 100%);
+        padding: 30px;
+        border-radius: 20px;
+        margin-top: 25px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .result-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 25px;
+        background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+        margin: 15px 0;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        border-right: 5px solid #667eea;
+        transition: all 0.3s ease;
+    }
+
+    .result-item:hover {
+        transform: translateX(-5px);
+        box-shadow: 0 6px 20px rgba(102,126,234,0.2);
+    }
+
+    .result-item .label {
+        font-weight: 700;
+        color: #4a5568;
+        font-size: 1.15em;
+    }
+
+    .result-item .value {
+        font-size: 1.8em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 900;
+    }
+
+    .shots-list {
+        max-height: 400px;
+        overflow-y: auto;
+        margin-top: 25px;
+        padding: 20px;
+        background: linear-gradient(135deg, #f8fafc 0%, #e8f0f9 100%);
+        border-radius: 15px;
+        box-shadow: inset 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .shots-list h4 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #4a5568;
+        font-size: 1.3em;
+        font-weight: 700;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #667eea;
+    }
+
+    .shots-list::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .shots-list::-webkit-scrollbar-track {
+        background: #e2e8f0;
+        border-radius: 10px;
+    }
+
+    .shots-list::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+    }
+
+    .shot-item {
+        background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+        padding: 15px 20px;
+        margin: 10px 0;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-right: 4px solid #667eea;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+    }
+
+    .shot-item:hover {
+        transform: translateX(-5px);
+        box-shadow: 0 5px 15px rgba(102,126,234,0.15);
+    }
+
+    .score-display {
+        text-align: center;
+        font-size: 4em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 900;
+        margin: 30px 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        padding: 25px;
+        background-color: rgba(102,126,234,0.05);
+        border-radius: 20px;
+        border: 3px dashed #667eea;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .print-header {
+        display: none;
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 35px;
+        border: 4px solid #667eea;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #f8fafc 0%, #e8f0f9 100%);
+    }
+
+    .print-header h2 {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 2.8em;
+        margin-bottom: 15px;
+        font-weight: 900;
+    }
+
+    .print-date {
+        color: #4a5568;
+        font-size: 1.3em;
+        font-weight: 700;
+    }
+
+    /* أنماط الطباعة */
+    @media print {
         body {
-            font-family: 'Times New Roman', Georgia, serif;
-            background: #f5f5f0;
-            min-height: 100vh;
-            padding: 20px;
-            color: #2c2c2c;
+            background: white;
+            padding: 0;
         }
-
+        
         .container {
-            max-width: 700px;
-            margin: 0 auto;
-            background: #ffffff;
-            border: 3px solid #8b4513;
-            padding: 40px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            box-shadow: none;
+            max-width: 100%;
+            padding: 30px;
+            border-radius: 0;
         }
-
+        
         h1 {
-            text-align: center;
-            color: #8b4513;
-            margin-bottom: 30px;
-            font-size: 2.2em;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 3px double #8b4513;
-            padding-bottom: 15px;
+            display: none;
         }
-
-        .instructions {
-            background: #fffef0;
-            padding: 20px;
-            border: 2px solid #d4af37;
-            margin-bottom: 30px;
+        
+        .instructions,
+        .scoring-section,
+        .controls,
+        button {
+            display: none !important;
         }
-
-        .instructions strong {
-            color: #8b4513;
-            font-size: 1.1em;
+        
+        #resultsSection {
+            display: block !important;
         }
-
-        .instructions ul {
-            margin-right: 25px;
-            margin-top: 15px;
-            line-height: 1.8;
+        
+        .print-header {
+            display: block !important;
         }
-
-        .instructions li {
-            margin: 8px 0;
-            color: #4a4a4a;
+        
+        .score-display {
+            font-size: 5em;
+            page-break-after: avoid;
         }
+        
+        .results {
+            page-break-inside: avoid;
+        }
+        
+        .shots-list {
+            max-height: none;
+            page-break-inside: avoid;
+        }
+    }
 
-        .scoring-section {
-            background: #fafafa;
+    @media (max-width: 768px) {
+        .container {
             padding: 25px;
-            border: 2px solid #8b4513;
-            margin-top: 20px;
         }
-
-        .scoring-section h3 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #8b4513;
-            font-size: 1.3em;
-            text-transform: uppercase;
+        
+        h1 {
+            font-size: 1.8em;
         }
 
         .zone-input {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin: 15px 0;
-            padding: 12px;
-            background: white;
-            border: 1px solid #ccc;
+            padding: 12px 15px;
         }
 
         .zone-input label {
-            flex: 1;
-            font-weight: bold;
-            font-size: 16px;
-            color: #4a4a4a;
+            font-size: 15px;
         }
 
         .zone-input input {
-            width: 90px;
+            width: 80px;
             padding: 10px;
-            border: 2px solid #8b4513;
             font-size: 16px;
-            text-align: center;
-            font-family: 'Times New Roman', serif;
-            background: #fffef0;
         }
+    }
 
-        .zone-input input:focus {
-            outline: none;
-            border-color: #d4af37;
-            background: #ffffff;
-        }
-
-        .controls {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 30px 0;
-        }
-
+    @media (max-width: 480px) {
         button {
-            padding: 15px 35px;
-            font-size: 16px;
-            border: 2px solid #8b4513;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-            font-family: 'Times New Roman', serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            background: #ffffff;
-            color: #8b4513;
+            padding: 14px 25px;
+            font-size: 15px;
         }
-
-        button:hover {
-            background: #8b4513;
-            color: #ffffff;
-        }
-
-        button:active {
-            transform: translateY(2px);
-        }
-
-        .btn-success {
-            border-color: #2d5016;
-            color: #2d5016;
-        }
-
-        .btn-success:hover {
-            background: #2d5016;
-            color: #ffffff;
-        }
-
-        .btn-danger {
-            border-color: #8b0000;
-            color: #8b0000;
-        }
-
-        .btn-danger:hover {
-            background: #8b0000;
-            color: #ffffff;
-        }
-
-        .btn-print {
-            border-color: #1a5490;
-            color: #1a5490;
-        }
-
-        .btn-print:hover {
-            background: #1a5490;
-            color: #ffffff;
-        }
-
-        .results {
-            background: #fafafa;
-            padding: 25px;
-            border: 2px solid #8b4513;
-            margin-top: 20px;
-        }
-
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: white;
-            margin: 12px 0;
-            border: 1px solid #ccc;
-        }
-
-        .result-item .label {
-            font-weight: bold;
-            color: #4a4a4a;
-            font-size: 1.1em;
+        
+        .score-display {
+            font-size: 2.5em;
         }
 
         .result-item .value {
-            font-size: 1.6em;
-            color: #8b4513;
-            font-weight: bold;
+            font-size: 1.5em;
         }
+    }
+</style>
+```
 
-        .shots-list {
-            max-height: 350px;
-            overflow-y: auto;
-            margin-top: 20px;
-            border: 2px solid #8b4513;
-            background: #fafafa;
-            padding: 15px;
-        }
-
-        .shots-list h4 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #8b4513;
-            font-size: 1.2em;
-            text-transform: uppercase;
-            border-bottom: 2px solid #d4af37;
-            padding-bottom: 10px;
-        }
-
-        .shot-item {
-            background: white;
-            padding: 12px 15px;
-            margin: 8px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #ccc;
-            border-right: 4px solid #8b4513;
-        }
-
-        .score-display {
-            text-align: center;
-            font-size: 3.5em;
-            color: #8b4513;
-            font-weight: bold;
-            margin: 25px 0;
-            padding: 20px;
-            border: 3px double #8b4513;
-            background: #fffef0;
-            letter-spacing: 3px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .print-header {
-            display: none;
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            border: 4px double #8b4513;
-            background: #fffef0;
-        }
-
-        .print-header h2 {
-            color: #8b4513;
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        .print-date {
-            color: #4a4a4a;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        /* أنماط الطباعة */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .container {
-                border: 3px solid #8b4513;
-                max-width: 100%;
-                padding: 30px;
-            }
-            
-            h1 {
-                display: none;
-            }
-            
-            .instructions,
-            .scoring-section,
-            .controls,
-            button {
-                display: none !important;
-            }
-            
-            #resultsSection {
-                display: block !important;
-            }
-            
-            .print-header {
-                display: block !important;
-            }
-            
-            .score-display {
-                font-size: 4em;
-                page-break-after: avoid;
-            }
-            
-            .results {
-                page-break-inside: avoid;
-            }
-            
-            .shots-list {
-                max-height: none;
-                page-break-inside: avoid;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 25px;
-            }
-            
-            h1 {
-                font-size: 1.6em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            button {
-                padding: 12px 25px;
-                font-size: 14px;
-            }
-            
-            .score-display {
-                font-size: 2.5em;
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="container">
         <h1>🎯 حاسبة أهداف الرماية</h1>
 
-        <div class="instructions">
-            <strong>📋 تعليمات الاستخدام:</strong>
-            <ul>
-                <li>أدخل عدد الإصابات في كل منطقة من مناطق الهدف</li>
-                <li>سيتم حساب النقاط تلقائياً بناءً على قيمة كل منطقة</li>
-                <li>يمكنك تعديل القيم في أي وقت وسيتم تحديث النتائج فوراً</li>
-                <li>اضغط على زر الطباعة للحصول على ستيكر احترافي للنتائج</li>
-            </ul>
+```
+    <div class="instructions">
+        <strong>📋 تعليمات الاستخدام:</strong>
+        <ul>
+            <li>أدخل عدد الإصابات في كل منطقة من مناطق الهدف</li>
+            <li>سيتم حساب النقاط تلقائياً بناءً على قيمة كل منطقة</li>
+            <li>يمكنك تعديل القيم في أي وقت وسيتم تحديث النتائج فوراً</li>
+            <li>اضغط على زر الطباعة للحصول على ستيكر احترافي للنتائج</li>
+        </ul>
+    </div>
+
+    <div class="scoring-section">
+        <h3>أدخل عدد الإصابات لكل منطقة</h3>
+        
+        <div class="zone-input">
+            <label>🎯 المركز (10 نقاط):</label>
+            <input type="number" id="zone10" min="0" value="0" />
+        </div>
+        
+        <div class="zone-input">
+            <label>⭕ المنطقة 9 نقاط:</label>
+            <input type="number" id="zone9" min="0" value="0" />
+        </div>
+        
+        <div class="zone-input">
+            <label>⭕ المنطقة 8 نقاط:</label>
+            <input type="number" id="zone8" min="0" value="0" />
+        </div>
+        
+        <div class="zone-input">
+            <label>⭕ المنطقة 7 نقاط:</label>
+            <input type="number" id="zone7" min="0" value="0" />
+        </div>
+        
+        <div class="zone-input">
+            <label>⭕ المنطقة 6 نقاط:</label>
+            <input type="number" id="zone6" min="0" value="0" />
         </div>
 
-        <div class="scoring-section">
-            <h3>أدخل عدد الإصابات لكل منطقة</h3>
-            
-            <div class="zone-input">
-                <label>🎯 المركز (10 نقاط):</label>
-                <input type="number" id="zone10" min="0" value="0" />
-            </div>
-            
-            <div class="zone-input">
-                <label>⭕ المنطقة 9 نقاط:</label>
-                <input type="number" id="zone9" min="0" value="0" />
-            </div>
-            
-            <div class="zone-input">
-                <label>⭕ المنطقة 8 نقاط:</label>
-                <input type="number" id="zone8" min="0" value="0" />
-            </div>
-            
-            <div class="zone-input">
-                <label>⭕ المنطقة 7 نقاط:</label>
-                <input type="number" id="zone7" min="0" value="0" />
-            </div>
-            
-            <div class="zone-input">
-                <label>⭕ المنطقة 6 نقاط:</label>
-                <input type="number" id="zone6" min="0" value="0" />
-            </div>
-
-            <div class="zone-input">
-                <label>⭕ المنطقة 5 نقاط:</label>
-                <input type="number" id="zone5" min="0" value="0" />
-            </div>
-
-            <div class="zone-input">
-                <label>⭕ المنطقة 4 نقاط:</label>
-                <input type="number" id="zone4" min="0" value="0" />
-            </div>
-
-            <div class="zone-input">
-                <label>⭕ المنطقة 3 نقاط:</label>
-                <input type="number" id="zone3" min="0" value="0" />
-            </div>
-
-            <div class="zone-input">
-                <label>⭕ المنطقة 2 نقطة:</label>
-                <input type="number" id="zone2" min="0" value="0" />
-            </div>
-
-            <div class="zone-input">
-                <label>⭕ المنطقة 1 نقطة:</label>
-                <input type="number" id="zone1" min="0" value="0" />
-            </div>
-
-            <div class="controls">
-                <button class="btn-success" id="calculate">🧮 احسب النقاط</button>
-                <button class="btn-danger" id="reset">🗑️ مسح الكل</button>
-                <button class="btn-print" id="printBtn">🖨️ طباعة الستيكر</button>
-            </div>
+        <div class="zone-input">
+            <label>⭕ المنطقة 5 نقاط:</label>
+            <input type="number" id="zone5" min="0" value="0" />
         </div>
 
-        <div id="resultsSection" class="hidden">
-            <div class="print-header">
-                <h2>🎯 نتائج الرماية</h2>
-                <p class="print-date" id="printDate"></p>
-            </div>
-            
-            <div class="score-display" id="totalScore">0</div>
-            
-            <div class="results">
-                <div class="result-item">
-                    <span class="label">إجمالي الإصابات:</span>
-                    <span class="value" id="totalShots">0</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">معدل النقاط:</span>
-                    <span class="value" id="avgScore">0</span>
-                </div>
-                <div class="result-item">
-                    <span class="label">أعلى منطقة:</span>
-                    <span class="value" id="bestZone">-</span>
-                </div>
-            </div>
+        <div class="zone-input">
+            <label>⭕ المنطقة 4 نقاط:</label>
+            <input type="number" id="zone4" min="0" value="0" />
+        </div>
 
-            <div class="shots-list" id="shotsList"></div>
+        <div class="zone-input">
+            <label>⭕ المنطقة 3 نقاط:</label>
+            <input type="number" id="zone3" min="0" value="0" />
+        </div>
+
+        <div class="zone-input">
+            <label>⭕ المنطقة 2 نقطة:</label>
+            <input type="number" id="zone2" min="0" value="0" />
+        </div>
+
+        <div class="zone-input">
+            <label>⭕ المنطقة 1 نقطة:</label>
+            <input type="number" id="zone1" min="0" value="0" />
+        </div>
+
+        <div class="controls">
+            <button class="btn-success" id="calculate">🧮 احسب النقاط</button>
+            <button class="btn-danger" id="reset">🗑️ مسح الكل</button>
+            <button class="btn-print" id="printBtn">🖨️ طباعة الستيكر</button>
         </div>
     </div>
 
-    <script>
-        const calculateBtn = document.getElementById('calculate');
-        const resetBtn = document.getElementById('reset');
-        const printBtn = document.getElementById('printBtn');
-        const resultsSection = document.getElementById('resultsSection');
+    <div id="resultsSection" class="hidden">
+        <div class="print-header">
+            <h2>🎯 نتائج الرماية</h2>
+            <p class="print-date" id="printDate"></p>
+        </div>
+        
+        <div class="score-display" id="totalScore">0</div>
+        
+        <div class="results">
+            <div class="result-item">
+                <span class="label">إجمالي الإصابات:</span>
+                <span class="value" id="totalShots">0</span>
+            </div>
+            <div class="result-item">
+                <span class="label">معدل النقاط:</span>
+                <span class="value" id="avgScore">0</span>
+            </div>
+            <div class="result-item">
+                <span class="label">أعلى منطقة:</span>
+                <span class="value" id="bestZone">-</span>
+            </div>
+        </div>
 
-        // حساب النقاط
-        calculateBtn.addEventListener('click', () => {
-            const zone10 = parseInt(document.getElementById('zone10').value) || 0;
-            const zone9 = parseInt(document.getElementById('zone9').value) || 0;
-            const zone8 = parseInt(document.getElementById('zone8').value) || 0;
-            const zone7 = parseInt(document.getElementById('zone7').value) || 0;
-            const zone6 = parseInt(document.getElementById('zone6').value) || 0;
-            const zone5 = parseInt(document.getElementById('zone5').value) || 0;
-            const zone4 = parseInt(document.getElementById('zone4').value) || 0;
-            const zone3 = parseInt(document.getElementById('zone3').value) || 0;
-            const zone2 = parseInt(document.getElementById('zone2').value) || 0;
-            const zone1 = parseInt(document.getElementById('zone1').value) || 0;
+        <div class="shots-list" id="shotsList"></div>
+    </div>
+</div>
 
-            const totalScore = (zone10 * 10) + (zone9 * 9) + (zone8 * 8) + (zone7 * 7) + 
-                             (zone6 * 6) + (zone5 * 5) + (zone4 * 4) + (zone3 * 3) + 
-                             (zone2 * 2) + (zone1 * 1);
-            
-            const totalShots = zone10 + zone9 + zone8 + zone7 + zone6 + zone5 + zone4 + zone3 + zone2 + zone1;
-            const avgScore = totalShots > 0 ? (totalScore / totalShots).toFixed(2) : 0;
+<script>
+    const calculateBtn = document.getElementById('calculate');
+    const resetBtn = document.getElementById('reset');
+    const printBtn = document.getElementById('printBtn');
+    const resultsSection = document.getElementById('resultsSection');
 
-            // إيجاد أعلى منطقة
-            const zones = [
-                { name: 'المركز (10)', count: zone10, points: 10 },
-                { name: 'المنطقة 9', count: zone9, points: 9 },
-                { name: 'المنطقة 8', count: zone8, points: 8 },
-                { name: 'المنطقة 7', count: zone7, points: 7 },
-                { name: 'المنطقة 6', count: zone6, points: 6 },
-                { name: 'المنطقة 5', count: zone5, points: 5 },
-                { name: 'المنطقة 4', count: zone4, points: 4 },
-                { name: 'المنطقة 3', count: zone3, points: 3 },
-                { name: 'المنطقة 2', count: zone2, points: 2 },
-                { name: 'المنطقة 1', count: zone1, points: 1 }
-            ];
-            
-            const bestZone = zones.reduce((max, zone) => zone.count > max.count ? zone : max);
+    // حساب النقاط
+    calculateBtn.addEventListener('click', () => {
+        const zone10 = parseInt(document.getElementById('zone10').value) || 0;
+        const zone9 = parseInt(document.getElementById('zone9').value) || 0;
+        const zone8 = parseInt(document.getElementById('zone8').value) || 0;
+        const zone7 = parseInt(document.getElementById('zone7').value) || 0;
+        const zone6 = parseInt(document.getElementById('zone6').value) || 0;
+        const zone5 = parseInt(document.getElementById('zone5').value) || 0;
+        const zone4 = parseInt(document.getElementById('zone4').value) || 0;
+        const zone3 = parseInt(document.getElementById('zone3').value) || 0;
+        const zone2 = parseInt(document.getElementById('zone2').value) || 0;
+        const zone1 = parseInt(document.getElementById('zone1').value) || 0;
 
-            // عرض النتائج
-            document.getElementById('totalScore').textContent = totalScore + ' نقطة';
-            document.getElementById('totalShots').textContent = totalShots;
-            document.getElementById('avgScore').textContent = avgScore;
-            document.getElementById('bestZone').textContent = bestZone.count > 0 ? bestZone.name : 'لا توجد إصابات';
+        const totalScore = (zone10 * 10) + (zone9 * 9) + (zone8 * 8) + (zone7 * 7) + 
+                         (zone6 * 6) + (zone5 * 5) + (zone4 * 4) + (zone3 * 3) + 
+                         (zone2 * 2) + (zone1 * 1);
+        
+        const totalShots = zone10 + zone9 + zone8 + zone7 + zone6 + zone5 + zone4 + zone3 + zone2 + zone1;
+        const avgScore = totalShots > 0 ? (totalScore / totalShots).toFixed(2) : 0;
 
-            // عرض قائمة التفاصيل
-            const shotsList = document.getElementById('shotsList');
-            shotsList.innerHTML = '<h4>تفاصيل الإصابات</h4>';
-            
-            zones.forEach((zone) => {
-                if (zone.count > 0) {
-                    const points = zone.points * zone.count;
-                    shotsList.innerHTML += `
-                        <div class="shot-item">
-                            <span>${zone.name}: ${zone.count} إصابة</span>
-                            <span style="color: #8b4513; font-weight: bold;">${points} نقطة</span>
-                        </div>
-                    `;
-                }
-            });
+        // إيجاد أعلى منطقة
+        const zones = [
+            { name: 'المركز (10)', count: zone10, points: 10 },
+            { name: 'المنطقة 9', count: zone9, points: 9 },
+            { name: 'المنطقة 8', count: zone8, points: 8 },
+            { name: 'المنطقة 7', count: zone7, points: 7 },
+            { name: 'المنطقة 6', count: zone6, points: 6 },
+            { name: 'المنطقة 5', count: zone5, points: 5 },
+            { name: 'المنطقة 4', count: zone4, points: 4 },
+            { name: 'المنطقة 3', count: zone3, points: 3 },
+            { name: 'المنطقة 2', count: zone2, points: 2 },
+            { name: 'المنطقة 1', count: zone1, points: 1 }
+        ];
+        
+        const bestZone = zones.reduce((max, zone) => zone.count > max.count ? zone : max);
 
-            resultsSection.classList.remove('hidden');
-            
-            // تحديث تاريخ الطباعة
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('ar-SA', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            document.getElementById('printDate').textContent = dateStr;
-        });
+        // عرض النتائج
+        document.getElementById('totalScore').textContent = totalScore + ' نقطة';
+        document.getElementById('totalShots').textContent = totalShots;
+        document.getElementById('avgScore').textContent = avgScore;
+        document.getElementById('bestZone').textContent = bestZone.count > 0 ? bestZone.name : 'لا توجد إصابات';
 
-        // مسح الكل
-        resetBtn.addEventListener('click', () => {
-            if (confirm('هل تريد مسح جميع البيانات؟')) {
-                document.getElementById('zone10').value = 0;
-                document.getElementById('zone9').value = 0;
-                document.getElementById('zone8').value = 0;
-                document.getElementById('zone7').value = 0;
-                document.getElementById('zone6').value = 0;
-                document.getElementById('zone5').value = 0;
-                document.getElementById('zone4').value = 0;
-                document.getElementById('zone3').value = 0;
-                document.getElementById('zone2').value = 0;
-                document.getElementById('zone1').value = 0;
-                
-                resultsSection.classList.add('hidden');
+        // عرض قائمة التفاصيل
+        const shotsList = document.getElementById('shotsList');
+        shotsList.innerHTML = '<h4>تفاصيل الإصابات</h4>';
+        
+        zones.forEach((zone) => {
+            if (zone.count > 0) {
+                const points = zone.points * zone.count;
+                shotsList.innerHTML += `
+                    <div class="shot-item">
+                        <span>${zone.name}: ${zone.count} إصابة</span>
+                        <span style="font-weight: bold; font-size: 1.2em;">${points} نقطة</span>
+                    </div>
+                `;
             }
         });
 
-        // طباعة الستيكر
-        printBtn.addEventListener('click', () => {
-            if (resultsSection.classList.contains('hidden')) {
-                alert('⚠️ يجب حساب النقاط أولاً قبل الطباعة!');
-                return;
-            }
-            window.print();
+        resultsSection.classList.remove('hidden');
+        
+        // تحديث تاريخ الطباعة
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('ar-SA', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
         });
+        document.getElementById('printDate').textContent = dateStr;
+    });
 
-        // تحديث النقاط تلقائياً عند تغيير القيم
-        ['zone10', 'zone9', 'zone8', 'zone7', 'zone6', 'zone5', 'zone4', 'zone3', 'zone2', 'zone1'].forEach(id => {
-            document.getElementById(id).addEventListener('input', () => {
-                if (!resultsSection.classList.contains('hidden')) {
-                    calculateBtn.click();
-                }
-            });
-        });
-
-        // حساب النتائج عند التحميل الأولي إذا كانت هناك قيم
-        window.addEventListener('load', () => {
-            const hasValues = ['zone10', 'zone9', 'zone8', 'zone7', 'zone6', 'zone5', 'zone4', 'zone3', 'zone2', 'zone1'].some(id => {
-                return parseInt(document.getElementById(id).value) > 0;
-            });
+    // مسح الكل
+    resetBtn.addEventListener('click', () => {
+        if (confirm('هل تريد مسح جميع البيانات؟')) {
+            document.getElementById('zone10').value = 0;
+            document.getElementById('zone9').value = 0;
+            document.getElementById('zone8').value = 0;
+            document.getElementById('zone7').value = 0;
+            document.getElementById('zone6').value = 0;
+            document.getElementById('zone5').value = 0;
+            document.getElementById('zone4').value = 0;
+            document.getElementById('zone3').value = 0;
+            document.getElementById('zone2').value = 0;
+            document.getElementById('zone1').value = 0;
             
-            if (hasValues) {
+            resultsSection.classList.add('hidden');
+        }
+    });
+
+    // طباعة الستيكر
+    printBtn.addEventListener('click', () => {
+        if (resultsSection.classList.contains('hidden')) {
+            alert('⚠️ يجب حساب النقاط أولاً قبل الطباعة!');
+            return;
+        }
+        window.print();
+    });
+
+    // تحديث النقاط تلقائياً عند تغيير القيم
+    ['zone10', 'zone9', 'zone8', 'zone7', 'zone6', 'zone5', 'zone4', 'zone3', 'zone2', 'zone1'].forEach(id => {
+        document.getElementById(id).addEventListener('input', () => {
+            if (!resultsSection.classList.contains('hidden')) {
                 calculateBtn.click();
             }
         });
-    </script>
+    });
+
+    // حساب النتائج عند التحميل الأولي إذا كانت هناك قيم
+    window.addEventListener('load', () => {
+        const hasValues = ['zone10', 'zone9', 'zone8', 'zone7', 'zone6', 'zone5', 'zone4', 'zone3', 'zone2', 'zone1'].some(id => {
+            return parseInt(document.getElementById(id).value) > 0;
+        });
+        
+        if (hasValues) {
+            calculateBtn.click();
+        }
+    });
+</script>
+```
+
 </body>
 </html>
