@@ -424,234 +424,169 @@
 
 </head>
 <body>
-    <div class="container">
-        <h1>🎯 حاسبة أهداف الرماية</h1>
+  <div class="container">
+    <h1>🎯 حاسبة أهداف الرماية</h1>
 
-```
     <div class="instructions">
-        <strong>📋 تعليمات الاستخدام:</strong>
-        <ul>
-            <li>أدخل عدد الإصابات في كل منطقة من مناطق الهدف</li>
-            <li>سيتم حساب النقاط تلقائياً بناءً على قيمة كل منطقة</li>
-            <li>يمكنك تعديل القيم في أي وقت وسيتم تحديث النتائج فوراً</li>
-            <li>اضغط على زر الطباعة للحصول على ستيكر احترافي للنتائج</li>
-        </ul>
+      <strong>📋 تعليمات الاستخدام:</strong>
+      <ul>
+        <li>أدخل عدد الإصابات في كل منطقة من مناطق الهدف</li>
+        <li>سيتم حساب النقاط تلقائياً بناءً على قيمة كل منطقة</li>
+        <li>يمكنك تعديل القيم في أي وقت وسيتم تحديث النتائج فوراً</li>
+        <li>اضغط على زر الطباعة للحصول على ستيكر احترافي للنتائج</li>
+      </ul>
     </div>
 
     <div class="scoring-section">
-        <h3>أدخل عدد الإصابات لكل منطقة</h3>
-        
-        <div class="zone-input">
-            <label>🎯 المركز (10 نقاط):</label>
-            <input type="number" id="zone10" min="0" value="0" />
-        </div>
-        
-        <div class="zone-input">
-            <label>⭕ المنطقة 9 نقاط:</label>
-            <input type="number" id="zone9" min="0" value="0" />
-        </div>
-        
-        <div class="zone-input">
-            <label>⭕ المنطقة 8 نقاط:</label>
-            <input type="number" id="zone8" min="0" value="0" />
-        </div>
-        
-        <div class="zone-input">
-            <label>⭕ المنطقة 7 نقاط:</label>
-            <input type="number" id="zone7" min="0" value="0" />
-        </div>
-        
-        <div class="zone-input">
-            <label>⭕ المنطقة 6 نقاط:</label>
-            <input type="number" id="zone6" min="0" value="0" />
-        </div>
+      <h3>أدخل عدد الإصابات لكل منطقة</h3>
 
-        <div class="zone-input">
-            <label>⭕ المنطقة 5 نقاط:</label>
-            <input type="number" id="zone5" min="0" value="0" />
-        </div>
+      <!-- مناطق الإدخال -->
+      <div class="zone-input"><label>🎯 المركز (10 نقاط):</label><input type="number" id="zone10" min="0" value="0" /></div>
+      <div class="zone-input"><label>⭕ المنطقة 9 نقاط:</label><input type="number" id="zone9" min="0" value="0" /></div>
+      <div class="zone-input"><label>⭕ المنطقة 8 نقاط:</label><input type="number" id="zone8" min="0" value="0" /></div>
+      <div class="zone-input"><label>⭕ المنطقة 7 نقاط:</label><input type="number" id="zone7" min="0" value="0" /></div>
+      <div class="zone-input"><label>⭕ المنطقة 6 نقاط:</label><input type="number" id="zone6" min="0" value="0" /></div>
+      <div class="zone-input"><label>⭕ المنطقة 5 نقاط:</label><input type="number" id="zone5" min="0" value="0" /></div>
+      <div class="zone-input"><label>⭕ المنطقة 4 نقاط:</label><input type="number" id="zone4" min="0" value="0" /></div>
+      <div class="zone-input"><label>⭕ المنطقة 3 نقاط:</label><input type="number" id="zone3" min="0" value="0" /></div>
+      <div class="zone-input"><label>⭕ المنطقة 2 نقطة:</label><input type="number" id="zone2" min="0" value="0" /></div>
+      <div class="zone-input"><label>⭕ المنطقة 1 نقطة:</label><input type="number" id="zone1" min="0" value="0" /></div>
 
-        <div class="zone-input">
-            <label>⭕ المنطقة 4 نقاط:</label>
-            <input type="number" id="zone4" min="0" value="0" />
-        </div>
-
-        <div class="zone-input">
-            <label>⭕ المنطقة 3 نقاط:</label>
-            <input type="number" id="zone3" min="0" value="0" />
-        </div>
-
-        <div class="zone-input">
-            <label>⭕ المنطقة 2 نقطة:</label>
-            <input type="number" id="zone2" min="0" value="0" />
-        </div>
-
-        <div class="zone-input">
-            <label>⭕ المنطقة 1 نقطة:</label>
-            <input type="number" id="zone1" min="0" value="0" />
-        </div>
-
-        <div class="controls">
-            <button class="btn-success" id="calculate">🧮 احسب النقاط</button>
-            <button class="btn-danger" id="reset">🗑️ مسح الكل</button>
-            <button class="btn-print" id="printBtn">🖨️ طباعة الستيكر</button>
-        </div>
+      <div class="controls">
+        <button class="btn-success" id="calculate">🧮 احسب النقاط</button>
+        <button class="btn-danger" id="reset">🗑️ مسح الكل</button>
+        <button class="btn-print" id="printBtn">🖨️ طباعة الستيكر</button>
+      </div>
     </div>
 
     <div id="resultsSection" class="hidden">
-        <div class="print-header">
-            <h2>🎯 نتائج الرماية</h2>
-            <p class="print-date" id="printDate"></p>
-        </div>
-        
-        <div class="score-display" id="totalScore">0</div>
-        
-        <div class="results">
-            <div class="result-item">
-                <span class="label">إجمالي الإصابات:</span>
-                <span class="value" id="totalShots">0</span>
-            </div>
-            <div class="result-item">
-                <span class="label">معدل النقاط:</span>
-                <span class="value" id="avgScore">0</span>
-            </div>
-            <div class="result-item">
-                <span class="label">أعلى منطقة:</span>
-                <span class="value" id="bestZone">-</span>
-            </div>
-        </div>
+      <div class="print-header">
+        <h2>🎯 نتائج الرماية</h2>
+        <p class="print-date" id="printDate"></p>
+      </div>
 
-        <div class="shots-list" id="shotsList"></div>
+      <div class="score-display" id="totalScore">0</div>
+
+      <!-- قسم تفاصيل الإصابات + النتائج -->
+      <div class="shots-list" id="shotsList">
+        <h4>تفاصيل الإصابات</h4>
+
+        <!-- النتائج تظهر بعد التفاصيل -->
+        <div class="results" id="summaryResults">
+          <div class="result-item">
+            <span class="label">إجمالي الإصابات:</span>
+            <span class="value" id="totalShots">0</span>
+          </div>
+          <div class="result-item">
+            <span class="label">معدل النقاط:</span>
+            <span class="value" id="avgScore">0</span>
+          </div>
+          <div class="result-item">
+            <span class="label">أعلى منطقة:</span>
+            <span class="value" id="bestZone">-</span>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
+  <script>
     const calculateBtn = document.getElementById('calculate');
     const resetBtn = document.getElementById('reset');
     const printBtn = document.getElementById('printBtn');
     const resultsSection = document.getElementById('resultsSection');
 
-    // حساب النقاط
     calculateBtn.addEventListener('click', () => {
-        const zone10 = parseInt(document.getElementById('zone10').value) || 0;
-        const zone9 = parseInt(document.getElementById('zone9').value) || 0;
-        const zone8 = parseInt(document.getElementById('zone8').value) || 0;
-        const zone7 = parseInt(document.getElementById('zone7').value) || 0;
-        const zone6 = parseInt(document.getElementById('zone6').value) || 0;
-        const zone5 = parseInt(document.getElementById('zone5').value) || 0;
-        const zone4 = parseInt(document.getElementById('zone4').value) || 0;
-        const zone3 = parseInt(document.getElementById('zone3').value) || 0;
-        const zone2 = parseInt(document.getElementById('zone2').value) || 0;
-        const zone1 = parseInt(document.getElementById('zone1').value) || 0;
+      const zone10 = parseInt(document.getElementById('zone10').value) || 0;
+      const zone9 = parseInt(document.getElementById('zone9').value) || 0;
+      const zone8 = parseInt(document.getElementById('zone8').value) || 0;
+      const zone7 = parseInt(document.getElementById('zone7').value) || 0;
+      const zone6 = parseInt(document.getElementById('zone6').value) || 0;
+      const zone5 = parseInt(document.getElementById('zone5').value) || 0;
+      const zone4 = parseInt(document.getElementById('zone4').value) || 0;
+      const zone3 = parseInt(document.getElementById('zone3').value) || 0;
+      const zone2 = parseInt(document.getElementById('zone2').value) || 0;
+      const zone1 = parseInt(document.getElementById('zone1').value) || 0;
 
-        const totalScore = (zone10 * 10) + (zone9 * 9) + (zone8 * 8) + (zone7 * 7) + 
-                         (zone6 * 6) + (zone5 * 5) + (zone4 * 4) + (zone3 * 3) + 
+      const totalScore = (zone10 * 10) + (zone9 * 9) + (zone8 * 8) + (zone7 * 7) +
+                         (zone6 * 6) + (zone5 * 5) + (zone4 * 4) + (zone3 * 3) +
                          (zone2 * 2) + (zone1 * 1);
-        
-        const totalShots = zone10 + zone9 + zone8 + zone7 + zone6 + zone5 + zone4 + zone3 + zone2 + zone1;
-        const avgScore = totalShots > 0 ? (totalScore / totalShots).toFixed(2) : 0;
 
-        // إيجاد أعلى منطقة
-        const zones = [
-            { name: 'المركز (10)', count: zone10, points: 10 },
-            { name: 'المنطقة 9', count: zone9, points: 9 },
-            { name: 'المنطقة 8', count: zone8, points: 8 },
-            { name: 'المنطقة 7', count: zone7, points: 7 },
-            { name: 'المنطقة 6', count: zone6, points: 6 },
-            { name: 'المنطقة 5', count: zone5, points: 5 },
-            { name: 'المنطقة 4', count: zone4, points: 4 },
-            { name: 'المنطقة 3', count: zone3, points: 3 },
-            { name: 'المنطقة 2', count: zone2, points: 2 },
-            { name: 'المنطقة 1', count: zone1, points: 1 }
-        ];
-        
-        const bestZone = zones.reduce((max, zone) => zone.count > max.count ? zone : max);
+      const totalShots = zone10 + zone9 + zone8 + zone7 + zone6 + zone5 + zone4 + zone3 + zone2 + zone1;
+      const avgScore = totalShots > 0 ? (totalScore / totalShots).toFixed(2) : 0;
 
-        // عرض النتائج
-        document.getElementById('totalScore').textContent = totalScore + ' نقطة';
-        document.getElementById('totalShots').textContent = totalShots;
-        document.getElementById('avgScore').textContent = avgScore;
-        document.getElementById('bestZone').textContent = bestZone.count > 0 ? bestZone.name : 'لا توجد إصابات';
+      const zones = [
+        { name: 'المركز (10)', count: zone10, points: 10 },
+        { name: 'المنطقة 9', count: zone9, points: 9 },
+        { name: 'المنطقة 8', count: zone8, points: 8 },
+        { name: 'المنطقة 7', count: zone7, points: 7 },
+        { name: 'المنطقة 6', count: zone6, points: 6 },
+        { name: 'المنطقة 5', count: zone5, points: 5 },
+        { name: 'المنطقة 4', count: zone4, points: 4 },
+        { name: 'المنطقة 3', count: zone3, points: 3 },
+        { name: 'المنطقة 2', count: zone2, points: 2 },
+        { name: 'المنطقة 1', count: zone1, points: 1 }
+      ];
 
-        // عرض قائمة التفاصيل
-        const shotsList = document.getElementById('shotsList');
-        shotsList.innerHTML = '<h4>تفاصيل الإصابات</h4>';
-        
-        zones.forEach((zone) => {
-            if (zone.count > 0) {
-                const points = zone.points * zone.count;
-                shotsList.innerHTML += `
-                    <div class="shot-item">
-                        <span>${zone.name}: ${zone.count} إصابة</span>
-                        <span style="font-weight: bold; font-size: 1.2em;">${points} نقطة</span>
-                    </div>
-                `;
-            }
-        });
+      const bestZone = zones.reduce((max, zone) => zone.count > max.count ? zone : max);
 
-        resultsSection.classList.remove('hidden');
-        
-        // تحديث تاريخ الطباعة
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('ar-SA', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-        document.getElementById('printDate').textContent = dateStr;
+      // تحديث النتائج
+      document.getElementById('totalScore').textContent = totalScore + ' نقطة';
+      document.getElementById('totalShots').textContent = totalShots;
+      document.getElementById('avgScore').textContent = avgScore;
+      document.getElementById('bestZone').textContent = bestZone.count > 0 ? bestZone.name : 'لا توجد إصابات';
+
+      // تحديث تفاصيل الإصابات
+      const shotsList = document.getElementById('shotsList');
+      shotsList.innerHTML = '<h4>تفاصيل الإصابات</h4>';
+
+      zones.forEach((zone) => {
+        if (zone.count > 0) {
+          const points = zone.points * zone.count;
+          shotsList.innerHTML += `
+            <div class="shot-item">
+              <span>${zone.name}: ${zone.count} إصابة</span>
+              <span style="font-weight: bold; font-size: 1.2em;">${points} نقطة</span>
+            </div>
+          `;
+        }
+      });
+
+      // إضافة النتائج أسفل القائمة
+      shotsList.innerHTML += `
+        <div class="results" id="summaryResults">
+          <div class="result-item">
+            <span class="label">إجمالي الإصابات:</span>
+            <span class="value" id="totalShots">${totalShots}</span>
+          </div>
+          <div class="result-item">
+            <span class="label">معدل النقاط:</span>
+            <span class="value" id="avgScore">${avgScore}</span>
+          </div>
+          <div class="result-item">
+            <span class="label">أعلى منطقة:</span>
+            <span class="value" id="bestZone">${bestZone.count > 0 ? bestZone.name : 'لا توجد إصابات'}</span>
+          </div>
+        </div>
+      `;
+
+      // عرض قسم النتائج
+      resultsSection.classList.remove('hidden');
+
+      // تحديث التاريخ للطباعة
+      const now = new Date();
+      document.getElementById('printDate').textContent = `📅 التاريخ: ${now.toLocaleDateString('ar-EG')}`;
     });
 
-    // مسح الكل
     resetBtn.addEventListener('click', () => {
-        if (confirm('هل تريد مسح جميع البيانات؟')) {
-            document.getElementById('zone10').value = 0;
-            document.getElementById('zone9').value = 0;
-            document.getElementById('zone8').value = 0;
-            document.getElementById('zone7').value = 0;
-            document.getElementById('zone6').value = 0;
-            document.getElementById('zone5').value = 0;
-            document.getElementById('zone4').value = 0;
-            document.getElementById('zone3').value = 0;
-            document.getElementById('zone2').value = 0;
-            document.getElementById('zone1').value = 0;
-            
-            resultsSection.classList.add('hidden');
-        }
+      const inputs = document.querySelectorAll('input[type="number"]');
+      inputs.forEach(input => input.value = 0);
+      resultsSection.classList.add('hidden');
     });
 
-    // طباعة الستيكر
     printBtn.addEventListener('click', () => {
-        if (resultsSection.classList.contains('hidden')) {
-            alert('⚠️ يجب حساب النقاط أولاً قبل الطباعة!');
-            return;
-        }
-        window.print();
+      window.print();
     });
-
-    // تحديث النقاط تلقائياً عند تغيير القيم
-    ['zone10', 'zone9', 'zone8', 'zone7', 'zone6', 'zone5', 'zone4', 'zone3', 'zone2', 'zone1'].forEach(id => {
-        document.getElementById(id).addEventListener('input', () => {
-            if (!resultsSection.classList.contains('hidden')) {
-                calculateBtn.click();
-            }
-        });
-    });
-
-    // حساب النتائج عند التحميل الأولي إذا كانت هناك قيم
-    window.addEventListener('load', () => {
-        const hasValues = ['zone10', 'zone9', 'zone8', 'zone7', 'zone6', 'zone5', 'zone4', 'zone3', 'zone2', 'zone1'].some(id => {
-            return parseInt(document.getElementById(id).value) > 0;
-        });
-        
-        if (hasValues) {
-            calculateBtn.click();
-        }
-    });
-</script>
-```
-
+  </script>
 </body>
 </html>
