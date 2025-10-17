@@ -92,7 +92,7 @@
     </div>
     
     <div class="mb-4">
-        <label for="serialInput" class="form-label fs-5">رقم التسلسل:</label>
+        <label for="serialInput" class="form-label fs-5">رقم التسلسل (اختياري):</label>
         <input type="text" class="form-control form-control-lg" id="serialInput" 
                placeholder="مثال: SN-001" dir="ltr">
     </div>
@@ -105,7 +105,7 @@
     
     <div id="barcodeSection" style="display: none;">
         <div class="barcode-container print-area">
-            <div class="mb-2">
+            <div class="mb-3">
                 <strong id="serialText" style="font-size: 16px; color: #666;"></strong>
             </div>
             <svg id="barcode"></svg>
@@ -125,6 +125,7 @@
 <script>
     function generateBarcode() {
         const input = document.getElementById('numberInput').value.trim();
+        const serial = document.getElementById('serialInput').value.trim();
         
         if (!input) {
             alert('⚠️ الرجاء إدخال رقم');
@@ -145,7 +146,29 @@
                 margin: 10
             });
             
-            document.getElementById('barcodeText').textContent = input;
+            // عرض رقم التسلسل إذا تم إدخاله
+            const serialElement = document.getElementById('serialText');
+            if (serial) {
+                serialElement.textContent = 'التسلسل: ' + serial;
+                serialElement.style.display = 'block';
+            } else {
+                serialElement.textContent = '';
+                serialElement.style.display = 'none';
+            }
+            
+            // عرض التاريخ والوقت
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ar-SA', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            const timeStr = now.toLocaleTimeString('ar-SA', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('dateTimeText').textContent = dateStr + ' - ' + timeStr;
+            
             document.getElementById('barcodeSection').style.display = 'block';
         } catch (e) {
             alert('⚠️ حدث خطأ في توليد الباركود: ' + e.message);
@@ -153,6 +176,12 @@
     }
     
     document.getElementById('numberInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            generateBarcode();
+        }
+    });
+    
+    document.getElementById('serialInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             generateBarcode();
         }
